@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+tests
+scripts
+docs
+README.md
+.env
+*.test.js
+*.test.cjs

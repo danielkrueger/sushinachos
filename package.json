@@ -1,0 +1,16 @@
+{
+  "name": "sushinachos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sushinachos Games - jogos de comida mexicana e japonesa em JS puro/Canvas com ranking em PostgreSQL",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8"
+  }
+}

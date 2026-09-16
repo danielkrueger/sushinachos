@@ -1,0 +1,927 @@
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #1a1a2e;
+    color: #fff;
+    touch-action: none;
+    -webkit-touch-callout: none;
+}
+
+/* ===== SCREENS ===== */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ===== MENU SCREEN ===== */
+#menu-screen {
+    background: linear-gradient(145deg, #D32F2F 0%, #b71c1c 40%, #880E4F 100%);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.menu-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    min-height: min-content;
+}
+
+/* Chef Photo */
+.chef-photo-frame {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    overflow: hidden;
+    margin-bottom: 5px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.chef-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+}
+
+/* Logo */
+.logo-area {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-area h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.2rem;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+    line-height: 1.1;
+    letter-spacing: 1px;
+}
+
+.logo-area h1 span {
+    color: #FFC107;
+    font-size: 1.8rem;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+/* Points Display */
+.points-display {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.points-icon {
+    font-size: 1.3rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+/* Games Grid */
+.games-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.game-btn {
+    width: 100%;
+    padding: 16px 18px;
+    border: none;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: left;
+}
+
+.game-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.game-icon {
+    font-size: 1.8rem;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFF3E0;
+    border-radius: 14px;
+    flex-shrink: 0;
+}
+
+.game-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.game-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.game-desc {
+    font-size: 0.78rem;
+    color: #888;
+    font-weight: 600;
+}
+
+.game-arrow {
+    color: #D32F2F;
+    font-size: 1.2rem;
+    opacity: 0.6;
+}
+
+/* Rewards Button */
+.rewards-btn {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.rewards-btn:active {
+    transform: scale(0.97);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.footer-text {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    text-align: center;
+    max-width: 280px;
+    line-height: 1.4;
+}
+
+/* ===== GAME SCREEN ===== */
+#game-screen {
+    flex-direction: column;
+    background: #000;
+}
+
+#game-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.game-hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    padding-top: max(8px, env(safe-area-inset-top));
+    pointer-events: none;
+}
+
+.hud-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    transition: transform 0.1s;
+}
+
+.hud-btn:active {
+    transform: scale(0.9);
+}
+
+.hud-score {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hud-icon {
+    font-size: 1rem;
+}
+
+/* Tutorial Overlay */
+.tutorial-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.tutorial-overlay.hidden {
+    display: none;
+}
+
+.tutorial-content {
+    text-align: center;
+    max-width: 320px;
+}
+
+.tutorial-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.tutorial-content h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+
+.tutorial-content p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+/* ===== OVERLAYS ===== */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.overlay-content {
+    background: linear-gradient(145deg, #2d2d44, #1a1a2e);
+    border-radius: 24px;
+    padding: 35px 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.overlay-content h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.final-score {
+    margin: 20px 0;
+}
+
+.final-score-label {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+#final-score-value {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.5rem;
+    color: #FFC107;
+    display: block;
+    text-shadow: 0 0 30px rgba(255, 193, 7, 0.3);
+}
+
+.best-score {
+    font-size: 0.9rem;
+    color: #4CAF50;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.gameover-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.overlay-btn {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.overlay-btn:active {
+    transform: scale(0.96);
+}
+
+.overlay-btn.primary {
+    background: linear-gradient(135deg, #D32F2F, #F44336);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+}
+
+.overlay-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== REWARDS SCREEN ===== */
+#rewards-screen {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.rewards-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
+}
+
+.back-link {
+    background: none;
+    border: none;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 8px 0;
+    opacity: 0.8;
+}
+
+.back-link:active {
+    opacity: 1;
+}
+
+.rewards-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    margin: 15px 0;
+}
+
+.total-points-big {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 152, 0, 0.1));
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.points-icon-big {
+    font-size: 2.5rem;
+}
+
+.points-big-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.points-big-number {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #FFC107;
+}
+
+.points-big-label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+/* Rewards List */
+.rewards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.reward-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.reward-item.available {
+    background: rgba(76, 175, 80, 0.1);
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.reward-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reward-emoji {
+    font-size: 1.6rem;
+    width: 40px;
+    text-align: center;
+}
+
+.reward-desc {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.reward-points {
+    font-size: 0.78rem;
+    opacity: 0.5;
+    margin-top: 2px;
+}
+
+.reward-status {
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.reward-status.locked {
+    color: #999;
+}
+
+.reward-status.redeemed {
+    color: #4CAF50;
+}
+
+.redeem-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.1s;
+    white-space: nowrap;
+}
+
+.redeem-btn:active {
+    transform: scale(0.95);
+}
+
+/* Redeemed Codes */
+.redeemed-codes {
+    margin-top: 10px;
+}
+
+.redeemed-codes h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.code-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.code-value {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: #FFC107;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+}
+
+.code-desc {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.code-date {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    margin-top: 2px;
+}
+
+.rewards-footer {
+    text-align: center;
+    font-size: 0.78rem;
+    opacity: 0.5;
+    margin-top: 20px;
+    line-height: 1.5;
+    padding-bottom: 30px;
+}
+
+/* ===== UTILITY ===== */
+.hidden {
+    display: none !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-height: 600px) {
+    .menu-container {
+        gap: 12px;
+        padding: 15px 20px;
+    }
+
+    .chef-photo-frame {
+        width: 65px;
+        height: 65px;
+    }
+
+    .logo-area h1 {
+        font-size: 1.7rem;
+    }
+
+    .logo-area h1 span {
+        font-size: 1.3rem;
+    }
+
+    .game-btn {
+        padding: 12px 14px;
+    }
+
+    .game-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .menu-container {
+        gap: 22px;
+    }
+
+    .chef-photo-frame {
+        width: 110px;
+        height: 110px;
+    }
+
+    .logo-area h1 {
+        font-size: 2.8rem;
+    }
+
+    .game-btn {
+        padding: 20px 22px;
+    }
+
+    .game-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .rewards-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+/* Chef John Play — warm arcade identity */
+html,body{background:#fff8e9;color:#304c41;touch-action:auto}
+button:focus-visible{outline:3px solid #27877a;outline-offset:4px}
+#menu-screen,#rewards-screen,#ranking-screen{background:radial-gradient(ellipse at 85% 15%,#ffe9ab 0,transparent 48%),#fff8e9;color:#304c41}
+#menu-screen{justify-content:flex-start;touch-action:pan-y}
+.menu-container{max-width:1100px;padding:28px 36px;display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center}
+.logo-area{flex-direction:row;text-align:left;gap:14px;flex-wrap:wrap}
+.chef-photo-frame{width:62px;height:62px;border:0;box-shadow:0 3px 10px #36544426;margin:0;background:transparent}
+.chef-photo{object-fit:contain;object-position:center}
+.logo-area h1{font-size:23px;color:#304c41;text-shadow:none;letter-spacing:-.5px}
+.logo-area h1 span{font-size:12px;background:#d84c33;color:#fff8e5;border-radius:6px;padding:5px 7px;vertical-align:middle;letter-spacing:1px}
+.subtitle{font-size:9px;letter-spacing:1.4px;width:100%;margin-top:-20px;padding-left:76px;color:#617565}
+.points-display{color:#755328;background:#fff0c9;border:1px solid #ead4a5;padding:10px 15px;font-size:12px;gap:8px;white-space:nowrap}
+.coin-icon{display:inline-grid;place-items:center;flex:none;width:28px;height:28px;background:linear-gradient(130deg,#fff19b,#efb72f);border:2px solid #dfa126;border-radius:50%;box-shadow:1px 3px 0 #bd7c24;color:#a2661c;font:900 19px Nunito}
+.hero{grid-column:1/-1;position:relative;min-height:345px;background:#fff0cf;border:1px solid #eadcb7;border-radius:28px;overflow:hidden;display:flex;align-items:center}
+.hero-copy{position:relative;z-index:1;padding:38px;width:62%}
+.eyebrow{display:block;font-size:10px;font-weight:900;letter-spacing:2px;color:#9a653c}
+.hero h2{font-family:'Fredoka One',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:400;line-height:1.03;letter-spacing:-2px;margin:15px 0;color:#2e5546}
+.hero h2 span{color:#d65738}.hero p{font-size:14px;line-height:1.7;color:#6e7862}
+.hero-stamp{display:inline-block;margin-top:24px;padding:8px 13px;border-radius:30px;background:#fffaf0;color:#a3623d;font-size:11px;font-weight:900;line-height:1.35;text-align:center;white-space:nowrap;transform:rotate(-3deg);border:1px dashed #d2b57c}
+.hero-john{position:absolute;right:4%;bottom:-24%;height:132%;width:46%;object-fit:contain;mix-blend-mode:multiply}
+.section-label{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}.section-label h2{font-size:20px;font-weight:900;letter-spacing:-.5px}.section-label>span{font-size:9px;letter-spacing:1.5px;color:#8b907b}
+.games-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.game-btn{display:grid;grid-template-columns:1fr auto;position:relative;padding:0 0 18px;gap:0;overflow:hidden;background:#fffdf6;border:1px solid #e6ddc6;border-radius:20px;box-shadow:0 5px 0 #e8dfc9;transition:transform .2s}
+.game-btn[data-game=runner]{order:-1}.game-cover{width:100%;height:150px;object-fit:cover;grid-column:1/-1;margin-bottom:17px;background:#c9debf}
+.game-info{padding-left:19px;gap:7px}.game-name{font-size:17px;color:#2f5545}.game-desc{font-size:10px;color:#80846d}.game-arrow{margin:0 16px 0 8px;background:#f8e9cd;border-radius:50%;width:30px;height:30px;display:grid;place-items:center;font-size:11px;opacity:1}
+.rewards-btn{grid-column:1/-1;max-width:350px;justify-self:center;color:#7d5938;background:#f6eddb;border:1px solid #ded2b8;font-size:13px;padding:12px}.rewards-btn:hover{background:#f0e3c8}
+.footer-text{grid-column:1/-1;max-width:none;font-size:10px;letter-spacing:.3px;color:#8c917b;opacity:1}
+#game-screen{background:#a0c9b2;touch-action:none;max-width:1000px;left:50%;transform:translateX(-50%);box-shadow:0 0 80px #30544626}
+#game-canvas{touch-action:none}.game-hud{padding:14px 16px}.hud-btn{background:#fff8e6;color:#3f6554;border:1px solid #ecddbc;box-shadow:0 3px 0 #c5c8a0}.hud-score{background:#fff8e9;color:#70502f;box-shadow:0 3px 0 #c5c8a0;gap:9px;padding:8px 16px;font-size:20px}.hud-score small{font:900 10px Nunito}
+.tutorial-overlay{background:linear-gradient(135deg,#d2e6c4b8,#fff0cabe);backdrop-filter:blur(6px);padding:20px;overflow:auto}
+.tutorial-content{position:relative;max-width:430px;width:100%;padding:28px 30px;background:#fff9e9;border:2px solid #fffdf3;border-radius:28px;color:#345345;box-shadow:0 15px 0 #64816f22,0 30px 70px #3e634833}
+.tutorial-logo{width:54px;height:54px;border-radius:50%;position:absolute;right:20px;top:20px}.tutorial-icon{font-size:44px;margin:0 0 10px;text-align:left}.tutorial-content .eyebrow{font-size:8px;margin:12px 0}.tutorial-content h2{font-size:28px;letter-spacing:-.5px;margin:15px 0}.tutorial-content p{white-space:pre-line;font-size:13px;line-height:1.6;margin:16px 0 25px;opacity:1;color:#61705b}
+.overlay{background:#b5cba97d;backdrop-filter:blur(8px)}.overlay-content{background:#fff7e4;color:#345345;border:2px solid #fffcf1;box-shadow:0 20px 60px #36544435}.overlay-btn.primary{background:#da5338;box-shadow:0 5px 0 #b33a2d}.overlay-btn.secondary{color:#6f694e;background:#ede6cf;border:1px solid #dfd5b5;margin-top:13px}.best-score{color:#2a7963}#final-score-value{color:#b2761d;text-shadow:none}.final-score-label{opacity:1;color:#8a7957}
+.runner-controls{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:12}.runner-controls button{border:1px solid #fff7d5;background:#fff5dce8;box-shadow:0 3px 0 #49655550;color:#315748;border-radius:14px;min-width:52px;height:48px;font-size:22px;cursor:pointer;touch-action:manipulation}.runner-controls small{font:900 8px Nunito;display:block}.runner-controls .turbo-control{min-width:72px;background:#ffe1a6;color:#9c4a25}.runner-controls .turbo-control:disabled{opacity:.55;cursor:default}.runner-controls .turbo-control.turbo-active{background:#f5a83b;color:#fff9e9;box-shadow:0 3px 0 #bd7028}
+.rewards-container{max-width:600px}.back-link{color:#375a47}.reward-item,.code-item{background:#fffdf6;border-color:#e2d8bf}.reward-points,.rewards-footer,.points-big-label{opacity:1;color:#847559}.points-big-number,.code-value{color:#aa7426}
+@media(max-width:650px){.menu-container{padding:18px;gap:21px}.logo-area{gap:9px}.chef-photo-frame{width:44px;height:44px}.logo-area h1{font-size:17px}.logo-area h1 span{font-size:8px;padding:4px}.subtitle{display:none}.points-display{font-size:9px;padding:8px;gap:5px}.coin-icon{width:22px;height:22px;font-size:15px}.hero{min-height:278px;border-radius:22px}.hero-copy{padding:23px;width:65%}.eyebrow{font-size:8px;letter-spacing:1px}.hero h2{font-size:36px;letter-spacing:-1.5px}.hero p{font-size:11px;max-width:175px}.hero-john{height:105%;width:61%;right:-16%;bottom:-8%}.hero-stamp{font-size:8px;padding:7px;margin-top:18px}.section-label h2{font-size:18px}.section-label>span{display:none}.games-grid{grid-template-columns:1fr;gap:15px}.game-btn{grid-template-columns:110px 1fr auto;padding:0;min-height:110px;align-items:center;border-radius:17px}.game-cover{grid-column:auto;width:110px;height:110px;margin:0}.game-info{padding:12px}.game-name{font-size:15px}.game-desc{font-size:10px;max-width:155px}.game-arrow{margin:0 12px 0 0;width:26px;height:26px}.rewards-btn{margin-top:5px}.tutorial-content{padding:23px}.tutorial-content h2{font-size:24px}.tutorial-content p{font-size:12px}.hud-score{font-size:18px}.hud-score small{font-size:9px}}
+@media(max-height:550px){.tutorial-overlay{align-items:flex-start}.tutorial-content{margin:auto;max-width:650px;padding:18px}.tutorial-content p{font-size:11px;line-height:1.3;margin:10px}.tutorial-icon,.tutorial-logo{display:none}.tutorial-content h2{font-size:20px;margin:8px}.tutorial-content .eyebrow{margin:0}.overlay-content{padding:20px}.runner-controls{bottom:8px}.runner-controls button{height:40px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.hero-john{height:115%;bottom:-18%;mask-image:linear-gradient(to right,transparent,#000 14%,#000 85%,transparent)}
+@media(max-width:650px){.hero-john{height:105%;bottom:-8%}}
+/* Mobile menu typography: readable at the device's normal zoom. */
+@media(max-width:650px){
+ .menu-container{gap:24px}
+ .logo-area h1{font-size:19px}
+ .points-display{font-size:12px;padding:9px;white-space:normal}
+ .hero{min-height:340px}
+ .hero-copy{width:70%;padding:22px}
+ .hero .eyebrow{font-size:11px;line-height:1.5;letter-spacing:.7px}
+ .hero h2{font-size:37px;margin:16px 0}
+ .hero p{font-size:15px;line-height:1.6;max-width:210px}
+ .hero p br{display:none}
+ .hero-stamp{font-size:12px;line-height:1.5;margin-top:18px}
+ .hero-john{right:-24%;width:62%;opacity:.6}
+ .section-label h2{font-size:23px}
+ .game-btn{grid-template-columns:82px 1fr auto;min-height:140px}
+ .game-cover{width:82px;height:140px}
+ .game-info{padding:15px 12px;gap:9px}
+ .game-name{font-size:19px;line-height:1.2}
+ .game-desc{font-size:14px;line-height:1.5;max-width:none;color:#626a55}
+ .game-arrow{margin-right:10px;width:28px;height:28px}
+ .rewards-btn{font-size:16px;padding:16px;max-width:none}
+ .footer-text{font-size:13px;line-height:1.6;color:#6f765f}
+}
+@media(max-width:360px){
+ .menu-container{padding:14px}
+ .logo-area h1{font-size:17px}
+ .points-display{font-size:11px}
+ .game-btn{grid-template-columns:64px 1fr auto}
+ .game-cover{width:64px}
+ .hero-copy{width:80%}
+}
+
+/* Final readability pass: keep menu and game tutorials at the same comfortable scale. */
+.hero h2{font-size:clamp(38px,5vw,62px)}
+.section-label h2{font-size:22px}
+.game-name{font-size:19px}
+.game-desc{font-size:12px}
+.tutorial-content h2{font-size:30px}
+.tutorial-content p{font-size:16px;line-height:1.65}
+.hero-john{right:2%;mix-blend-mode:normal;opacity:.92;filter:saturate(1.12) contrast(1.03)}
+@media(max-width:650px){
+ .hero h2{font-size:40px}
+ .hero p{font-size:16px}
+ .section-label h2{font-size:25px}
+ .game-name{font-size:20px}
+ .game-desc{font-size:15px}
+ .tutorial-content h2{font-size:28px}
+ .tutorial-content p{font-size:15px;line-height:1.65}
+ .hero-john{right:1%;width:56%;opacity:.86;filter:saturate(1.18) contrast(1.05)}
+}
+@media(max-width:450px){
+ .hero-copy{width:58%;padding:20px}
+ .hero h2{max-width:170px;font-size:36px}
+ .hero p{max-width:175px}
+ .hero-john{right:2%;width:50%}
+}
+
+.delivery-slogan{position:relative;margin:22px auto 28px;padding:18px 20px;max-width:320px;border-radius:24px;background:#da5338;color:#fff8e9;font-family:'Fredoka One',sans-serif;font-size:clamp(22px,5vw,28px);line-height:1.25;box-shadow:0 5px 0 #b33a2d}
+.delivery-slogan::after{content:'';position:absolute;bottom:-13px;left:38px;border-top:17px solid #da5338;border-right:19px solid transparent}
+
+/* ===== RANKING (submissão no game over + tela de ranking) ===== */
+.ranking-submit{margin:18px 0;padding:16px 18px;border-radius:16px;background:#fff0c9;border:1px dashed #e6b25a;text-align:left}
+.ranking-submit label{display:block;font-size:.78rem;font-weight:800;margin-bottom:8px;color:#7d5938}
+.ranking-submit input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #dfd5b5;background:#fffdf6;color:#304c41;font:700 15px 'Nunito',sans-serif;margin-bottom:10px}
+.ranking-submit input:disabled{opacity:.6}
+.ranking-submit .overlay-btn{margin-bottom:8px}
+.ranking-submit-status{font-size:.8rem;font-weight:700;color:#2a7963;min-height:1.1em;text-align:center}
+
+.ranking-container{width:100%;max-width:600px;margin:0 auto;padding:20px;padding-top:max(20px,env(safe-area-inset-top))}
+.ranking-tabs{display:flex;gap:8px;margin:18px 0 10px;flex-wrap:wrap}
+.ranking-tab{flex:1;min-width:96px;padding:10px 8px;border-radius:12px;border:1px solid #e2d8bf;background:#fffdf6;color:#61705b;font:800 12px 'Nunito',sans-serif;cursor:pointer;transition:transform .1s}
+.ranking-tab.active{background:#da5338;color:#fff8e9;border-color:#b33a2d}
+.ranking-tab:active{transform:scale(.96)}
+.ranking-period-toggle{display:flex;gap:8px;margin-bottom:18px}
+.ranking-period{flex:1;padding:10px;border-radius:10px;border:1px solid #dfd5b5;background:#f6eddb;color:#7d5938;font:800 12px 'Nunito',sans-serif;cursor:pointer;transition:transform .1s}
+.ranking-period.active{background:#2a7963;color:#fff8e9;border-color:#1f5d4c}
+.ranking-period:active{transform:scale(.96)}
+.ranking-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:0}
+.ranking-row{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;background:#fffdf6;border:1px solid #e2d8bf}
+.ranking-pos{font:900 14px 'Fredoka One',cursive;color:#aa7426}
+.ranking-name{font-weight:800;color:#304c41;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ranking-score{font:900 16px 'Fredoka One',cursive;color:#b2761d}
+.ranking-row.you{background:#fff0c9;border-color:#e6b25a;box-shadow:0 0 0 2px #e6b25a inset}
+.ranking-row-outside{margin-top:8px;border-style:dashed}
+.ranking-status{text-align:center;opacity:.75;padding:26px 10px;font-size:.9rem;color:#847559;line-height:1.5}
+@media(max-width:650px){
+ .ranking-container{padding:16px}
+ .ranking-tab{min-width:80px;font-size:11px;padding:9px 6px}
+ .ranking-row{grid-template-columns:30px 1fr auto;padding:10px 12px}
+ .ranking-score{font-size:14px}
+}
+
+/* ===== INPUTS: allow typing/selection despite the global user-select:none reset ===== */
+input,textarea,select{user-select:text;-webkit-user-select:text;touch-action:manipulation}
+
+/* ===== PROMOÇÕES NO FORNO (menu strip) ===== */
+.campaigns-strip{grid-column:1/-1;display:flex;flex-direction:column;gap:12px}
+.campaigns-strip.hidden{display:none}
+.campaigns-track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;touch-action:pan-x;padding:4px 2px 10px;margin:0 -2px}
+.campaigns-track::-webkit-scrollbar{height:6px}
+.campaigns-track::-webkit-scrollbar-thumb{background:#e6ddc6;border-radius:6px}
+.campaign-card{scroll-snap-align:start;flex:0 0 auto;width:250px;text-align:left;background:#fffdf6;border:1px solid #e6ddc6;border-radius:20px;box-shadow:0 5px 0 #e8dfc9;padding:16px;cursor:pointer;font-family:'Nunito',sans-serif;color:#304c41;display:flex;flex-direction:column;gap:8px;transition:transform .15s}
+.campaign-card:active{transform:scale(.97)}
+.campaign-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.campaign-badge{background:#2a7963;color:#fff8e9;font:900 10px 'Nunito',sans-serif;letter-spacing:.4px;padding:4px 9px;border-radius:20px;white-space:nowrap}
+.campaign-countdown{font:800 11px 'Nunito',sans-serif;color:#b2761d;white-space:nowrap}
+.campaign-title{font-family:'Fredoka One',cursive;font-size:16px;font-weight:400;color:#2f5545;line-height:1.2}
+.campaign-banner{font-size:12px;color:#6e7862;line-height:1.4}
+.campaign-goal{display:flex;flex-direction:column;gap:6px}
+.campaign-goal-track{width:100%;height:8px;border-radius:6px;background:#f0e6cb;overflow:hidden}
+.campaign-goal-fill{height:100%;background:linear-gradient(90deg,#e6633e,#da5338);border-radius:6px;transition:width .6s ease}
+.campaign-goal-label{font-size:11px;font-weight:800;color:#7d5938}
+.campaign-card-chef{background:linear-gradient(160deg,#fff3d6,#ffe6b0);border-color:#e6b25a}
+.campaign-chef-photo{width:100%;height:110px;object-fit:cover;border-radius:14px;background:#101417}
+.campaign-chef-record{font:900 12px 'Nunito',sans-serif;color:#7d5938}
+.campaign-chef-cta{display:inline-block;align-self:flex-start;background:#da5338;color:#fff8e9;font:900 11px 'Nunito',sans-serif;padding:6px 12px;border-radius:20px}
+@media(max-width:650px){
+ .campaign-card{width:220px;padding:14px}
+ .campaign-title{font-size:15px}
+}
+
+/* ===== MODAIS: campanha, cadastro, cupom ===== */
+.modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:none;border-radius:50%;background:#ede6cf;color:#6f694e;font-size:15px;cursor:pointer;display:grid;place-items:center}
+.campaign-modal-content,.register-modal-content,.coupon-modal-content{position:relative;text-align:left;max-height:85vh;overflow-y:auto;touch-action:pan-y}
+.campaign-modal-content h2,.register-modal-content h2{padding-right:36px}
+.campaign-modal-banner{font-weight:800;color:#7d5938;margin-bottom:6px}
+.campaign-modal-description{font-size:.9rem;line-height:1.5;color:#5c6650;margin-bottom:12px}
+.campaign-modal-rules{font-size:.85rem;line-height:1.5;color:#7d5938;background:#fff0c9;border:1px dashed #e6b25a;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.campaign-modal-prize{background:#f6eddb;border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.campaign-modal-prize strong{display:block;color:#2a7963;font-size:1rem;margin-bottom:4px}
+.campaign-modal-prize p{font-size:.85rem;color:#6e7862}
+.campaign-modal-stock{font-size:.82rem;font-weight:800;color:#b2761d;margin-bottom:10px}
+.campaign-modal-progress{font-size:.85rem;font-weight:800;color:#2a7963;background:#eaf3ea;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.campaign-modal-collective{margin-bottom:14px;display:flex;flex-direction:column;gap:6px}
+.campaign-modal-collective .campaign-goal-label{color:#7d5938}
+.campaign-modal-register-hint{background:#fff0c9;border-radius:14px;padding:12px 14px;margin-bottom:14px;text-align:center}
+.campaign-modal-register-hint p{font-size:.85rem;margin-bottom:8px;color:#7d5938}
+
+.register-modal-intro{font-size:.85rem;color:#5c6650;margin-bottom:14px;line-height:1.5}
+.register-label{display:block;font-size:.78rem;font-weight:800;margin:10px 0 6px;color:#7d5938}
+#register-name-input,#register-phone-input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #dfd5b5;background:#fffdf6;color:#304c41;font:700 15px 'Nunito',sans-serif}
+.register-consent{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:.78rem;line-height:1.5;color:#5c6650}
+.register-consent input{margin-top:3px;flex-shrink:0;width:18px;height:18px}
+.register-status{font-size:.82rem;font-weight:700;color:#b2412c;min-height:1.2em;text-align:center;margin-top:8px}
+.link-btn{background:none;border:none;color:#2a7963;font:800 .8rem 'Nunito',sans-serif;text-decoration:underline;cursor:pointer;display:block;margin:14px auto 0;padding:6px}
+
+.coupon-modal-content{text-align:center}
+.coupon-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:24px}
+.coupon-confetti span{position:absolute;top:-10%;font-size:20px;animation-name:coupon-fall;animation-timing-function:ease-in;animation-iteration-count:1;animation-fill-mode:forwards}
+@keyframes coupon-fall{from{transform:translateY(0) rotate(0deg);opacity:1}to{transform:translateY(420px) rotate(280deg);opacity:0}}
+.coupon-modal-campaign{font-size:.8rem;font-weight:800;color:#7d5938;text-transform:uppercase;letter-spacing:.5px}
+.coupon-code{font-family:'Fredoka One',cursive;font-size:2rem;letter-spacing:2px;color:#b2761d;margin:14px 0;word-break:break-word}
+.coupon-modal-prize{font-weight:800;color:#2a7963;margin-bottom:6px}
+.coupon-modal-expiry{font-size:.82rem;color:#6e7862;margin-bottom:12px}
+.coupon-modal-instructions{font-size:.85rem;color:#5c6650;margin-bottom:18px;line-height:1.5}
+
+/* ===== FIM DE JOGO: progresso de campanha, cadastro e status ===== */
+.campaign-progress{margin:16px 0;text-align:left;display:flex;flex-direction:column;gap:12px}
+.campaign-progress-row{background:#fff0c9;border:1px dashed #e6b25a;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.campaign-progress-label{font:800 .8rem 'Nunito',sans-serif;color:#7d5938}
+.campaign-progress-track{width:100%;height:8px;border-radius:6px;background:#f0e6cb;overflow:hidden}
+.campaign-progress-fill{height:100%;background:linear-gradient(90deg,#e6633e,#da5338);border-radius:6px;width:0;transition:width .8s ease}
+.campaign-progress-numbers{font:900 .85rem 'Fredoka One',cursive;color:#b2761d}
+.campaign-progress-rank{font:800 .85rem 'Nunito',sans-serif;color:#2a7963;text-align:center}
+.register-invite{margin:16px 0;padding:16px 18px;border-radius:16px;background:#fff0c9;border:1px dashed #e6b25a;text-align:center}
+.register-invite p{font-size:.85rem;font-weight:800;color:#7d5938;margin-bottom:10px}
+.gameover-status{font-size:.82rem;font-weight:700;color:#7d5938;min-height:1.2em;text-align:center;margin:6px 0}
+
+/* ===== MEUS BRINDES ===== */
+.brindes-player{background:#fff0c9;border-radius:14px;padding:14px 16px;margin-bottom:16px;font-size:.9rem;color:#304c41}
+.brindes-status{text-align:center;opacity:.85;padding:20px 10px;font-size:.9rem;color:#847559;line-height:1.5}
+.brindes-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.brinde-item{background:#fffdf6;border:1px solid #e2d8bf;border-radius:14px;padding:14px 16px}
+.brinde-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.brinde-code{font-family:'Fredoka One',cursive;font-size:1.1rem;letter-spacing:1px;color:#b2761d}
+.brinde-status-badge{font:900 10px 'Nunito',sans-serif;padding:4px 10px;border-radius:20px;background:#eee;color:#777;white-space:nowrap}
+.brinde-status-issued .brinde-status-badge{background:#e2f2e4;color:#2a7963}
+.brinde-status-redeemed .brinde-status-badge{background:#e6ddc6;color:#7d5938}
+.brinde-status-expired .brinde-status-badge,.brinde-status-cancelled .brinde-status-badge{background:#f6dedb;color:#b2412c}
+.brinde-prize{font-weight:800;color:#2f5545}
+.brinde-desc{font-size:.82rem;color:#6e7862;margin-top:2px}
+.brinde-campaign{font-size:.78rem;color:#8b907b;margin-top:4px}
+.brinde-dates{font-size:.78rem;color:#8b907b;margin-top:4px}
+.brindes-campaigns-invite{margin-bottom:18px}
+.brindes-invite-heading{font-size:.85rem;font-weight:800;color:#7d5938;margin-bottom:10px}
+.brindes-invite-card{display:block;width:100%;text-align:left;background:#fff0c9;border:1px solid #e6b25a;border-radius:12px;padding:12px 14px;margin-bottom:8px;font:800 .85rem 'Nunito',sans-serif;color:#7d5938;cursor:pointer}

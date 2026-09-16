@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sushinachos Games 🍣🌮</title>
+    <link rel="stylesheet" href="css/style.css?v=20260915-sushinachos">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍣</text></svg>">
+</head>
+<body>
+    <!-- ========== TELA DO MENU PRINCIPAL ========== -->
+    <div id="menu-screen" class="screen active">
+        <div class="menu-container">
+            <div class="logo-area">
+                <div class="chef-photo-frame">
+                    <img src="assets/logo-sushinachos.png?v=20260915-logo" alt="Sushinachos - Comida Mexicana e Japonesa" class="chef-photo">
+                </div>
+                <h1>Sushinachos <span>PLAY</span></h1>
+                <p class="subtitle">SUSHI & NACHOS. DIVERSÃO EM DOBRO.</p>
+            </div>
+
+            <div class="points-display" id="menu-points-display">
+                <span class="coin-icon" aria-hidden="true">SN</span>
+                <span id="total-points">0</span> SN Coin
+            </div>
+
+            <section class="hero">
+                <div class="hero-copy"><span class="eyebrow">O ARCADE NIPO-MEXICANO</span><h2>O melhor dos dois<br>mundos<span>.</span></h2><p>Do Japão ao México em alta velocidade.<br> Escolha seu desafio e venha nessa!</p><span class="hero-stamp">3 jogos · fusão de sabores</span></div>
+                <img class="hero-john" src="assets/sushinachos-mascot.png" alt="Mascote Sushinachos com sushi e nachos crocantes">
+            </section>
+
+            <section id="campaigns-strip" class="campaigns-strip hidden" aria-label="Promoções do Sushinachos">
+                <div class="section-label"><h2>Promoções da Casa</h2><span>TOQUE PARA VER AS REGRAS</span></div>
+                <div class="campaigns-track" id="campaigns-track" role="list"></div>
+            </section>
+
+            <div class="section-label"><h2>Qual é a boa de hoje?</h2><span>ESCOLHA E DÊ O PLAY</span></div>
+            <div class="games-grid">
+                <button class="game-btn" data-game="catcher">
+                    <canvas class="game-cover" data-cover="catcher" width="640" height="360" aria-hidden="true"></canvas>
+                    <div class="game-info">
+                        <span class="game-name">Pega Sushinachos</span>
+                        <span class="game-desc">A esteira não para. Sua agilidade também não.</span>
+                    </div>
+                    <span class="game-arrow">▶</span>
+                </button>
+
+                <button class="game-btn" data-game="runner">
+                    <canvas class="game-cover" data-cover="runner" width="640" height="360" aria-hidden="true"></canvas>
+                    <div class="game-info">
+                        <span class="game-name">Corrida Sushinachos</span>
+                        <span class="game-desc">Entregue os combos mais quentes da cidade.</span>
+                    </div>
+                    <span class="game-arrow">▶</span>
+                </button>
+
+                <button class="game-btn" data-game="ninja">
+                    <canvas class="game-cover" data-cover="ninja" width="640" height="360" aria-hidden="true"></canvas>
+                    <div class="game-info">
+                        <span class="game-name">Ninja Sushinachos</span>
+                        <span class="game-desc">Capriche no corte. Multiplique o combo.</span>
+                    </div>
+                    <span class="game-arrow">▶</span>
+                </button>
+            </div>
+
+            <button class="rewards-btn" id="rewards-btn">
+                🎁 Meus brindes
+            </button>
+
+            <button class="rewards-btn" id="ranking-btn">
+                🏆 Ranking
+            </button>
+
+            <p class="footer-text">Comida Mexicana e Japonesa com muita diversão. • Sushinachos</p>
+        </div>
+    </div>
+
+    <!-- ========== TELA DO JOGO ========== -->
+    <div id="game-screen" class="screen">
+        <div class="game-hud">
+            <button id="back-btn" class="hud-btn" aria-label="Voltar">◀</button>
+            <div class="hud-score">
+                <span class="coin-icon" aria-hidden="true">SN</span>
+                <span id="game-score">0</span><small>SN Coin</small>
+            </div>
+            <button id="pause-btn" class="hud-btn" aria-label="Pausar">⏸</button>
+        </div>
+        <canvas id="game-canvas" aria-label="Área do jogo"></canvas>
+        <div id="runner-controls" class="runner-controls hidden" aria-label="Controles da corrida">
+            <button data-control="ArrowLeft" aria-label="Faixa esquerda">←</button><button data-control="ArrowUp" aria-label="Pular">↑ <small>PULAR</small></button><button data-control="ArrowDown" aria-label="Deslizar">↓ <small>DESLIZAR</small></button><button data-control="ArrowRight" aria-label="Faixa direita">→</button><button id="runner-turbo" class="turbo-control" data-control="Turbo" aria-label="Ativar Turbo">⚡ <small>TURBO</small></button>
+        </div>
+        <!-- Tutorial overlay -->
+        <div id="tutorial-overlay" class="tutorial-overlay hidden">
+            <div class="tutorial-content">
+                <img class="tutorial-logo" src="assets/logo-sushinachos.png?v=20260915-logo" alt="Sushinachos"><div id="tutorial-icon" class="tutorial-icon">🍣</div><span class="eyebrow">UM MINUTINHO ANTES DO PLAY</span>
+                <h2 id="tutorial-title">Como Jogar</h2>
+                <p id="tutorial-text">Instruções do jogo</p>
+                <button class="overlay-btn primary" id="tutorial-start-btn">Bora jogar! →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== OVERLAY DE PAUSE ========== -->
+    <div id="pause-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2>⏸ Pausado</h2>
+            <button class="overlay-btn primary" id="resume-btn">▶ Continuar</button>
+            <button class="overlay-btn secondary" id="quit-btn">🏠 Menu</button>
+        </div>
+    </div>
+
+    <!-- ========== OVERLAY DE GAME OVER ========== -->
+    <div id="gameover-overlay" class="overlay hidden">
+        <div class="overlay-content gameover">
+            <h2 id="gameover-title">🍣 Fim de Jogo!</h2>
+            <div class="final-score">
+                <div class="final-score-label">SN Coin conquistadas</div>
+                <span id="final-score-value">0</span>
+            </div>
+            <div id="best-score-display" class="best-score"></div>
+            <div id="campaign-progress" class="campaign-progress hidden" aria-live="polite"></div>
+            <div id="register-invite" class="register-invite hidden">
+                <p>Cadastre-se para entrar no ranking e ganhar brindes!</p>
+                <button class="overlay-btn primary" id="register-invite-btn">🎁 Cadastrar agora</button>
+            </div>
+            <p id="gameover-status" class="gameover-status hidden" aria-live="polite"></p>
+            <div class="gameover-buttons">
+                <button class="overlay-btn primary" id="retry-btn">🔄 Jogar de Novo</button>
+                <button class="overlay-btn secondary" id="menu-btn">🏠 Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TELA DE RECOMPENSAS ========== -->
+    <div id="rewards-screen" class="screen">
+        <div class="rewards-container">
+            <button class="back-link" id="rewards-back">◀ Voltar</button>
+            <h2 class="rewards-title">🎁 Meus brindes</h2>
+            <div class="total-points-big">
+                <span class="coin-icon">SN</span>
+                <div class="points-big-info">
+                    <span id="rewards-total-points" class="points-big-number">0</span>
+                    <span class="points-big-label">SN Coin conquistadas</span>
+                </div>
+            </div>
+            <div id="brindes-player" class="brindes-player hidden"></div>
+            <div id="brindes-loading" class="brindes-status hidden">Carregando seus brindes…</div>
+            <div id="brindes-list" class="brindes-list"></div>
+            <p id="brindes-empty" class="brindes-status hidden"></p>
+            <div id="brindes-campaigns-invite" class="brindes-campaigns-invite hidden"></div>
+            <p class="rewards-footer">Mostre o código do cupom no caixa do Sushinachos para resgatar seu brinde.</p>
+        </div>
+    </div>
+
+    <!-- ========== TELA DE RANKING ========== -->
+    <div id="ranking-screen" class="screen">
+        <div class="ranking-container">
+            <button class="back-link" id="ranking-back">◀ Voltar</button>
+            <h2 class="rewards-title">🏆 Ranking</h2>
+            <div class="ranking-tabs" id="ranking-game-tabs">
+                <button type="button" class="ranking-tab" data-ranking-game="catcher">Pega Sushi</button>
+                <button type="button" class="ranking-tab" data-ranking-game="runner">Corrida</button>
+                <button type="button" class="ranking-tab" data-ranking-game="ninja">Ninja</button>
+            </div>
+            <div class="ranking-period-toggle" id="ranking-period-toggle">
+                <button type="button" class="ranking-period" data-ranking-period="all">Geral</button>
+                <button type="button" class="ranking-period" data-ranking-period="month">Mensal</button>
+            </div>
+            <div id="ranking-loading" class="ranking-status hidden">Carregando ranking…</div>
+            <ol id="ranking-list" class="ranking-list"></ol>
+            <p id="ranking-empty" class="ranking-status hidden">Ranking indisponível agora. Seus SN Coins continuam valendo — tente de novo mais tarde!</p>
+        </div>
+    </div>
+
+    <div id="delivery-overlay" class="overlay hidden"><div class="overlay-content"><h2 id="delivery-title">🍣 Entrega concluída!</h2><div class="delivery-slogan">Sabor que une o melhor do Japão e do México</div><p id="delivery-text">Mais um combo especial entregue!</p><p><strong>+100 SN Coin de bônus</strong></p><button id="next-delivery" class="overlay-btn primary">Próxima entrega →</button></div></div>
+
+    <!-- ========== CAMPANHAS: modal da campanha, cadastro e cupom ========== -->
+    <div id="campaign-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="campaign-modal-title">
+        <div class="overlay-content campaign-modal-content">
+            <button type="button" class="modal-close" id="campaign-modal-close" aria-label="Fechar">✕</button>
+            <h2 id="campaign-modal-title">Campanha</h2>
+            <p id="campaign-modal-banner" class="campaign-modal-banner"></p>
+            <p id="campaign-modal-description" class="campaign-modal-description"></p>
+            <p id="campaign-modal-rules" class="campaign-modal-rules"></p>
+            <div id="campaign-modal-prize" class="campaign-modal-prize"></div>
+            <p id="campaign-modal-stock" class="campaign-modal-stock hidden"></p>
+            <div id="campaign-modal-progress" class="campaign-modal-progress hidden"></div>
+            <div id="campaign-modal-collective" class="campaign-modal-collective hidden"></div>
+            <div id="campaign-modal-register-hint" class="campaign-modal-register-hint hidden">
+                <p>Cadastre-se para concorrer ao prêmio.</p>
+                <button type="button" class="overlay-btn secondary" id="campaign-modal-register-btn">Cadastrar agora</button>
+            </div>
+            <button type="button" class="overlay-btn primary" id="campaign-modal-play-btn">Jogar agora</button>
+        </div>
+    </div>
+
+    <div id="register-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+        <div class="overlay-content register-modal-content">
+            <button type="button" class="modal-close" id="register-modal-close" aria-label="Fechar">✕</button>
+            <h2 id="register-modal-title">🎁 Cadastro rápido</h2>
+            <p class="register-modal-intro">Cadastre nome e WhatsApp para entrar no ranking e concorrer aos brindes.</p>
+            <label class="register-label" for="register-name-input">Nome</label>
+            <input type="text" id="register-name-input" maxlength="14" placeholder="Até 14 letras" autocomplete="name">
+            <label class="register-label" for="register-phone-input">WhatsApp</label>
+            <input type="tel" id="register-phone-input" placeholder="(47) 99999-9999" autocomplete="tel" inputmode="numeric">
+            <label class="register-consent">
+                <input type="checkbox" id="register-consent-input">
+                <span>Aceito que o Sushinachos use meu nome e WhatsApp para validar brindes e enviar promoções. Posso pedir exclusão quando quiser.</span>
+            </label>
+            <button type="button" class="overlay-btn primary" id="register-submit-btn">Cadastrar</button>
+            <p id="register-status" class="register-status" aria-live="polite"></p>
+            <button type="button" class="link-btn" id="register-forget-btn">Excluir meus dados</button>
+        </div>
+    </div>
+
+    <div id="coupon-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="coupon-modal-title">
+        <div class="overlay-content coupon-modal-content">
+            <div class="coupon-confetti" id="coupon-confetti" aria-hidden="true"></div>
+            <h2 id="coupon-modal-title">🎉 Cupom liberado!</h2>
+            <p id="coupon-modal-campaign" class="coupon-modal-campaign"></p>
+            <div class="coupon-code" id="coupon-modal-code"></div>
+            <p id="coupon-modal-prize" class="coupon-modal-prize"></p>
+            <p id="coupon-modal-expiry" class="coupon-modal-expiry"></p>
+            <p class="coupon-modal-instructions">Mostre este código no caixa do Sushinachos.</p>
+            <button type="button" class="overlay-btn primary" id="coupon-modal-close">Show de bola! 🎉</button>
+        </div>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="js/art.js?v=20260915-sushinachos"></script>
+    <script src="js/audio.js?v=20260915-sushinachos"></script>
+    <script src="js/ranking.js?v=20260915-sushinachos"></script>
+    <script src="js/campaigns.js?v=20260915-sushinachos"></script>
+    <script src="js/main.js?v=20260915-sushinachos"></script>
+    <script src="js/pizza-catcher.js?v=20260915-sushinachos"></script>
+    <script src="js/pizza-runner.js?v=20260915-sushinachos"></script>
+    <script src="js/pizza-ninja.js?v=20260915-sushinachos"></script>
+    <script src="js/covers.js?v=20260915-sushinachos"></script>
+</body>
+</html>

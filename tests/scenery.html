@@ -1,0 +1,16 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Teste de continuidade do cenário</title>
+<style>body{margin:0;background:#fff6e1;font:14px sans-serif;color:#345345}header{padding:12px;display:flex;gap:8px;flex-wrap:wrap}button{padding:10px;cursor:pointer}canvas{display:block;margin:auto;max-width:100%;border:1px solid #aec4ad}output{align-self:center}</style>
+<header><button id="before">Antes: 11,99 m</button><button id="after">Depois: 12,01 m</button><button id="pass">Passando: 20 m</button><button id="run">Animar percurso</button><button id="mobile">Celular</button><button id="desktop">Desktop</button><output id="distance"></output></header>
+<canvas id="scene" width="390" height="720"></canvas>
+<script src="../js/art.js"></script><script src="../js/pizza-runner.js?v=20260913-sidewalk"></script><script>
+const canvas=document.getElementById('scene');
+const game=new PizzaRunnerGame(canvas,canvas.width,canvas.height,()=>{});
+let running=false,last=0;game.messageTime=0;
+function render(distance){game.distance=distance;game.render();document.getElementById('distance').textContent=distance.toFixed(2)+' m';}
+document.getElementById('before').onclick=()=>{running=false;render(11.99);};
+document.getElementById('after').onclick=()=>{running=false;render(12.01);};
+document.getElementById('pass').onclick=()=>{running=false;render(20);};
+document.getElementById('run').onclick=()=>{running=!running;};
+for(const [id,w,h] of [['mobile',390,720],['desktop',1000,650]])document.getElementById(id).onclick=()=>{canvas.width=w;canvas.height=h;game.resize(w,h);render(game.distance);};
+function frame(now){if(running){game.time+=Math.min((now-last)/1000,.05);render(game.distance+Math.min((now-last)/1000,.05)*28);}last=now;requestAnimationFrame(frame);}render(11.99);requestAnimationFrame(frame);
+</script></html>
