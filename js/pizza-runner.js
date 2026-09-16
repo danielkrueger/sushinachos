@@ -386,7 +386,7 @@ class PizzaRunnerGame {
         scene.sort((a,b)=>b.z-a.z).forEach(o=>o.draw());
         for(const p of this.particles){c.globalAlpha=p.life;c.fillStyle='#fff2a1';c.font='900 24px Nunito';c.textAlign='center';c.fillText('+5',p.x,p.y);}c.globalAlpha=1;
         // Menu covers show only the scene; the card below already names the game.
-        if(!this.cover){c.font='900 13px Nunito';c.textAlign='left';c.fillStyle='#284f48';c.fillText(`ORLA DE PENHA  /  ${Math.floor(this.distance)} m`,18,82);
+        if(!this.cover){c.font='900 13px Nunito';c.textAlign='left';c.fillStyle='#284f48';c.fillText(`PRAIA DO GRAVATÁ  /  ${Math.floor(this.distance)} m`,18,82);
         c.textAlign='right';c.fillText(`${Math.floor(this.speed*3.6)} km/h`,w-18,82);}
         if(this.messageTime>0&&!this.cover){c.font='900 16px Nunito';c.textAlign='center';const y=h*.2;JohnArt.box(c,w/2-143,y-23,286,38,'#fff4dbe8',19);c.fillStyle='#925032';c.fillText(this.message,w/2,y+1);}
         if(weather===2||weather===3){c.fillStyle=weather===2?'rgba(12,23,63,.28)':'rgba(39,61,78,.15)';c.fillRect(0,90,w,h-90);}
