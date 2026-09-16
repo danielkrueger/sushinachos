@@ -64,7 +64,7 @@ const ChefJohnGames = (() => {
 
     // ---- Tutorials ----
     const TUTORIALS = {
-        catcher: { icon: '🌮', title: 'Festa Mexicana', text: 'A festa mexicana está a todo vapor!\n\nArraste o dedo ou use ← → para mover o chef.\nPegue burritos, tacos, tortilhas crocantes e guacamole fresco para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!' },
+        catcher: { icon: '🌮', title: 'Festa Mexicana', text: 'A festa mexicana está a todo vapor!\n\nArraste o dedo ou use ← → para mover o nacho.\nPegue burritos, tacos, tortilhas crocantes e guacamole fresco para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!' },
         runner: { icon: '🏃', title: 'Entrega Sushinachos', text: 'A próxima entrega é sua!\n\n← → ou deslize para os lados: troque de faixa.\n↑ / espaço ou deslize para cima: pule as barreiras e os buracos.\n↓ ou deslize para baixo: passe sob os toldos.\n⚡ TURBO: toque no botão ou pressione Shift para acelerar por alguns segundos.\n\nEntregue o pedido de sushi & nachos, volte ao Sushinachos para pegar o próximo e siga assim! Cada chegada vale 100 SN Coin de bônus, e a corrida fica mais longa e mais rápida.' },
         ninja: { icon: '⚔️', title: 'Sushi Ninja', text: 'Um corte de mestre, uma chuva de sushis!\n\nArraste o dedo ou o mouse pressionado para fatiar sushis, sashimis e temakis no ar.\nCorte várias comidas no mesmo gesto: combo até 4×!\n⚠️ Não corte: 🍽️ pratos vazios e 🥛 copos.\n\nVocê tem 3 vidas. Comida boa não pode cair!' }
     };
@@ -479,8 +479,8 @@ const ChefJohnGames = (() => {
 
         // Fun title
         const titles = score >= 100
-            ? ['🍕 Incrível!', '🔥 Mandou bem!', '⭐ Espetacular!', '🏆 Chef de Elite!']
-            : ['🍕 Fim de Jogo!', '👨‍🍳 Boa tentativa!', '🍕 Quase lá!'];
+            ? ['🍣 Incrível!', '🔥 Mandou bem!', '⭐ Espetacular!', '🏆 Mestre Sushinachos!']
+            : ['🌮 Fim de Jogo!', '🥢 Boa tentativa!', '🍣 Quase lá!'];
         document.getElementById('gameover-title').textContent =
             titles[Math.floor(Math.random() * titles.length)];
 
@@ -518,7 +518,7 @@ const ChefJohnGames = (() => {
 
         if (!window.ChefJohnRanking) {
             loading.classList.add('hidden');
-            empty.textContent = 'Ranking indisponível agora. Seus John Coin continuam valendo — tente de novo mais tarde!';
+            empty.textContent = 'Ranking indisponível agora. Seus SN Coins continuam valendo — tente de novo mais tarde!';
             empty.classList.remove('hidden');
             return;
         }
@@ -528,7 +528,7 @@ const ChefJohnGames = (() => {
         track('ranking_view', { game: rankingGame, period: rankingPeriod });
 
         if (!data || !Array.isArray(data.scores)) {
-            empty.textContent = 'Ranking indisponível agora. Seus John Coin continuam valendo — tente de novo mais tarde!';
+            empty.textContent = 'Ranking indisponível agora. Seus SN Coins continuam valendo — tente de novo mais tarde!';
             empty.classList.remove('hidden');
             return;
         }
@@ -715,11 +715,11 @@ const ChefJohnGames = (() => {
         if (isChef) {
             const record = document.createElement('span');
             record.className = 'campaign-chef-record';
-            record.textContent = `Recorde do Chef: ${Number(c.challenger.score).toLocaleString('pt-BR')}`;
+            record.textContent = `Recorde a bater: ${Number(c.challenger.score).toLocaleString('pt-BR')}`;
             card.appendChild(record);
             const cta = document.createElement('span');
             cta.className = 'campaign-chef-cta';
-            cta.textContent = 'Superar o Chef';
+            cta.textContent = 'Superar Desafio';
             card.appendChild(cta);
         } else {
             const banner = document.createElement('p');
@@ -880,7 +880,10 @@ const ChefJohnGames = (() => {
         if (!consent.checked) { status.textContent = 'É preciso aceitar o uso dos dados para continuar.'; return; }
 
         lastPlayerName = name;
-        try { localStorage.setItem('chefJohnPlayerName', name); } catch (e) { /* localStorage indisponível */ }
+        try {
+            localStorage.setItem('sushinachosPlayerName', name);
+            localStorage.setItem('chefJohnPlayerName', name);
+        } catch (e) { /* localStorage indisponível */ }
 
         btn.disabled = true;
         status.textContent = 'Cadastrando…';
@@ -908,7 +911,7 @@ const ChefJohnGames = (() => {
             closeRegisterModal();
             return;
         }
-        if (!confirm('Tem certeza que deseja excluir seu cadastro e seus dados da pizzaria?')) return;
+        if (!confirm('Tem certeza que deseja excluir seu cadastro e seus dados do Sushinachos?')) return;
         await window.ChefJohnCampaigns.forget();
         closeRegisterModal();
         refreshCampaigns();

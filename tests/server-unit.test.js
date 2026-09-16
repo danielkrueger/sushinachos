@@ -187,20 +187,21 @@ test('parseCookies reads a Cookie header into a map', () => {
 
 // ---- lib/coupons ----
 
-test('generateCouponCode matches CJ-XXXX-XXXX with the safe alphabet', () => {
+test('generateCouponCode matches SN-XXXX-XXXX with the safe alphabet', () => {
   for (let i = 0; i < 20; i++) {
     const code = couponsLib.generateCouponCode();
-    assert.match(code, /^CJ-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
-    for (const char of code.replace(/^CJ-/, '').replace('-', '')) {
+    assert.match(code, /^SN-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
+    for (const char of code.replace(/^SN-/, '').replace('-', '')) {
       assert.ok(couponsLib.ALPHABET.includes(char), `unexpected char ${char}`);
     }
   }
 });
 
 test('normalizeCouponCode accepts lowercase, missing hyphens and stray spaces', () => {
+  assert.equal(couponsLib.normalizeCouponCode('sn7kq2m9tx'), 'SN-7KQ2-M9TX');
+  assert.equal(couponsLib.normalizeCouponCode('SN-7KQ2-M9TX'), 'SN-7KQ2-M9TX');
+  assert.equal(couponsLib.normalizeCouponCode(' sn 7kq2 m9tx '), 'SN-7KQ2-M9TX');
   assert.equal(couponsLib.normalizeCouponCode('cj7kq2m9tx'), 'CJ-7KQ2-M9TX');
-  assert.equal(couponsLib.normalizeCouponCode('CJ-7KQ2-M9TX'), 'CJ-7KQ2-M9TX');
-  assert.equal(couponsLib.normalizeCouponCode(' cj 7kq2 m9tx '), 'CJ-7KQ2-M9TX');
   assert.equal(couponsLib.normalizeCouponCode('short'), null);
 });
 

@@ -9,7 +9,7 @@ class PizzaRunnerGame {
         this.targetLane=1; this.lane=1; this.jump=0; this.jumpVelocity=0; this.slide=0;
         this.sectionIndex=0; this.easySectionsLeft=2; this.lastChallenge=null; this.lastActionSequence=null;
         this.state='playing'; this.objects=[]; this.particles=[]; this.spawnTimer=1.5; this.arrivalTime=0; this.arrivalDecel=0;
-        this.touch=null; this.crashTime=0; this.damageProgress=0; this.damageDirection=1; this.impactTime=0; this.hitObject=null; this.message='Bora entregar essas pizzas!'; this.messageTime=3;
+        this.touch=null; this.crashTime=0; this.damageProgress=0; this.damageDirection=1; this.impactTime=0; this.hitObject=null; this.message='Bora entregar esses pedidos!'; this.messageTime=3;
         this.sceneryLayout={buildingCenter:8.3,buildingWidth:3.7,palmX:4.5,sidewalkEdge:6.5};
     }
     nextStage() {

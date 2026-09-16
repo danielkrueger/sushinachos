@@ -106,7 +106,7 @@ test('integration: register, play and earn a coupon when the target is reached',
     assert.equal(body.campaigns.length, 1);
     assert.equal(body.campaigns[0].completed, true);
     assert.equal(body.newCoupons.length, 1);
-    assert.match(body.newCoupons[0].code, /^CJ-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
+    assert.match(body.newCoupons[0].code, /^SN-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
     assert.ok(body.ranking);
     assert.equal(body.ranking.allRank, 1);
   });

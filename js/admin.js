@@ -1,4 +1,4 @@
-/* Chef John — Backoffice SPA (js/admin.js)
+/* Sushinachos — Backoffice SPA (js/admin.js)
  * Pure helpers are exported at the bottom for node --test.
  * Browser-only code (DOM, fetch, router) runs only when window/document exist. */
 (function () {
@@ -37,19 +37,21 @@
     return `${t.getUTCFullYear()}-${pad2(t.getUTCMonth() + 1)}-${pad2(t.getUTCDate())}T${pad2(t.getUTCHours())}:${pad2(t.getUTCMinutes())}`;
   }
 
-  // Coupon input mask: accepts lowercase/no-hyphen typing, always renders "CJ-XXXX-XXXX".
+  // Coupon input mask: accepts lowercase/no-hyphen typing, renders "SN-XXXX-XXXX" (or CJ-XXXX-XXXX).
   function formatCouponCode(raw) {
     let s = String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (s.slice(0, 2) === 'CJ') s = s.slice(2);
+    let prefix = 'SN-';
+    if (s.startsWith('CJ')) { prefix = 'CJ-'; s = s.slice(2); }
+    else if (s.startsWith('SN')) { prefix = 'SN-'; s = s.slice(2); }
     s = s.slice(0, 8);
-    let out = 'CJ-';
+    let out = prefix;
     if (s.length > 0) out += s.slice(0, 4);
     if (s.length > 4) out += '-' + s.slice(4, 8);
     return out;
   }
 
   function isCompleteCouponCode(code) {
-    return /^CJ-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(code || ''));
+    return /^(SN|CJ)-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(String(code || ''));
   }
 
   function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
@@ -86,9 +88,9 @@
   }
 
   function gameLabel(game) {
-    if (game === 'catcher') return 'Pega Pizza';
-    if (game === 'runner') return 'Corrida da Pizza';
-    if (game === 'ninja') return 'Ninja da Pizza';
+    if (game === 'catcher') return 'Festa Mexicana';
+    if (game === 'runner') return 'Entrega Sushinachos';
+    if (game === 'ninja') return 'Sushi Ninja';
     return 'qualquer jogo';
   }
 
@@ -98,7 +100,8 @@
 
   function metricVerb(c) {
     const n = numberBR(c.target);
-    const gamePart = c.game ? ` na ${gameLabel(c.game)}` : ' em qualquer jogo';
+    const prep = c.game === 'ninja' ? 'no' : 'na';
+    const gamePart = c.game ? ` ${prep} ${gameLabel(c.game)}` : ' em qualquer jogo';
     if (c.metric === 'score') {
       return c.aggregation === 'sum' ? `somar ${n} pontos${gamePart}` : `fizer ${n} pontos${gamePart}`;
     }
@@ -109,9 +112,9 @@
   }
 
   function targetHintText(metric) {
-    if (metric === 'deliveries') return '🛵 Corrida da Pizza: ~1 entrega a cada 45–60s de corrida.';
+    if (metric === 'deliveries') return '🛵 Entrega Sushinachos: ~1 entrega a cada 45–60s de corrida.';
     if (metric === 'plays') return '🎮 Partidas jogadas: 1 por partida completa (~1 a 2 min cada).';
-    return '💡 Rendimento: ~370 a 400 John Coins por minuto (equilibrado nos 3 jogos).';
+    return '💡 Rendimento: ~370 a 400 SN Coins por minuto (equilibrado nos 3 jogos).';
   }
 
   function humanSummary(c) {
@@ -126,14 +129,15 @@
     if (c.startsAt && c.endsAt) parts.push(`de ${brDateOnly(c.startsAt)} a ${brDateOnly(c.endsAt)}`);
     let subject;
     if (c.challengerName) {
-      subject = `quem superar ${c.challengerName} (${numberBR(c.challengerScore)} pontos${c.game ? ` na ${gameLabel(c.game)}` : ''}) ganha ${c.prizeTitle || 'o prêmio'}`;
+      const prep = c.game === 'ninja' ? 'no' : 'na';
+      subject = `quem superar ${c.challengerName} (${numberBR(c.challengerScore)} pontos${c.game ? ` ${prep} ${gameLabel(c.game)}` : ''}) ganha ${c.prizeTitle || 'o prêmio'}`;
     } else if (c.kind === 'collective') {
       subject = `juntos, os jogadores precisam ${metricVerb(c)} para desbloquear ${c.prizeTitle || 'o prêmio'} para todo mundo`;
     } else {
       subject = `quem ${metricVerb(c)} ganha ${c.prizeTitle || 'o prêmio'}`;
     }
     parts.push(subject);
-    if (c.multiplier && Number(c.multiplier) > 1) parts.push(`${c.multiplier}× John Coin no período`);
+    if (c.multiplier && Number(c.multiplier) > 1) parts.push(`${c.multiplier}× SN Coin no período`);
     const stockTxt = (c.stock === null || c.stock === undefined) ? 'estoque ilimitado' : `${numberBR(c.stock)} unidades`;
     parts.push(`${stockTxt}, ${c.perPlayerLimit || 1} por pessoa`);
     if (c.couponValidDays) parts.push(`cupom válido por ${c.couponValidDays} dias`);
@@ -450,47 +454,47 @@
 
       const campaigns = [
         {
-          id: 1, title: 'Desafio do Chef John', bannerText: 'O Chef John fez 1.240 na Corrida. Você supera?',
-          description: 'Supere o recorde pessoal do Chef John na Corrida da Pizza e ganhe um brinde na loja.',
+          id: 1, title: 'Desafio do Nacho Ninja', bannerText: 'O Nacho Ninja fez 1.240 na Entrega. Você supera?',
+          description: 'Supere o recorde pessoal do Nacho Ninja na Entrega Sushinachos e ganhe um brinde no restaurante.',
           kind: 'challenge', game: 'runner', metric: 'score', aggregation: 'best', target: 1241, multiplier: 1,
           startsAt: iso(-5 * DAY), endsAt: iso(25 * DAY), weekdays: null, dailyStart: null, dailyEnd: null,
           prizeTitle: 'Refrigerante 2L grátis', prizeDescription: 'Um refrigerante de 2 litros grátis na sua próxima visita.',
-          stock: 50, perPlayerLimit: 1, couponValidDays: 7, challengerName: 'Chef John', challengerScore: 1240,
+          stock: 50, perPlayerLimit: 1, couponValidDays: 7, challengerName: 'Nacho Ninja', challengerScore: 1240,
           status: 'active', live: true, couponsIssued: 6, couponsRedeemed: 2, participants: 34,
         },
         {
-          id: 2, title: 'Terça turbinada', bannerText: 'Toda terça vale o dobro de John Coin!',
+          id: 2, title: 'Terça turbinada', bannerText: 'Toda terça vale o dobro de SN Coin!',
           description: 'Jogue nas terças-feiras à noite e some pontos em dobro para ganhar seu brinde.',
           kind: 'challenge', game: null, metric: 'score', aggregation: 'sum', target: 2000, multiplier: 2,
           startsAt: iso(-2 * DAY), endsAt: iso(28 * DAY), weekdays: [2], dailyStart: '18:00', dailyEnd: '21:00',
-          prizeTitle: 'Fatia grátis', prizeDescription: 'Uma fatia de pizza grátis na sua próxima visita.',
+          prizeTitle: 'Porção de Nachos grátis', prizeDescription: 'Uma porção de nachos crocantes grátis na sua próxima visita.',
           stock: 100, perPlayerLimit: 1, couponValidDays: 10, challengerName: null, challengerScore: null,
           status: 'active', live: isTuesdayNowBR(), couponsIssued: 11, couponsRedeemed: 4, participants: 58,
         },
         {
-          id: 3, title: 'Penha entrega 1.000 pizzas', bannerText: 'Ajude a Penha a bater 1.000 entregas!',
-          description: 'Meta coletiva: quando todos os jogadores juntos somarem 1.000 entregas na Corrida, todo mundo que participou ganha um brinde.',
+          id: 3, title: 'Gravatá entrega 1.000 pedidos', bannerText: 'Ajude o Gravatá a bater 1.000 entregas!',
+          description: 'Meta coletiva: quando todos os jogadores juntos somarem 1.000 entregas na Entrega Sushinachos, todo mundo que participou ganha um brinde.',
           kind: 'collective', game: 'runner', metric: 'deliveries', aggregation: 'sum', target: 1000, multiplier: 1,
           startsAt: iso(-10 * DAY), endsAt: iso(20 * DAY), weekdays: null, dailyStart: null, dailyEnd: null,
-          prizeTitle: 'Rodada de refrigerantes', prizeDescription: 'Um copo de refrigerante grátis para cada participante.',
+          prizeTitle: 'Combo Sushinachos Especial', prizeDescription: 'Um combo cortesia de sushi e nachos para cada participante.',
           stock: null, perPlayerLimit: 1, couponValidDays: 14, challengerName: null, challengerScore: null,
           status: 'active', live: true, couponsIssued: 0, couponsRedeemed: 0, participants: 71, collectiveProgress: 742,
         },
         {
-          id: 4, title: 'Missão da Corrida', bannerText: 'Complete 3 entregas numa única corrida!',
-          description: 'Entregue 3 pizzas em uma única corrida e ganhe um brinde na hora.',
+          id: 4, title: 'Missão da Entrega', bannerText: 'Complete 3 entregas numa única corrida!',
+          description: 'Entregue 3 pedidos em uma única corrida e ganhe um brinde na hora.',
           kind: 'challenge', game: 'runner', metric: 'deliveries', aggregation: 'best', target: 3, multiplier: 1,
           startsAt: iso(-30 * DAY), endsAt: iso(-1 * DAY), weekdays: null, dailyStart: null, dailyEnd: null,
-          prizeTitle: 'Brownie grátis', prizeDescription: 'Um brownie de sobremesa grátis.',
+          prizeTitle: 'Hot Roll Especial', prizeDescription: 'Uma porção cortesia de hot roll na próxima visita.',
           stock: 30, perPlayerLimit: 1, couponValidDays: 7, challengerName: null, challengerScore: null,
           status: 'archived', live: false, couponsIssued: 19, couponsRedeemed: 15, participants: 40,
         },
         {
           id: 5, title: 'Fim de semana ninja', bannerText: 'Combos afiados valem prêmio no fim de semana.',
-          description: 'Faça um combo de 20x ou mais no Ninja da Pizza no fim de semana.',
+          description: 'Faça um combo de 20x ou mais no Sushi Ninja no fim de semana.',
           kind: 'challenge', game: 'ninja', metric: 'score', aggregation: 'best', target: 3000, multiplier: 1,
           startsAt: iso(3 * DAY), endsAt: iso(33 * DAY), weekdays: [0, 6], dailyStart: null, dailyEnd: null,
-          prizeTitle: 'Sobremesa do dia', prizeDescription: 'Sobremesa do dia grátis.',
+          prizeTitle: 'Guacamole Cortesia', prizeDescription: 'Guacamole fresco cortesia.',
           stock: 40, perPlayerLimit: 1, couponValidDays: 7, challengerName: null, challengerScore: null,
           status: 'draft', live: false, couponsIssued: 0, couponsRedeemed: 0, participants: 0,
         },
@@ -513,15 +517,15 @@
       nextPlayerId += firstNames.length;
 
       const coupons = [
-        { code: 'CJ-7KQ2-M9TX', campaignId: 1, playerId: players[0].id, status: 'issued', issuedAt: iso(-2 * DAY), expiresAt: iso(5 * DAY), redeemedAt: null, redeemedBy: null },
-        { code: 'CJ-3PLM-8XZR', campaignId: 2, playerId: players[1].id, status: 'redeemed', issuedAt: iso(-6 * DAY), expiresAt: iso(4 * DAY), redeemedAt: iso(-1 * DAY), redeemedBy: 'Caixa Demo' },
-        { code: 'CJ-9V2K-TQ4H', campaignId: 4, playerId: players[2].id, status: 'issued', issuedAt: iso(-40 * DAY), expiresAt: iso(-33 * DAY), redeemedAt: null, redeemedBy: null },
-        { code: 'CJ-2M8N-RXY7', campaignId: 1, playerId: players[3].id, status: 'cancelled', issuedAt: iso(-3 * DAY), expiresAt: iso(4 * DAY), redeemedAt: null, redeemedBy: null },
+        { code: 'SN-7KQ2-M9TX', campaignId: 1, playerId: players[0].id, status: 'issued', issuedAt: iso(-2 * DAY), expiresAt: iso(5 * DAY), redeemedAt: null, redeemedBy: null },
+        { code: 'SN-3PLM-8XZR', campaignId: 2, playerId: players[1].id, status: 'redeemed', issuedAt: iso(-6 * DAY), expiresAt: iso(4 * DAY), redeemedAt: iso(-1 * DAY), redeemedBy: 'Caixa Demo' },
+        { code: 'SN-9V2K-TQ4H', campaignId: 4, playerId: players[2].id, status: 'issued', issuedAt: iso(-40 * DAY), expiresAt: iso(-33 * DAY), redeemedAt: null, redeemedBy: null },
+        { code: 'SN-2M8N-RXY7', campaignId: 1, playerId: players[3].id, status: 'cancelled', issuedAt: iso(-3 * DAY), expiresAt: iso(4 * DAY), redeemedAt: null, redeemedBy: null },
       ];
 
       const users = [
-        { id: 1, name: 'Admin Demo', email: 'admin@chefjohn.local', role: 'admin', disabledAt: null },
-        { id: 2, name: 'Caixa Demo', email: 'caixa@chefjohn.local', role: 'caixa', disabledAt: null },
+        { id: 1, name: 'Admin Demo', email: 'admin@sushinachos.local', role: 'admin', disabledAt: null },
+        { id: 2, name: 'Caixa Demo', email: 'caixa@sushinachos.local', role: 'caixa', disabledAt: null },
       ];
 
       const rankingEntries = { catcher: [], runner: [], ninja: [] };
@@ -853,9 +857,9 @@
           h('div', { class: 'section-heading' }, [h('h2', {}, 'Partidas por dia')]),
           h('div', { class: 'chart-wrap' }, h('div', { class: 'bar-chart' }, bars)),
           h('div', { class: 'chart-legend' }, [
-            h('span', {}, [h('span', { class: 'legend-dot catcher' }), 'Pega Pizza']),
-            h('span', {}, [h('span', { class: 'legend-dot runner' }), 'Corrida']),
-            h('span', {}, [h('span', { class: 'legend-dot ninja' }), 'Ninja']),
+            h('span', {}, [h('span', { class: 'legend-dot catcher' }), 'Festa Mexicana']),
+            h('span', {}, [h('span', { class: 'legend-dot runner' }), 'Entrega']),
+            h('span', {}, [h('span', { class: 'legend-dot ninja' }), 'Sushi Ninja']),
           ]),
           h('h3', { style: 'margin-top:18px;font-size:13px;color:var(--ink-soft-2)' }, 'Tempo médio por jogo'),
           avgList,
@@ -939,20 +943,20 @@
     /* ================= Campanhas: formulário ================= */
     const TEMPLATES = [
       {
-        key: 'desafio', title: 'Desafio do Chef John', desc: 'Supere o recorde do John na Corrida.',
-        data: { title: 'Desafio do Chef John', bannerText: 'O Chef John fez 1.240 na Corrida. Você supera?', description: 'Supere o recorde pessoal do Chef John na Corrida da Pizza e ganhe um brinde.', kind: 'challenge', game: 'runner', metric: 'score', aggregation: 'best', challengerName: 'Chef John', challengerScore: 1240, target: 1241, multiplier: 1, weekdays: null, dailyStart: '', dailyEnd: '', prizeTitle: 'Refrigerante 2L grátis', prizeDescription: 'Um refrigerante de 2 litros grátis na próxima visita.', stock: 50, perPlayerLimit: 1, couponValidDays: 7 },
+        key: 'desafio', title: 'Desafio do Nacho Ninja', desc: 'Supere o recorde do Ninja na Entrega.',
+        data: { title: 'Desafio do Nacho Ninja', bannerText: 'O Nacho Ninja fez 1.240 na Entrega. Você supera?', description: 'Supere o recorde pessoal do Nacho Ninja na Entrega Sushinachos e ganhe um brinde no restaurante.', kind: 'challenge', game: 'runner', metric: 'score', aggregation: 'best', challengerName: 'Nacho Ninja', challengerScore: 1240, target: 1241, multiplier: 1, weekdays: null, dailyStart: '', dailyEnd: '', prizeTitle: 'Refrigerante 2L grátis', prizeDescription: 'Um refrigerante de 2 litros grátis na próxima visita.', stock: 50, perPlayerLimit: 1, couponValidDays: 7 },
       },
       {
         key: 'turbinada', title: 'Horário turbinado', desc: 'Terça 18h-21h com pontos em dobro.',
-        data: { title: 'Terça turbinada', bannerText: 'Toda terça vale o dobro de John Coin!', description: 'Jogue nas terças à noite e some pontos em dobro para ganhar seu brinde.', kind: 'challenge', game: null, metric: 'score', aggregation: 'sum', challengerName: '', challengerScore: '', target: 2000, multiplier: 2, weekdays: [2], dailyStart: '18:00', dailyEnd: '21:00', prizeTitle: 'Fatia grátis', prizeDescription: 'Uma fatia de pizza grátis na próxima visita.', stock: 100, perPlayerLimit: 1, couponValidDays: 10 },
+        data: { title: 'Terça turbinada', bannerText: 'Toda terça vale o dobro de SN Coin!', description: 'Jogue nas terças à noite e some pontos em dobro para ganhar seu brinde.', kind: 'challenge', game: null, metric: 'score', aggregation: 'sum', challengerName: '', challengerScore: '', target: 2000, multiplier: 2, weekdays: [2], dailyStart: '18:00', dailyEnd: '21:00', prizeTitle: 'Porção de Nachos grátis', prizeDescription: 'Uma porção de nachos crocantes grátis na próxima visita.', stock: 100, perPlayerLimit: 1, couponValidDays: 10 },
       },
       {
-        key: 'coletiva', title: 'Meta coletiva', desc: 'Penha entrega 1.000 pizzas juntos.',
-        data: { title: 'Penha entrega 1.000 pizzas', bannerText: 'Ajude a Penha a bater 1.000 entregas!', description: 'Quando todos os jogadores juntos somarem 1.000 entregas na Corrida, todo mundo que participou ganha um brinde.', kind: 'collective', game: 'runner', metric: 'deliveries', aggregation: 'sum', challengerName: '', challengerScore: '', target: 1000, multiplier: 1, weekdays: null, dailyStart: '', dailyEnd: '', prizeTitle: 'Rodada de refrigerantes', prizeDescription: 'Um copo de refrigerante grátis para cada participante.', stock: null, perPlayerLimit: 1, couponValidDays: 14 },
+        key: 'coletiva', title: 'Meta coletiva', desc: 'Gravatá entrega 1.000 pedidos juntos.',
+        data: { title: 'Gravatá entrega 1.000 pedidos', bannerText: 'Ajude o Gravatá a bater 1.000 entregas!', description: 'Quando todos os jogadores juntos somarem 1.000 entregas na Entrega Sushinachos, todo mundo que participou ganha um brinde.', kind: 'collective', game: 'runner', metric: 'deliveries', aggregation: 'sum', challengerName: '', challengerScore: '', target: 1000, multiplier: 1, weekdays: null, dailyStart: '', dailyEnd: '', prizeTitle: 'Combo Sushinachos Especial', prizeDescription: 'Um combo cortesia de sushi e nachos para cada participante.', stock: null, perPlayerLimit: 1, couponValidDays: 14 },
       },
       {
-        key: 'missao', title: 'Missão da Corrida', desc: '3 entregas em uma corrida.',
-        data: { title: 'Missão da Corrida', bannerText: 'Complete 3 entregas numa única corrida!', description: 'Entregue 3 pizzas em uma única corrida e ganhe um brinde na hora.', kind: 'challenge', game: 'runner', metric: 'deliveries', aggregation: 'best', challengerName: '', challengerScore: '', target: 3, multiplier: 1, weekdays: null, dailyStart: '', dailyEnd: '', prizeTitle: 'Brownie grátis', prizeDescription: 'Um brownie de sobremesa grátis.', stock: 30, perPlayerLimit: 1, couponValidDays: 7 },
+        key: 'missao', title: 'Missão da Entrega', desc: '3 entregas em uma corrida.',
+        data: { title: 'Missão da Entrega', bannerText: 'Complete 3 entregas numa única corrida!', description: 'Entregue 3 pedidos em uma única corrida e ganhe um brinde na hora.', kind: 'challenge', game: 'runner', metric: 'deliveries', aggregation: 'best', challengerName: '', challengerScore: '', target: 3, multiplier: 1, weekdays: null, dailyStart: '', dailyEnd: '', prizeTitle: 'Hot Roll Especial', prizeDescription: 'Uma porção cortesia de hot roll na próxima visita.', stock: 30, perPlayerLimit: 1, couponValidDays: 7 },
       },
     ];
 
@@ -1004,13 +1008,13 @@
         ]);
         const fGame = h('select', { onchange: (e) => { state.game = e.target.value || null; refreshLive(); } }, [
           h('option', { value: '', selected: !state.game }, 'Qualquer jogo'),
-          h('option', { value: 'catcher', selected: state.game === 'catcher' }, 'Pega Pizza'),
-          h('option', { value: 'runner', selected: state.game === 'runner' }, 'Corrida da Pizza'),
-          h('option', { value: 'ninja', selected: state.game === 'ninja' }, 'Ninja da Pizza'),
+          h('option', { value: 'catcher', selected: state.game === 'catcher' }, 'Festa Mexicana'),
+          h('option', { value: 'runner', selected: state.game === 'runner' }, 'Entrega Sushinachos'),
+          h('option', { value: 'ninja', selected: state.game === 'ninja' }, 'Sushi Ninja'),
         ]);
         const fMetric = h('select', { onchange: (e) => { state.metric = e.target.value; refreshLive(); } }, [
           h('option', { value: 'score', selected: state.metric === 'score' }, 'Pontuação'),
-          h('option', { value: 'deliveries', selected: state.metric === 'deliveries' }, 'Entregas (Corrida)'),
+          h('option', { value: 'deliveries', selected: state.metric === 'deliveries' }, 'Entregas (Entrega Sushinachos)'),
           h('option', { value: 'plays', selected: state.metric === 'plays' }, 'Partidas jogadas'),
         ]);
         const fAgg = h('select', { onchange: (e) => { state.aggregation = e.target.value; refreshLive(); } }, [
@@ -1023,14 +1027,14 @@
         const metricGuideEl = h('div', { class: 'metric-guide' }, [
           h('div', { class: 'metric-guide-title' }, '⏱️ Guia de Estimativa de Gameplay (Equilíbrio dos 3 Jogos)'),
           h('div', { class: 'metric-guide-text' },
-            'Pega Pizza, Corrida e Ninja estão equilibrados para render a mesma média de John Coins por tempo:'
+            'Festa Mexicana, Entrega e Sushi Ninja estão equilibrados para render a mesma média de SN Coins por tempo:'
           ),
           h('div', { class: 'metric-guide-pills' }, [
-            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, '1 minuto:'), '~370 – 400 JC']),
-            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, '2 minutos:'), '~950 – 1.050 JC']),
-            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, 'Recorde (1 partida):'), '300–600 JC (médio) | 1.000+ (difícil)']),
-            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, 'Soma acumulada:'), '2.000 JC (~5 min) | 5.000 JC (~12 min)']),
-            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, 'Entregas (Corrida):'), '~1 entrega a cada 45–60s']),
+            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, '1 minuto:'), '~370 – 400 SN']),
+            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, '2 minutos:'), '~950 – 1.050 SN']),
+            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, 'Recorde (1 partida):'), '300–600 SN (médio) | 1.000+ (difícil)']),
+            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, 'Soma acumulada:'), '2.000 SN (~5 min) | 5.000 SN (~12 min)']),
+            h('span', { class: 'metric-guide-pill' }, [h('strong', {}, 'Entregas (Entrega Sushinachos):'), '~1 entrega a cada 45–60s']),
           ]),
         ]);
         const fChallengerName = h('input', { type: 'text', maxlength: '30', value: state.challengerName || '', oninput: (e) => { state.challengerName = e.target.value; refreshLive(); } });
@@ -1087,7 +1091,7 @@
               h('div', { class: 'preview-desc' }, state.description || 'Descrição da campanha para o jogador.'),
               h('div', { class: 'preview-prize' }, `🎁 ${state.prizeTitle || 'Prêmio'}`),
               h('div', { class: 'preview-badge-row' }, [
-                state.multiplier > 1 ? h('span', { class: 'badge badge-live' }, `${state.multiplier}× John Coin`) : null,
+                state.multiplier > 1 ? h('span', { class: 'badge badge-live' }, `${state.multiplier}× SN Coin`) : null,
                 (weekdaysSummary(state.weekdays) || windowSummary(state.dailyStart, state.dailyEnd)) ? h('span', { class: 'badge badge-scheduled' }, [weekdaysSummary(state.weekdays), windowSummary(state.dailyStart, state.dailyEnd)].filter(Boolean).join(' ')) : null,
               ].filter(Boolean)),
             ]),
@@ -1110,7 +1114,7 @@
           ]), h('div', { class: 'form-row three' }, [
             h('div', { class: 'field' }, [h('label', {}, 'Agregação'), fAgg]),
             h('div', { class: 'field' }, [h('label', {}, 'Meta (alvo)'), fTarget, targetHintEl]),
-            h('div', { class: 'field' }, [h('label', {}, 'Multiplicador de John Coin'), fMultiplier]),
+            h('div', { class: 'field' }, [h('label', {}, 'Multiplicador de SN Coin'), fMultiplier]),
           ]), h('div', { class: 'form-row' }, [
             h('div', { class: 'field' }, [h('label', {}, 'Nome do desafiante (opcional)'), fChallengerName]),
             h('div', { class: 'field' }, [h('label', {}, 'Pontuação do desafiante'), fChallengerScore]),
@@ -1190,10 +1194,10 @@
     function renderCupons(container) {
       const state = { history: [] };
       const input = h('input', {
-        class: 'coupon-input', type: 'text', inputmode: 'text', autocomplete: 'off', placeholder: 'CJ-____-____',
+        class: 'coupon-input', type: 'text', inputmode: 'text', autocomplete: 'off', placeholder: 'SN-____-____',
         'aria-label': 'Código do cupom',
       });
-      input.value = 'CJ-';
+      input.value = 'SN-';
       const consultBtn = h('button', { class: 'btn btn-primary btn-block', disabled: true }, 'Consultar');
       const resultRegion = h('div', { 'aria-live': 'polite' });
       const historyRegion = h('div', { class: 'coupon-history' });
@@ -1383,7 +1387,7 @@
         guardedLoad(container, token, () => api.ranking(state.game, state.period), renderList, load);
       }
       function renderList(data) {
-        const gameTabs = h('div', { class: 'tabs' }, [['catcher', 'Pega Pizza'], ['runner', 'Corrida'], ['ninja', 'Ninja']].map(([g, label]) =>
+        const gameTabs = h('div', { class: 'tabs' }, [['catcher', 'Festa Mexicana'], ['runner', 'Entrega'], ['ninja', 'Sushi Ninja']].map(([g, label]) =>
           h('button', { class: `tab ${state.game === g ? 'active' : ''}`, onclick: () => { state.game = g; load(); } }, label)));
         const periodTabs = h('div', { class: 'tabs' }, [['all', 'Geral'], ['month', 'Mensal']].map(([p, label]) =>
           h('button', { class: `tab ${state.period === p ? 'active' : ''}`, onclick: () => { state.period = p; load(); } }, label)));

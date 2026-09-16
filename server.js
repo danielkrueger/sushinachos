@@ -743,7 +743,7 @@ async function handlePlays(req, res) {
 
 async function requireAdmin(req, res, roles) {
   const cookies = adminAuth.parseCookies(req.headers.cookie);
-  const session = adminAuth.verifyAdminCookie(cookies[adminAuth.COOKIE_NAME], ADMIN_SECRET);
+  const session = adminAuth.verifyAdminCookie(cookies[adminAuth.COOKIE_NAME] || cookies.cj_admin, ADMIN_SECRET);
   if (!session) { json(res, 401, { error: 'não autenticado' }); return null; }
   const result = await pool.query('SELECT id, email, name, role, disabled_at FROM admin_users WHERE id = $1', [session.uid]);
   const user = result.rows[0];
@@ -1358,7 +1358,7 @@ async function start() {
   } catch (e) {
     console.warn(`Aviso: banco de dados indisponível (${e.message}). Iniciando servidor sem ranking.`);
   }
-  createServer().listen(PORT, '0.0.0.0', () => console.log(`Chef John Games ouvindo na porta ${PORT}`));
+  createServer().listen(PORT, '0.0.0.0', () => console.log(`Sushinachos Games ouvindo na porta ${PORT}`));
 }
 
 if (require.main === module) start().catch(e => { console.error(e.message); process.exit(1); });

@@ -36,12 +36,12 @@ async function main() {
   const email = typeof args.email === 'string' ? args.email.trim().toLowerCase() : '';
   const name = typeof args.name === 'string' ? args.name.trim() : '';
   const role = args.role;
-  const password = process.env.CHEFJOHN_ADMIN_PASSWORD;
+  const password = process.env.SUSHINACHOS_ADMIN_PASSWORD || process.env.CHEFJOHN_ADMIN_PASSWORD;
 
   if (!email || !/^\S+@\S+\.\S+$/.test(email)) throw new Error('--email obrigatório e válido');
   if (!name) throw new Error('--name obrigatório');
   if (role !== 'admin' && role !== 'caixa') throw new Error('--role deve ser admin ou caixa');
-  if (!adminAuth.isPasswordStrongEnough(password)) throw new Error('CHEFJOHN_ADMIN_PASSWORD ausente ou com menos de 10 caracteres');
+  if (!adminAuth.isPasswordStrongEnough(password)) throw new Error('SUSHINACHOS_ADMIN_PASSWORD ausente ou com menos de 10 caracteres');
 
   const client = new Client(databaseConfig());
   await client.connect();

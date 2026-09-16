@@ -3,19 +3,22 @@ const assert = require('node:assert/strict');
 const A = require('../js/admin.js');
 
 test('formatCouponCode masks partial and full input, accepting lowercase/no-hyphen', () => {
-  assert.equal(A.formatCouponCode(''), 'CJ-');
-  assert.equal(A.formatCouponCode('7'), 'CJ-7');
-  assert.equal(A.formatCouponCode('7kq2'), 'CJ-7KQ2');
-  assert.equal(A.formatCouponCode('7kq2m9tx'), 'CJ-7KQ2-M9TX');
+  assert.equal(A.formatCouponCode(''), 'SN-');
+  assert.equal(A.formatCouponCode('7'), 'SN-7');
+  assert.equal(A.formatCouponCode('7kq2'), 'SN-7KQ2');
+  assert.equal(A.formatCouponCode('7kq2m9tx'), 'SN-7KQ2-M9TX');
+  assert.equal(A.formatCouponCode('sn7kq2m9tx'), 'SN-7KQ2-M9TX');
+  assert.equal(A.formatCouponCode('SN-7KQ2-M9TX'), 'SN-7KQ2-M9TX');
+  assert.equal(A.formatCouponCode('  sn 7kq2 m9tx  '), 'SN-7KQ2-M9TX');
   assert.equal(A.formatCouponCode('cj7kq2m9tx'), 'CJ-7KQ2-M9TX');
   assert.equal(A.formatCouponCode('CJ-7KQ2-M9TX'), 'CJ-7KQ2-M9TX');
-  assert.equal(A.formatCouponCode('  cj 7kq2 m9tx  '), 'CJ-7KQ2-M9TX');
 });
 
-test('isCompleteCouponCode validates the full CJ-XXXX-XXXX shape', () => {
+test('isCompleteCouponCode validates the full SN-XXXX-XXXX shape', () => {
+  assert.equal(A.isCompleteCouponCode('SN-7KQ2-M9TX'), true);
   assert.equal(A.isCompleteCouponCode('CJ-7KQ2-M9TX'), true);
-  assert.equal(A.isCompleteCouponCode('CJ-7KQ2'), false);
-  assert.equal(A.isCompleteCouponCode('CJ-'), false);
+  assert.equal(A.isCompleteCouponCode('SN-7KQ2'), false);
+  assert.equal(A.isCompleteCouponCode('SN-'), false);
   assert.equal(A.isCompleteCouponCode(''), false);
 });
 
@@ -52,14 +55,14 @@ test('windowSummary formats a daily window in short hour form', () => {
 });
 
 test('gameLabel maps game codes to pt-BR names', () => {
-  assert.equal(A.gameLabel('catcher'), 'Pega Pizza');
-  assert.equal(A.gameLabel('runner'), 'Corrida da Pizza');
-  assert.equal(A.gameLabel('ninja'), 'Ninja da Pizza');
+  assert.equal(A.gameLabel('catcher'), 'Festa Mexicana');
+  assert.equal(A.gameLabel('runner'), 'Entrega Sushinachos');
+  assert.equal(A.gameLabel('ninja'), 'Sushi Ninja');
   assert.equal(A.gameLabel(null), 'qualquer jogo');
 });
 
 test('targetHintText explains John Coin rate and delivery expectations by metric', () => {
-  assert.match(A.targetHintText('score'), /370 a 400 John Coins por minuto/);
+  assert.match(A.targetHintText('score'), /370 a 400 SN Coins por minuto/);
   assert.match(A.targetHintText('deliveries'), /1 entrega a cada 45–60s/);
   assert.match(A.targetHintText('plays'), /partida/);
 });
@@ -98,7 +101,7 @@ test('humanSummary composes the challenge sentence for a target campaign', () =>
   assert.match(summary, /Toda terça das 18h às 21h/);
   assert.match(summary, /somar 2\.000 pontos em qualquer jogo/);
   assert.match(summary, /ganha Refri 2L/);
-  assert.match(summary, /2× John Coin/);
+  assert.match(summary, /2× SN Coin/);
   assert.match(summary, /50 unidades, 1 por pessoa/);
 });
 
@@ -110,7 +113,7 @@ test('humanSummary composes the "Desafio do Chef John" sentence with the challen
     challengerName: 'Chef John', challengerScore: 1240,
     prizeTitle: 'Refrigerante 2L grátis', stock: 50, perPlayerLimit: 1, couponValidDays: 7,
   });
-  assert.match(summary, /superar Chef John \(1\.240 pontos na Corrida da Pizza\)/);
+  assert.match(summary, /superar Chef John \(1\.240 pontos na Entrega Sushinachos\)/);
   assert.match(summary, /ganha Refrigerante 2L grátis/);
 });
 
@@ -121,6 +124,6 @@ test('humanSummary composes the collective-goal sentence', () => {
     startsAt: '2026-09-01T00:00:00.000Z', endsAt: '2026-10-01T00:00:00.000Z',
     prizeTitle: 'Rodada de refrigerantes', stock: null, perPlayerLimit: 1, couponValidDays: 14,
   });
-  assert.match(summary, /juntos, os jogadores precisam somar 1\.000 entregas na Corrida da Pizza/);
+  assert.match(summary, /juntos, os jogadores precisam somar 1\.000 entregas na Entrega Sushinachos/);
   assert.match(summary, /estoque ilimitado, 1 por pessoa/);
 });
