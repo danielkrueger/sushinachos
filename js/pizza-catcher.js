@@ -61,9 +61,11 @@ class PizzaCatcherGame {
     spawnItem() {
         // Determine what to spawn based on weights and level
         const possibleItems = [
-            { type: 'pizza', emoji: '🍕', points: 10, weight: 40, bad: false, mustCatch: true },
-            { type: 'cheese', emoji: '🧀', points: 15, weight: 20, bad: false, mustCatch: false },
-            { type: 'tomato', emoji: '🍅', points: 10, weight: 15, bad: false, mustCatch: false },
+            { type: 'nacho', emoji: '🧀', points: 10, weight: 40, bad: false, mustCatch: true },
+            { type: 'sushi', emoji: '🍣', points: 12, weight: 20, bad: false, mustCatch: false },
+            { type: 'sashimi', emoji: '🐟', points: 14, weight: 14, bad: false, mustCatch: false },
+            { type: 'burrito', emoji: '🌯', points: 10, weight: 14, bad: false, mustCatch: false },
+            { type: 'quesadilla', emoji: '🌮', points: 10, weight: 14, bad: false, mustCatch: false },
             { type: 'pineapple', emoji: '🍍', points: 12, weight: 8, bad: false, mustCatch: false },
             { type: 'burnt', emoji: '🔥', points: -20, weight: 10 + this.level, bad: true, mustCatch: false },
             { type: 'plate', emoji: '🍽️', points: -10, weight: 8 + this.level, bad: true, mustCatch: false }

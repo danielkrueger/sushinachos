@@ -76,7 +76,7 @@ class PizzaRunnerGame {
         if(this.easySectionsLeft>0) {
             this.easySectionsLeft--;
             const lane=pick([0,1,2]), safe=pick([0,1,2].filter(n=>n!==lane));
-            add(lane,75,pick(['van','barrier','arch','hole']));
+            add(lane,75,pick(['van','barrier','arch','hole','cactus']));
             for(let i=0;i<5;i++) add(safe,81+i*3,'coin');
             this.spawnTimer=(52+Math.random()*20)/19;
             return;
@@ -119,8 +119,8 @@ class PizzaRunnerGame {
             if(!o.checked && oldZ>=0 && o.z<=0) {
                 o.checked=true;
                 if(Math.abs(o.lane-this.lane)<.42) {
-                    if(o.kind==='coin') {this.coins+=5;if(typeof ChefJohnAudio!=='undefined') ChefJohnAudio.play('coin');this.message='+5 John Coin';this.messageTime=.5;const p=this.project((this.lane-1)*2.1,1,0);this.particles.push({x:p.x,y:p.y,life:1});}
-                    else if(!(((o.kind==='barrier'||o.kind==='hole') && this.jump>.7)||(o.kind==='arch'&&this.slide>0))) {if(typeof ChefJohnAudio!=='undefined') ChefJohnAudio.play('damage');this.state='gameover';this.crashTime=0;this.damageProgress=0;this.impactTime=.38;this.damageDirection=o.lane<this.lane?1:-1;this.jump=0;this.jumpVelocity=0;this.slide=0;o.hit=true;o.z=o.kind==='hole'?-.7:.55;this.hitObject=o;this.message='Opa! Vamos de novo?';this.messageTime=2;break;}
+                    if(o.kind==='coin') {this.coins+=5;if(typeof ChefJohnAudio!=='undefined') ChefJohnAudio.play('coin');this.message='+5 SN Coin';this.messageTime=.5;const p=this.project((this.lane-1)*2.1,1,0);this.particles.push({x:p.x,y:p.y,life:1});}
+                    else if(!(((o.kind==='barrier'||o.kind==='hole'||o.kind==='cactus') && this.jump>.7)||(o.kind==='arch'&&this.slide>0))) {if(typeof ChefJohnAudio!=='undefined') ChefJohnAudio.play('damage');this.state='gameover';this.crashTime=0;this.damageProgress=0;this.impactTime=.38;this.damageDirection=o.lane<this.lane?1:-1;this.jump=0;this.jumpVelocity=0;this.slide=0;o.hit=true;o.z=o.kind==='hole'?-.7:.55;this.hitObject=o;this.message='Opa! Vamos de novo?';this.messageTime=2;break;}
                 }
             }
         }
@@ -130,7 +130,7 @@ class PizzaRunnerGame {
             this.deliveryBonus+=100;this.state='arriving';this.arrivalTime=0;
             this.objects=[];this.slide=0;this.turboTime=0;this.targetLane=1;
             this.arrivalDecel=this.speed*this.speed/(2*Math.max(1,this.stopAt()-this.distance));
-            this.message=this.destinationKind()==='family'?'A família está esperando!':'Chegando na Pizzaria Chef John!';this.messageTime=2;
+            this.message=this.destinationKind()==='family'?'A família está esperando!':'Chegando no Sushinachos!';this.messageTime=2;
             if(typeof ChefJohnAudio!=='undefined')ChefJohnAudio.play('coin');
         }
         this.updateScore();
@@ -221,7 +221,7 @@ class PizzaRunnerGame {
             this.quad([[-10.2,5.2,z-.06],[10.2,5.2,z-.06],[0,8.1,z-.06]],'#e06d4f');
             this.rect(-1.2,1.2,0,2.7,z-.04,'#8a4b2f');this.rect(-.95,.95,.15,2.5,z-.06,'#a8613c');
             for(const x of [-7.5,-4,4,7.5]){this.rect(x-1.1,x+1.1,1.6,3.5,z-.04,'#fff0cb');this.rect(x-.85,x+.85,1.8,3.3,z-.06,'#7cc0c4');}
-            this.rect(-3.9,3.9,3.75,4.75,z-.08,'#fff4d0');label('OBRIGADO, JOHN!',4.25,.36,'#b33a2d');
+            this.rect(-3.9,3.9,3.75,4.75,z-.08,'#fff4d0');label('OBRIGADO, NACHO NINJA!',4.25,.34,'#b33a2d');
             for(const [x,height,shirt,hair] of [[-3.5,1.9,'#5aa0c8','#3b2a20'],[-2.3,1.2,'#f2b33d','#6b4a2f'],[2.3,1.1,'#e0607a','#2b211c'],[3.5,1.8,'#6fae6a','#554033']])this.person(x,z-2.4,height,shirt,hair,cheer);
         } else {
             this.quad([[-11,.03,z-5],[11,.03,z-5],[11,.03,z],[-11,.03,z]],'#e7c28f');
@@ -230,8 +230,8 @@ class PizzaRunnerGame {
             const oven=this.project(-5.4,1.6,z-.08);JohnArt.oval(c,oven.x,oven.y,oven.s*1.3,oven.s*.6,'#f28c3a');
             this.rect(-1.3,1.3,0,2.9,z-.04,'#5b3322');this.rect(-1.05,1.05,.15,2.7,z-.06,'#8a4b2f');
             for(let j=0;j<16;j++){const x=-9.6+j*1.2;this.quad([[x,3.2,z-1.3],[x+1.2,3.2,z-1.3],[x+1.2,3.9,z-.02],[x,3.9,z-.02]],j%2?'#fff2ce':'#cc4b36');}
-            this.rect(-7,7,4.25,5.95,z-.05,'#fff3d9');this.rect(-6.75,6.75,4.4,5.8,z-.07,'#b33a2d');label('PIZZARIA CHEF JOHN',5.1,.5,'#fff3d9');
-            const emblem=this.project(0,7,z-.1);JohnArt.food(c,'pizza',emblem.x,emblem.y,emblem.s*2.2,Math.PI/2);
+            this.rect(-7,7,4.25,5.95,z-.05,'#fff3d9');this.rect(-6.75,6.75,4.4,5.8,z-.07,'#b33a2d');label('SUSHINACHOS',5.1,.5,'#fff3d9');
+            const emblem=this.project(0,7,z-.1);JohnArt.food(c,'nacho',emblem.x,emblem.y,emblem.s*2.2,Math.PI/2);
             for(const [x,height,shirt,hair] of [[-3.4,1.85,'#fffdf0','#2c2723'],[2.4,1.2,'#f2b33d','#6b4a2f'],[3.6,1.8,'#5aa0c8','#3b2a20']])this.person(x,z-2.4,height,shirt,hair,cheer);
         }
         if(cheer>0) {
@@ -251,11 +251,25 @@ class PizzaRunnerGame {
                 const [dx,dz]=rim[i];
                 this.quad([[x+dx,.03,z+dz],[x+dx*1.24,.03,z+dz+.12],[x+dx*1.08,.03,z+dz+.04]],'#484c43');
             }
+        } else if(o.kind==='cactus') {
+            this.block(x,z,.85,.22,.85,'#b88653','#966738','#cf9e68');
+            this.block(x,z,.52,2.3,.52,'#2e7d32','#1b5e20','#4caf50');
+            this.block(x-.46,z,.42,.34,.36,'#2e7d32','#1b5e20','#4caf50');
+            this.block(x-.64,z,.36,1.15,.36,'#2e7d32','#1b5e20','#4caf50');
+            this.block(x+.46,z,.42,.34,.36,'#2e7d32','#1b5e20','#4caf50');
+            this.block(x+.64,z,.36,1.35,.36,'#2e7d32','#1b5e20','#4caf50');
+            const fl=this.project(x,2.38,z-.04);
+            JohnArt.oval(c,fl.x,fl.y,fl.s*.13,fl.s*.09,'#e91e63');
+            JohnArt.oval(c,fl.x,fl.y,fl.s*.06,fl.s*.04,'#ffeb3b');
+            const flL=this.project(x-.64,1.85,z-.04);
+            JohnArt.oval(c,flL.x,flL.y,flL.s*.09,flL.s*.06,'#ff4081');
+            const flR=this.project(x+.64,2.1,z-.04);
+            JohnArt.oval(c,flR.x,flR.y,flR.s*.09,flR.s*.06,'#ff4081');
         } else if(o.kind==='van') {
             this.block(x,z,1.65,2.35,3.8,'#d94e35','#b8332d','#ff9260');
             this.quad([[x-.65,1.2,z-.03],[x+.65,1.2,z-.03],[x+.65,2,z-.03],[x-.65,2,z-.03]],'#9ad4d1');
             for(const side of [-1,1]){const p=this.project(x+side*.58,.25,z-.04);JohnArt.oval(c,p.x,p.y,p.s*.18,p.s*.26,'#344740');}
-            const p=this.project(x,.65,z-.05);c.fillStyle='#fff3cb';c.font=`900 ${p.s*.22}px Nunito`;c.textAlign='center';c.fillText('PIZZA',p.x,p.y);
+            const p=this.project(x,.65,z-.05);c.fillStyle='#fff3cb';c.font=`900 ${p.s*.22}px Nunito`;c.textAlign='center';c.fillText('SUSHI',p.x,p.y);
         } else if(o.kind==='barrier') {
             this.block(x,z,1.75,.85,.25,'#edb249','#b77c35','#ffe49a');
             for(const side of [-1,1])this.block(x+side*.63,z-.05,.12,1.05,.12,'#fff5cd','#c7af78','#fff8dd');

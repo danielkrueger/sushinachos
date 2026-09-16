@@ -38,16 +38,17 @@ class PizzaNinjaGame {
             });
         }
 
-        // Tabela de itens temáticos da pizzaria:
-        // Agora com COPOS DE VIDRO e PRATOS DE PORCELANA como louça frágil!
+        // Tabela de itens temáticos do Sushinachos (mexicano e japonês):
         this.itemTypes = [
-            { id: 'pizza',   emoji: '🍕', name: 'Pizza',  pts: 3,   weight: 48, bad: false },
-            { id: 'cheese',  emoji: '🧀', name: 'Queijo', pts: 4,   weight: 16, bad: false },
-            { id: 'tomato',  emoji: '🍅', name: 'Tomate', pts: 2,   weight: 16, bad: false },
-            { id: 'special', emoji: '⭐', name: 'John Coin', pts: 10, weight: 5, bad: false, glow: true, isCoin: true },
-            { id: 'plate',   emoji: '🍽️', name: 'Prato',  pts: 0,   weight: 6,  bad: true, dish: true, label: 'PRATO' },
-            { id: 'glass',   emoji: '🥛', name: 'Copo',   pts: 0,   weight: 6,  bad: true, dish: true, label: 'COPO' },
-            { id: 'burnt',   emoji: '🔥', name: 'Queimada', pts: -5,  weight: 8, bad: true }
+            { id: 'nacho',      emoji: '🧀', name: 'Nacho',      pts: 3,   weight: 35, bad: false },
+            { id: 'sushi',      emoji: '🍣', name: 'Sushi',      pts: 4,   weight: 25, bad: false },
+            { id: 'sashimi',    emoji: '🐟', name: 'Sashimi',    pts: 5,   weight: 20, bad: false },
+            { id: 'burrito',    emoji: '🌯', name: 'Burrito',    pts: 4,   weight: 18, bad: false },
+            { id: 'quesadilla', emoji: '🌮', name: 'Quesadilla', pts: 4,   weight: 18, bad: false },
+            { id: 'special',    emoji: '⭐', name: 'SN Coin',    pts: 10,  weight: 6,  bad: false, glow: true, isCoin: true },
+            { id: 'plate',      emoji: '🍽️', name: 'Prato',      pts: 0,   weight: 6,  bad: true, dish: true, label: 'PRATO' },
+            { id: 'glass',      emoji: '🥛', name: 'Copo',       pts: 0,   weight: 6,  bad: true, dish: true, label: 'COPO' },
+            { id: 'burnt',      emoji: '🔥', name: 'Pimenta',    pts: -5,  weight: 8,  bad: true }
         ];
     }
 
@@ -154,7 +155,7 @@ class PizzaNinjaGame {
                     if (typeof ChefJohnAudio !== 'undefined') ChefJohnAudio.play('damage');
                     this.addPopup(item.x, this.h - 80, '💔 Escapou!', '#FF5252', 22);
                     if (this.lives <= 0) {
-                        this.gameOver('As pizzas caíram no chão!');
+                        this.gameOver('A comida caiu no chão!');
                     }
                 }
                 this.items.splice(i, 1);

@@ -33,6 +33,81 @@ const JohnArt = {
         } else if(type==='tomato') {
             const g=c.createRadialGradient(-8,-10,1,0,0,25); g.addColorStop(0,'#ff9c68');g.addColorStop(.5,'#f14d36');g.addColorStop(1,'#b82328');
             this.oval(c,0,2,23,21,g); c.shadowBlur=0;this.poly(c,[[0,-22],[4,-12],[14,-16],[7,-6],[0,-11],[-10,-6],[-5,-15],[-13,-18]],'#367546');
+        } else if(type==='nacho' || type==='nachos') {
+            // Nacho triangular crocante com queijo cheddar derretido e jalapeño
+            c.shadowBlur=0;
+            this.poly(c, [[-22, 18], [22, 18], [0, -22]], '#f4b036');
+            this.poly(c, [[-20, 16], [20, 16], [0, -20]], '#fed368');
+            this.poly(c, [[-15, 14], [15, 14], [10, 2], [5, 8], [0, -6], [-5, 4], [-12, 0]], '#ff9800');
+            this.poly(c, [[-13, 12], [13, 12], [8, 3], [4, 7], [0, -4], [-4, 3], [-10, 1]], '#ffc107');
+            this.oval(c, -3, 6, 6, 6, '#2e7d32');
+            this.oval(c, -3, 6, 3.5, 3.5, '#a5d6a7');
+            this.oval(c, -3, 6, 1.5, 1.5, '#1b5e20');
+            this.oval(c, 7, 8, 3, 2.5, '#d32f2f');
+            this.oval(c, -8, -1, 2.5, 2, '#d32f2f');
+            this.oval(c, 5, -5, 2, 2, '#d32f2f');
+        } else if(type==='sushi') {
+            // Sushi Nigiri de Salmão com arroz e alga nori
+            c.shadowBlur=0;
+            this.box(c, -20, 0, 40, 17, '#f5f5f0', 8);
+            this.box(c, -18, 2, 36, 13, '#ffffff', 6);
+            const salmon=c.createLinearGradient(-22, -14, 22, 0);
+            salmon.addColorStop(0, '#ff7043'); salmon.addColorStop(.5, '#ff5722'); salmon.addColorStop(1, '#f4511e');
+            this.box(c, -23, -12, 46, 16, salmon, 8);
+            c.strokeStyle='rgba(255,255,255,0.7)'; c.lineWidth=2; c.lineCap='round';
+            for(let i=-14; i<=14; i+=7) {
+                c.beginPath(); c.moveTo(i-4, -10); c.lineTo(i+4, 2); c.stroke();
+            }
+            this.box(c, -4, -12, 8, 29, '#1a221d', 1);
+            c.strokeStyle='rgba(255,255,255,0.85)'; c.lineWidth=1.5;
+            c.beginPath(); c.moveTo(-16, -9); c.lineTo(-8, -9); c.stroke();
+        } else if(type==='sashimi') {
+            // Fatias nobres de Sashimi de Salmão com limão e shiso
+            c.shadowBlur=0;
+            this.poly(c, [[-20, 16], [-15, 0], [-22, -10], [-8, -6], [-5, -20], [6, -12], [14, -20], [14, -6], [22, 0], [18, 16]], '#388e3c');
+            for(let i=0; i<3; i++) {
+                const ox=(i-1)*7, oy=(i-1)*4;
+                c.save(); c.translate(ox, oy);
+                const g=c.createLinearGradient(-15, -12, 15, 12);
+                g.addColorStop(0, '#ff8a65'); g.addColorStop(.6, '#ff5722'); g.addColorStop(1, '#d84315');
+                this.poly(c, [[-16, 10], [-10, -12], [12, -12], [16, 10]], g);
+                c.strokeStyle='rgba(255,255,255,0.75)'; c.lineWidth=1.8;
+                c.beginPath(); c.moveTo(-10, -8); c.lineTo(-4, 8); c.stroke();
+                c.beginPath(); c.moveTo(-3, -8); c.lineTo(3, 8); c.stroke();
+                c.beginPath(); c.moveTo(4, -8); c.lineTo(10, 8); c.stroke();
+                c.restore();
+            }
+            this.oval(c, 12, 10, 9, 9, '#fbc02d');
+            this.oval(c, 12, 10, 7, 7, '#fff59d');
+            this.oval(c, 12, 10, 2, 2, '#fbc02d');
+        } else if(type==='burrito') {
+            // Burrito suculento envolto em papel alumínio
+            c.shadowBlur=0;
+            this.box(c, -14, -20, 28, 40, '#f0cf9e', 8);
+            this.oval(c, -6, -12, 3, 2, '#b87c3b');
+            this.oval(c, 5, -8, 4, 2, '#a56c32');
+            this.oval(c, -4, -4, 3, 2, '#b87c3b');
+            const foil=c.createLinearGradient(-15, 0, 15, 20);
+            foil.addColorStop(0, '#cfd8dc'); foil.addColorStop(.4, '#ffffff'); foil.addColorStop(1, '#90a4ae');
+            this.box(c, -15, 0, 30, 21, foil, 4);
+            c.strokeStyle='#78909c'; c.lineWidth=1;
+            c.beginPath(); c.moveTo(-15, 6); c.lineTo(15, 8); c.stroke();
+            c.beginPath(); c.moveTo(-15, 14); c.lineTo(15, 12); c.stroke();
+            this.oval(c, 0, -20, 13, 6, '#4e342e');
+            this.oval(c, -4, -21, 6, 4, '#4caf50');
+            this.oval(c, 4, -20, 6, 4, '#ffca28');
+            this.oval(c, 0, -22, 3, 2, '#e53935');
+        } else if(type==='quesadilla') {
+            // Quesadilla dourada grelhada com queijo derretido
+            c.shadowBlur=0;
+            this.poly(c, [[-22, 16], [22, 16], [20, -10], [0, -20], [-20, -10]], '#f4c37d');
+            this.poly(c, [[-20, 14], [20, 14], [18, -8], [0, -18], [-18, -8]], '#fed89b');
+            c.strokeStyle='#9c5b1c'; c.lineWidth=2.2; c.lineCap='round';
+            c.beginPath(); c.moveTo(-14, 12); c.lineTo(-8, -12); c.stroke();
+            c.beginPath(); c.moveTo(-4, 12); c.lineTo(2, -14); c.stroke();
+            c.beginPath(); c.moveTo(6, 12); c.lineTo(12, -10); c.stroke();
+            this.poly(c, [[-22, 14], [22, 14], [18, 20], [12, 17], [6, 22], [0, 18], [-6, 21], [-14, 17], [-20, 20]], '#ffb300');
+            this.poly(c, [[-20, 14], [20, 14], [16, 18], [11, 16], [6, 20], [0, 16], [-6, 19], [-13, 16], [-18, 18]], '#ffe082');
         } else if(type==='cheese') {
             this.poly(c,[[-23,14],[23,14],[23,-8],[-13,-22],[-23,-5]],'#df911f');
             this.poly(c,[[-23,-5],[23,-8],[-13,-22]],'#ffe58b'); this.poly(c,[[-23,-5],[23,-8],[23,12],[-23,16]],'#ffc74f');
@@ -48,110 +123,222 @@ const JohnArt = {
         c.restore();
     },
     john(c, x, y, scale=1, back=false, phase=0, slide=0, sit=0, falling=0, air=0) {
-        c.save();c.translate(x,y);c.scale(scale,scale);
-        if(+slide>0){this.johnSlide(c,back,+slide);c.restore();return;}
-        this.oval(c,0,0,29,8,`rgba(41,46,39,${.2*(1-air)})`);
-        const swing=Math.sin(phase)*9*(1-sit)*(1-air);
-        falling=Math.max(falling,air);
-        for(const side of [-1,1]) {
-            if(air>0&&sit===0){
-                // Airborne tuck below the coat hem: knees spread, the leading foot pulled higher.
-                const lift=air*(side<0?1:.5),kx=side*(12+air*9),ky=-22+lift*3,fx=side*(8+air*3),fy=-5-lift*11;
-                c.strokeStyle='#53646e';c.lineWidth=12;c.lineCap='round';c.beginPath();c.moveTo(side*10,-30);c.lineTo(kx,ky);c.lineTo(fx,fy);c.stroke();
-                this.box(c,fx-9,fy-3,18,9,'#fff7e6',4);continue;
+        c.save(); c.translate(x, y); c.scale(scale, scale);
+        if (+slide > 0) { this.johnSlide(c, back, +slide); c.restore(); return; }
+        this.oval(c, 0, 0, 26, 7, `rgba(30,35,32,${.25 * (1 - air)})`);
+        const swing = Math.sin(phase) * 11 * (1 - sit) * (1 - air);
+        falling = Math.max(falling, air);
+
+        // Pernas e tênis verdes do Mascote Nacho Ninja
+        c.strokeStyle = '#1e2328'; c.lineWidth = 9; c.lineCap = 'round';
+        for (const side of [-1, 1]) {
+            if (air > 0 && sit === 0) {
+                const lift = air * (side < 0 ? 1 : .5);
+                const kx = side * (10 + air * 6), ky = -20 + lift * 4;
+                const fx = side * (8 + air * 3), fy = -6 - lift * 12;
+                c.beginPath(); c.moveTo(side * 8, -26); c.lineTo(kx, ky); c.lineTo(fx, fy); c.stroke();
+                this.box(c, fx - 8, fy - 4, 16, 8, '#239b4b', 3);
+                this.box(c, fx - 8, fy + 2, 16, 3, '#1c1f23', 1);
+                this.box(c, fx - 5, fy - 5, 8, 3, '#ffffff', 1);
+                continue;
             }
-            if(sit>0){c.strokeStyle='#53646e';c.lineWidth=13;c.lineCap='round';c.beginPath();c.moveTo(side*10,-30+sit*25);c.lineTo(side*(10+sit*16),-16-sit*12);c.lineTo(side*(10+sit*24),-4-sit*12);c.stroke();}
-            else this.box(c,side*10-6,-30,12,27+side*swing,'#53646e',5);
-            this.box(c,side*(10+sit*24)-8,-6+side*swing-sit*12,18,9,'#fff7e6',4);
+            if (sit > 0) {
+                c.beginPath(); c.moveTo(side * 8, -26 + sit * 18);
+                c.lineTo(side * 14, -14 - sit * 8); c.lineTo(side * 18, -4 - sit * 8); c.stroke();
+                this.box(c, side * 18 - 8, -6 - sit * 8, 16, 8, '#239b4b', 3);
+                this.box(c, side * 18 - 8, -1 - sit * 8, 16, 3, '#1c1f23', 1);
+                this.box(c, side * 18 - 5, -7 - sit * 8, 8, 3, '#ffffff', 1);
+            } else {
+                const footY = -6 + side * swing;
+                c.beginPath(); c.moveTo(side * 8, -26); c.lineTo(side * 8, footY); c.stroke();
+                this.box(c, side * 8 - 8, footY - 4, 16, 8, '#239b4b', 3);
+                this.box(c, side * 8 - 8, footY + 2, 16, 3, '#1c1f23', 1);
+                this.box(c, side * 8 - 5, footY - 5, 8, 3, '#ffffff', 1);
+            }
         }
-        c.translate(0,sit*25);
-        c.strokeStyle='#eee5d3';c.lineWidth=12;c.lineCap='round';
-        for(const side of [-1,1]) {c.beginPath();c.moveTo(side*17,-61);c.lineTo(side*(28+sit*13+falling*16),-40+side*swing+sit*17-falling*43);c.stroke();this.oval(c,side*(28+sit*13+falling*16),-36+side*swing+sit*17-falling*43,6,7,'#e6ad85');}
-        this.johnTorso(c,back);
+
+        c.translate(0, sit * 18);
+
+        // Braços de Nacho Ninja Dourado
+        c.strokeStyle = '#f5b041'; c.lineWidth = 7; c.lineCap = 'round';
+        for (const side of [-1, 1]) {
+            const armSwing = Math.sin(phase) * 11 * (1 - sit) * (1 - air);
+            const hx = side * (24 + sit * 8 + falling * 10);
+            const hy = -44 - side * armSwing + sit * 12 - falling * 32;
+            c.beginPath(); c.moveTo(side * 16, -60); c.lineTo(hx, hy); c.stroke();
+            this.oval(c, hx, hy, 5, 5, '#e59828');
+
+            if (side === -1) {
+                // Nunchaku com Roll de Sushi pendurado
+                c.save(); c.translate(hx, hy); c.rotate(-armSwing * 0.05 - 0.35);
+                this.box(c, -2, -13, 4, 13, '#9c5221', 1);
+                c.strokeStyle = '#d4af37'; c.lineWidth = 1.5;
+                c.beginPath(); c.moveTo(0, -13); c.quadraticCurveTo(-6, -18, -10, -14); c.stroke();
+                c.save(); c.translate(-10, -14); c.rotate(0.5 + armSwing * 0.08);
+                this.box(c, -2, 0, 4, 12, '#9c5221', 1);
+                // Maki de sushi no nunchaku
+                this.oval(c, 0, -2, 5.5, 4.5, '#181b1e');
+                this.oval(c, 0, -2, 4, 3, '#ffffff');
+                this.oval(c, 0, -2, 2, 1.5, '#ff5722');
+                c.restore();
+                c.restore();
+            }
+        }
+
+        this.johnTorso(c, back);
         c.restore();
     },
-    johnSlide(c,back,k) {
-        // Carrinho: John leans sideways, lead leg stretched along the asphalt, one hand braking on the ground.
-        const lerp=(a,b)=>a+(b-a)*k,hipY=lerp(-30,-10),a=lerp(0,.75);
-        // Converts a pose point in standing coordinates into the leaning torso frame below.
-        const local=(wx,wy)=>{const dy=wy-hipY;return[wx*Math.cos(a)-dy*Math.sin(a),wx*Math.sin(a)+dy*Math.cos(a)-30];};
-        this.oval(c,lerp(0,4),0,lerp(29,52),8,'rgba(41,46,39,.2)');
-        c.strokeStyle='#53646e';c.lineWidth=12;c.lineCap='round';
-        const lead=[lerp(10,54),lerp(-4,-5)],knee=[lerp(-10,-30),lerp(-16,-14)],foot=[lerp(-10,-18),lerp(-4,-3)];
-        c.beginPath();c.moveTo(8,hipY);c.lineTo(...lead);c.stroke();
-        c.beginPath();c.moveTo(-8,hipY);c.lineTo(...knee);c.lineTo(...foot);c.stroke();
-        this.box(c,lead[0]-4,lead[1]-7,12,14,'#fff7e6',4);this.box(c,foot[0]-9,foot[1]-4,18,9,'#fff7e6',4);
-        c.save();c.translate(0,hipY);c.rotate(-a);c.translate(0,30);
-        c.strokeStyle='#eee5d3';c.lineWidth=12;
-        for(const [side,wx,wy] of [[-1,lerp(-28,-60),lerp(-40,-4)],[1,lerp(28,24),lerp(-40,-72)]]) {
-            const [hx,hy]=local(wx,wy);c.beginPath();c.moveTo(side*17,-61);c.lineTo(hx,hy);c.stroke();this.oval(c,hx,hy,6,7,'#e6ad85');
-        }
-        this.johnTorso(c,back);c.restore();
+    johnSlide(c, back, k) {
+        const lerp = (a, b) => a + (b - a) * k, hipY = lerp(-24, -8), a = lerp(0, .75);
+        this.oval(c, lerp(0, 6), 0, lerp(26, 48), 7, 'rgba(30,35,32,.22)');
+        c.strokeStyle = '#1e2328'; c.lineWidth = 9; c.lineCap = 'round';
+        const lead = [lerp(10, 48), lerp(-4, -5)], knee = [lerp(-10, -24), lerp(-14, -12)], foot = [lerp(-10, -14), lerp(-4, -3)];
+        c.beginPath(); c.moveTo(6, hipY); c.lineTo(...lead); c.stroke();
+        c.beginPath(); c.moveTo(-6, hipY); c.lineTo(...knee); c.lineTo(...foot); c.stroke();
+        this.box(c, lead[0] - 5, lead[1] - 6, 15, 8, '#239b4b', 3);
+        this.box(c, lead[0] - 5, lead[1] + 1, 15, 3, '#1c1f23', 1);
+        this.box(c, foot[0] - 7, foot[1] - 4, 15, 8, '#239b4b', 3);
+        c.save(); c.translate(0, hipY); c.rotate(-a); c.translate(0, 24);
+        c.strokeStyle = '#f5b041'; c.lineWidth = 7; c.lineCap = 'round';
+        c.beginPath(); c.moveTo(-16, -60); c.lineTo(-28, -12); c.stroke();
+        this.oval(c, -28, -12, 5, 5, '#e59828');
+        this.johnTorso(c, back);
+        c.restore();
     },
-    johnTorso(c,back) {
-        // Nacho ninja torso: golden nacho chip warmth with orange ninja belt (obi)
-        const coat=c.createLinearGradient(-22,0,22,0);coat.addColorStop(0,'#e89b2b');coat.addColorStop(.45,'#f7bc45');coat.addColorStop(1,'#e09324');
-        this.box(c,-21,-74,42,49,coat,12);
-        // Orange ninja belt (obi) around waist
-        this.box(c,-22,-44,44,9,'#e86523',3);
-        if(back) {
-            // Katana handle sticking out at waist
-            this.poly(c,[[-22,-42],[-34,-48],[-33,-52],[-21,-46]],'#1c2024');
-            this.oval(c,-22,-44,3,4,'#cca035'); // tsuba (guard)
-            // Black harness holding the delivery box
-            c.lineCap='round';
-            for(const side of [-1,1]) {
-                c.strokeStyle='#15181b';c.lineWidth=4;
-                c.beginPath();c.moveTo(side*11,-60);c.quadraticCurveTo(side*11.5,-70,side*14,-72.5);c.stroke();
-                c.beginPath();c.moveTo(side*16,-38);c.lineTo(side*19,-40);c.stroke();
-            }
-            this.box(c,-19,-62,38,33,'#101214',7);this.box(c,-17,-63,34,28,'#292d31',6);
-            c.fillStyle='#fff2c9';c.font='900 10px Nunito';c.textAlign='center';c.fillText('SN',0,-48);c.font='13px sans-serif';c.fillText('🍣',0,-34);
-        } else {
-            // Knot of the orange ninja belt
-            this.box(c,-6,-46,12,11,'#d45313',3);
-            this.poly(c,[[-5,-38],[-9,-24],[-2,-24],[0,-38]],'#e86523');
-            this.poly(c,[[0,-38],[4,-26],[9,-26],[5,-38]],'#d45313');
-            // Katana sheath at side
-            this.poly(c,[[18,-42],[34,-36],[33,-32],[17,-38]],'#1c2024');
-            this.oval(c,18,-40,3,4,'#cca035');
-        }
-        // Neck & Head
-        this.box(c,-7,-85,14,15,'#e09324',5);
-        const skin=c.createLinearGradient(-19,-110,18,-80);skin.addColorStop(0,'#f7bc45');skin.addColorStop(1,'#e09324');
-        this.box(c,-20,-115,40,41,skin,17);
+    johnTorso(c, back) {
+        // === CORPO TRIANGULAR DO NACHO NINJA (Crocante e Dourado) ===
+        c.beginPath();
+        c.moveTo(-29, -26);
+        c.quadraticCurveTo(0, -22, 29, -26);
+        c.quadraticCurveTo(32, -29, 26, -37);
+        c.lineTo(6, -96);
+        c.quadraticCurveTo(0, -102, -6, -96);
+        c.lineTo(-26, -37);
+        c.quadraticCurveTo(-32, -29, -29, -26);
+        c.closePath();
 
-        // Sombrero & Ninja Headband:
-        // Sombrero brim
-        this.oval(c,0,-112,29,8,'#2d8f43');
-        this.oval(c,0,-112,27,6,'#3bb554');
-        // Zigzag pattern on brim
-        c.strokeStyle='#d83b27';c.lineWidth=1.5;c.beginPath();
-        for(let i=-22;i<=22;i+=6){c.lineTo(i,-112+(i%12?2:-2));}c.stroke();
-        // Sombrero cone
-        this.poly(c,[[-14,-112],[0,-136],[14,-112]],'#3bb554');
-        this.poly(c,[[-8,-112],[0,-136],[8,-112]],'#48c963');
-        // Japanese Hachimaki (headband) around sombrero
-        this.box(c,-11,-123,22,6,'#ffffff',1);
-        this.oval(c,0,-120,2.5,2.5,'#d62828'); // Red rising sun
-        if(back) {
-            // White headband knot fluttering behind
-            this.poly(c,[[10,-122],[18,-128],[15,-122],[19,-118],[10,-120]],'#ffffff');
+        const chip = c.createLinearGradient(0, -102, 0, -22);
+        chip.addColorStop(0, '#fed368');
+        chip.addColorStop(0.35, '#f5b838');
+        chip.addColorStop(0.75, '#ea9c20');
+        chip.addColorStop(1, '#db8410');
+        c.fillStyle = chip;
+        c.fill();
+        c.strokeStyle = '#c67207'; c.lineWidth = 2; c.stroke();
+
+        // Salpicos tostados autênticos de nacho
+        const spots = [
+            [-14, -42, 2.2, 1.4], [13, -44, 2.4, 1.6], [1, -52, 2, 1.2],
+            [-8, -64, 2.2, 1.5], [10, -70, 1.8, 1.3], [-4, -80, 2, 1.2],
+            [5, -86, 1.6, 1.1], [-18, -32, 2.3, 1.4], [16, -33, 2, 1.4]
+        ];
+        for (const [sx, sy, rx, ry] of spots) {
+            this.oval(c, sx, sy, rx, ry, '#ba6806');
+        }
+
+        // === FAIXA OBI LARANJA (Artes Marciais) ===
+        this.poly(c, [[-26, -33], [26, -33], [24, -43], [-24, -43]], '#ff6b22');
+        this.poly(c, [[-25, -33], [25, -33], [25, -36], [-25, -36]], '#d84e09');
+
+        if (back) {
+            // === VISÃO DE COSTAS (RUNNER): Katana atravessada nas costas ===
+            c.save();
+            c.translate(0, -60);
+            c.rotate(0.52);
+            // Bainha da Katana (Saya) em laca preta
+            this.box(c, -3.5, -34, 7, 72, '#181b1e', 2);
+            // Ponteira (Kojiri) e bocal em dourado
+            this.box(c, -3.5, 33, 7, 5, '#d4af37', 1);
+            this.box(c, -4, -34, 8, 5, '#d4af37', 1);
+            // Guarda redonda (Tsuba) dourada
+            this.oval(c, 0, -35, 7.5, 3.5, '#f1c40f');
+            // Empunhadura (Tsuka)
+            this.box(c, -2.5, -53, 5, 18, '#181b1e', 1);
+            this.box(c, -3, -54, 6, 3, '#d4af37', 1);
+            // Trançado da empunhadura
+            c.strokeStyle = '#e67e22'; c.lineWidth = 1.4;
+            c.beginPath(); c.moveTo(-2, -50); c.lineTo(2, -40); c.stroke();
+            c.beginPath(); c.moveTo(2, -50); c.lineTo(-2, -40); c.stroke();
+            c.restore();
+
+            // Nó da faixa segurando a bainha
+            this.box(c, -5, -42, 10, 8, '#d84e09', 2);
         } else {
-            // Sunglasses
-            this.box(c,-15,-102,13,8,'#1c1d21',3);
-            this.box(c,2,-102,13,8,'#1c1d21',3);
-            this.box(c,-3,-100,6,3,'#1c1d21',1);
-            // Yellow nose
-            this.oval(c,0,-95,3.5,3.5,'#ffd54f');
-            // Big black curved Mexican mustache
-            c.fillStyle='#1c1d21';c.beginPath();
-            c.moveTo(-18,-91);c.quadraticCurveTo(-9,-96,0,-92);c.quadraticCurveTo(9,-96,18,-91);
-            c.quadraticCurveTo(12,-85,0,-88);c.quadraticCurveTo(-12,-85,-18,-91);c.fill();
-            // Smiling mouth with teeth and red tongue
-            this.poly(c,[[-7,-87],[7,-87],[5,-77],[-5,-77]],'#851414');
-            this.box(c,-5,-87,10,3,'#ffffff',1); // teeth
-            this.oval(c,0,-78,3,2,'#e63946'); // tongue
+            // === VISÃO FRONTAL (CATCHER/COVERS): Rosto completo do Nacho Ninja ===
+            // Nó frontal da faixa com pontas soltas
+            this.box(c, -11, -43, 10, 10, '#d84e09', 2);
+            this.poly(c, [[-11, -33], [-16, -18], [-10, -18], [-6, -33]], '#ff6b22');
+            this.poly(c, [[-7, -33], [-5, -16], [0, -16], [-3, -33]], '#e85a14');
+
+            // Katana embainhada na cintura
+            c.save(); c.translate(14, -38); c.rotate(-0.15);
+            this.box(c, -2, -2, 24, 5, '#181b1e', 2);
+            this.box(c, 20, -2, 4, 5, '#d4af37', 1);
+            this.oval(c, -2, 0.5, 3, 5, '#f1c40f');
+            this.box(c, -14, -1.5, 12, 4, '#181b1e', 1);
+            this.box(c, -15, -1.5, 2, 4, '#d4af37', 1);
+            c.restore();
+
+            // --- ROSTO NO PRÓPRIO TRIÂNGULO DE NACHO ---
+            // Óculos escuros
+            this.poly(c, [[-16, -82], [-2, -82], [-4, -73], [-14, -73]], '#15171a');
+            this.poly(c, [[2, -82], [16, -82], [14, -73], [4, -73]], '#15171a');
+            this.box(c, -3, -81, 6, 3, '#15171a', 1);
+            // Reflexos nas lentes
+            c.strokeStyle = 'rgba(255,255,255,0.75)'; c.lineWidth = 1.5; c.lineCap = 'round';
+            c.beginPath(); c.moveTo(-13, -80); c.lineTo(-9, -75); c.stroke();
+            c.beginPath(); c.moveTo(5, -80); c.lineTo(9, -75); c.stroke();
+
+            // Narizinho amarelo arredondado
+            this.oval(c, 0, -71, 3.5, 3.5, '#ffd54f');
+            this.oval(c, -1, -72, 1, 1, '#fffde7');
+
+            // Bigode mexicano curvado grande
+            c.fillStyle = '#15171a'; c.beginPath();
+            c.moveTo(-22, -67);
+            c.quadraticCurveTo(-11, -74, 0, -68);
+            c.quadraticCurveTo(11, -74, 22, -67);
+            c.quadraticCurveTo(24, -63, 19, -63);
+            c.quadraticCurveTo(10, -66, 0, -64);
+            c.quadraticCurveTo(-10, -66, -19, -63);
+            c.quadraticCurveTo(-24, -63, -22, -67);
+            c.fill();
+
+            // Sorriso aberto com dentes brancos e língua vermelha
+            this.poly(c, [[-8, -63], [8, -63], [6, -53], [-6, -53]], '#7a0e10');
+            this.box(c, -6, -63, 12, 3.5, '#ffffff', 1);
+            this.oval(c, 0, -54, 4, 2.5, '#ff4757');
+        }
+
+        // === SOMBRERO VERDE MEXICANO & HACHIMAKI (Sobre o ápice do Nacho) ===
+        this.oval(c, 0, -96, 26, 6, 'rgba(0,0,0,0.2)');
+        this.oval(c, 0, -98, 33, 9, '#1e8240');
+        this.oval(c, 0, -99, 31, 7.5, '#27ae60');
+
+        // Borda zigue-zague vermelha tradicional mexicana
+        c.strokeStyle = '#d63031'; c.lineWidth = 1.8; c.lineCap = 'round';
+        c.beginPath();
+        for (let i = -26; i <= 26; i += 5.2) {
+            c.lineTo(i, -99 + (Math.abs(i) % 10.4 ? 2.2 : -2.2));
+        }
+        c.stroke();
+
+        // Cone do sombrero
+        this.poly(c, [[-16, -99], [0, -132], [16, -99]], '#229954');
+        this.poly(c, [[-7, -99], [0, -132], [7, -99]], '#2ecc71');
+
+        // Hachimaki branco (faixa ninja)
+        this.box(c, -11, -117, 22, 7, '#ffffff', 1);
+        this.box(c, -11, -111, 22, 1.5, '#dcdde1', 0);
+
+        if (back) {
+            // Nó e fitas brancas esvoaçando atrás ao correr
+            this.oval(c, 8, -113.5, 2.5, 2.5, '#f5f6fa');
+            this.poly(c, [[8, -114], [22, -122], [18, -116], [24, -111], [8, -112]], '#ffffff');
+            this.poly(c, [[8, -113], [19, -110], [15, -107], [22, -104], [8, -111]], '#e5e7eb');
+        } else {
+            // Sol nascente vermelho japonês na frente
+            this.oval(c, 0, -113.5, 3.2, 3.2, '#d63031');
         }
     },
     kitchen(c,w,h,ninja=false,time=0,label=true) {
