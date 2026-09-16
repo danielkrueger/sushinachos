@@ -48,7 +48,7 @@ class PizzaNinjaGame {
             { id: 'special',    emoji: '⭐', name: 'SN Coin',    pts: 10,  weight: 6,  bad: false, glow: true, isCoin: true },
             { id: 'plate',      emoji: '🍽️', name: 'Prato',      pts: 0,   weight: 6,  bad: true, dish: true, label: 'PRATO' },
             { id: 'glass',      emoji: '🥛', name: 'Copo',       pts: 0,   weight: 6,  bad: true, dish: true, label: 'COPO' },
-            { id: 'burnt',      emoji: '🔥', name: 'Pimenta',    pts: -5,  weight: 8,  bad: true }
+            { id: 'burnt',      emoji: '🔥', name: 'Nacho Queimado', pts: -5,  weight: 8,  bad: true }
         ];
     }
 

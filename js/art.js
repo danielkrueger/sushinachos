@@ -21,15 +21,30 @@ const JohnArt = {
         c.shadowColor='rgba(73,37,18,.24)'; c.shadowBlur=12; c.shadowOffsetY=7;
         if (type === 'golden' || type === 'special') { this.coin(c,0,0,24); }
         else if (type === 'pizza' || type === 'burnt') {
-            // A single slice keeps the pizza's footprint close to the other foods.
             const burnt=type==='burnt';
-            this.poly(c,[[-23,-18],[23,0],[-23,18]],burnt?'#574033':'#e9a64e');
-            c.shadowBlur=0; c.shadowOffsetY=0;
-            this.poly(c,[[-18,-13],[18,0],[-18,13]],burnt?'#332b28':'#e45430');
-            this.poly(c,[[-16,-11],[16,0],[-16,11]],burnt?'#534437':'#ffd46b');
-            c.strokeStyle=burnt?'#201e1b':'#9c531e';c.lineWidth=7;c.lineCap='round';c.beginPath();c.moveTo(-21,-16);c.lineTo(-21,16);c.stroke();
-            for (const [x,y] of [[-8,-7],[-7,7],[2,0],[8,4]]) this.oval(c,x,y,3.5,3.5,burnt?'#201e1b':'#c93928');
-            if(!burnt) for(const [x,y] of [[-12,0],[1,-5],[7,7]]) this.oval(c,x,y,2,3,'#4a8546');
+            if(burnt) {
+                // Nacho Queimado: triângulo de nacho carbonizado com fumaça e brasas incandescentes
+                c.shadowBlur=0; c.shadowOffsetY=0;
+                this.poly(c,[[-22,18],[22,18],[0,-22]],'#1c1a19');
+                this.poly(c,[[-19,15],[19,15],[0,-19]],'#2e2724');
+                this.poly(c,[[-14,12],[14,12],[0,-14]],'#3d3430');
+                c.strokeStyle='#ff3d00'; c.lineWidth=1.8; c.lineCap='round';
+                c.beginPath(); c.moveTo(-10,10); c.lineTo(-2,2); c.lineTo(4,6); c.stroke();
+                c.beginPath(); c.moveTo(2,-6); c.lineTo(8,-2); c.stroke();
+                for (const [x,y] of [[-7,8],[2,3],[5,-1],[-3,-4]]) this.oval(c,x,y,2.5,2.5,'#ff6d00');
+                for (const [x,y] of [[-7,8],[2,3],[5,-1]]) this.oval(c,x,y,1.2,1.2,'#ffea00');
+                this.oval(c,-4,-26,5,4,'rgba(120,115,110,0.6)');
+                this.oval(c,3,-32,7,5,'rgba(100,95,90,0.45)');
+                this.oval(c,-1,-39,9,6,'rgba(80,75,70,0.3)');
+            } else {
+                this.poly(c,[[-23,-18],[23,0],[-23,18]],'#e9a64e');
+                c.shadowBlur=0; c.shadowOffsetY=0;
+                this.poly(c,[[-18,-13],[18,0],[-18,13]],'#e45430');
+                this.poly(c,[[-16,-11],[16,0],[-16,11]],'#ffd46b');
+                c.strokeStyle='#9c531e';c.lineWidth=7;c.lineCap='round';c.beginPath();c.moveTo(-21,-16);c.lineTo(-21,16);c.stroke();
+                for (const [x,y] of [[-8,-7],[-7,7],[2,0],[8,4]]) this.oval(c,x,y,3.5,3.5,'#c93928');
+                for(const [x,y] of [[-12,0],[1,-5],[7,7]]) this.oval(c,x,y,2,3,'#4a8546');
+            }
         } else if(type==='tomato') {
             const g=c.createRadialGradient(-8,-10,1,0,0,25); g.addColorStop(0,'#ff9c68');g.addColorStop(.5,'#f14d36');g.addColorStop(1,'#b82328');
             this.oval(c,0,2,23,21,g); c.shadowBlur=0;this.poly(c,[[0,-22],[4,-12],[14,-16],[7,-6],[0,-11],[-10,-6],[-5,-15],[-13,-18]],'#367546');
