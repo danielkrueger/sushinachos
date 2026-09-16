@@ -38,17 +38,14 @@ class PizzaNinjaGame {
             });
         }
 
-        // Tabela de itens temáticos do Sushinachos (mexicano e japonês):
+        // Tabela de itens temáticos do Sushi Ninja (100% culinária japonesa):
         this.itemTypes = [
-            { id: 'burrito',    emoji: '🌯', name: 'Burrito',          pts: 3,   weight: 30, bad: false },
-            { id: 'taco',       emoji: '🌮', name: 'Taco',             pts: 4,   weight: 22, bad: false },
-            { id: 'sushi',      emoji: '🍣', name: 'Sushi',            pts: 4,   weight: 20, bad: false },
-            { id: 'sashimi',    emoji: '🐟', name: 'Sashimi',          pts: 5,   weight: 14, bad: false },
-            { id: 'temaki',     emoji: '🍙', name: 'Temaki',           pts: 4,   weight: 14, bad: false },
+            { id: 'sushi',      emoji: '🍣', name: 'Sushi',            pts: 3,   weight: 40, bad: false },
+            { id: 'sashimi',    emoji: '🐟', name: 'Sashimi',          pts: 4,   weight: 26, bad: false },
+            { id: 'temaki',     emoji: '🍙', name: 'Temaki',           pts: 3,   weight: 28, bad: false },
             { id: 'special',    emoji: '⭐', name: 'SN Coin',          pts: 10,  weight: 6,  bad: false, glow: true, isCoin: true },
-            { id: 'plate',      emoji: '🍽️', name: 'Prato',            pts: 0,   weight: 6,  bad: true, dish: true, label: 'PRATO' },
-            { id: 'glass',      emoji: '🥛', name: 'Copo',             pts: 0,   weight: 6,  bad: true, dish: true, label: 'COPO' },
-            { id: 'burnt',      emoji: '🔥', name: 'Burrito Queimado', pts: -5,  weight: 8,  bad: true }
+            { id: 'plate',      emoji: '🍽️', name: 'Prato',            pts: 0,   weight: 10, bad: true, dish: true, label: 'PRATO' },
+            { id: 'glass',      emoji: '🥛', name: 'Copo',             pts: 0,   weight: 10, bad: true, dish: true, label: 'COPO' }
         ];
     }
 
@@ -194,7 +191,7 @@ class PizzaNinjaGame {
     render() {
         const ctx = this.ctx;
 
-        JohnArt.kitchen(ctx, this.w, this.h, true, this.levelTimer);
+        JohnArt.kitchen(ctx, this.w, this.h, true, this.levelTimer, false);
 
         // Rastro de corte luminoso
         if (this.trail.length > 1) {
@@ -313,7 +310,7 @@ class PizzaNinjaGame {
         ctx.font = `bold 11px 'Nunito', sans-serif`;
         ctx.fillStyle = 'rgba(255,255,255,0.7)';
         ctx.textAlign = 'center';
-        ctx.fillText('⚠️ Fatie as pizzas • Não quebre a louça! 🍽️🥛', this.w / 2, 104);
+        ctx.fillText('⚠️ Fatie os sushis • Não quebre a louça! 🍽️🥛', this.w / 2, 104);
 
         // Combo
         if (this.slicing && this.combo > 1) {

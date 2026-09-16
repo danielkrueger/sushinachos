@@ -12,9 +12,15 @@ const JohnArt = {
     coin(c, x, y, size, time = 0) {
         c.save(); c.translate(x,y); c.scale(.72 + Math.abs(Math.cos(time)) * .28, 1);
         this.oval(c, 2, 3, size, size, '#b76a1e');
-        const g = c.createLinearGradient(-size,-size,size,size); g.addColorStop(0,'#fff2a0'); g.addColorStop(.45,'#ffc735'); g.addColorStop(1,'#e99814');
-        this.oval(c,0,0,size,size,g); c.strokeStyle='#fff0a1'; c.lineWidth=size*.09; c.beginPath(); c.arc(0,0,size*.77,0,Math.PI*2); c.stroke();
-        c.fillStyle='#a75c16'; c.font=`900 ${size*.95}px Nunito, sans-serif`; c.textAlign='center'; c.textBaseline='middle'; c.fillText('SN',0,1); c.restore();
+        const g = c.createLinearGradient(-size,-size,size,size);
+        g.addColorStop(0,'#fff6b8'); g.addColorStop(.25,'#ffd54f'); g.addColorStop(.65,'#f59e0b'); g.addColorStop(1,'#c87010');
+        this.oval(c,0,0,size,size,g);
+        c.strokeStyle='#fffae0'; c.lineWidth=Math.max(1, size*.08); c.beginPath(); c.arc(0,0,size*.78,0,Math.PI*2); c.stroke();
+        c.strokeStyle='rgba(167,92,22,0.3)'; c.lineWidth=Math.max(.8, size*.04); c.beginPath(); c.arc(0,0,size*.72,0,Math.PI*2); c.stroke();
+        c.font=`900 ${Math.max(6, size*.62)}px Nunito, sans-serif`; c.textAlign='center'; c.textBaseline='middle';
+        c.fillStyle='rgba(255,248,225,0.6)'; c.fillText('SN',0,0);
+        c.fillStyle='#8f4c0e'; c.fillText('SN',0,1.2);
+        c.restore();
     },
     food(c, type, x, y, size, rotation = 0) {
         c.save(); c.translate(x,y); c.rotate(rotation); c.scale(size/50,size/50);
@@ -65,6 +71,54 @@ const JohnArt = {
             this.oval(c, 7, 8, 3, 2.5, '#d32f2f');
             this.oval(c, -8, -1, 2.5, 2, '#d32f2f');
             this.oval(c, 5, -5, 2, 2, '#d32f2f');
+        } else if(type==='tortilha' || type==='tortilla') {
+            // Tortilha crocante estilo Doritos: triângulo de milho dourado com tempero nacho
+            c.shadowBlur = 0;
+            this.poly(c, [[-23, 19], [23, 19], [0, -23]], '#d47b18');
+            const chipGrad = c.createLinearGradient(-15, -20, 15, 20);
+            chipGrad.addColorStop(0, '#ffd54f');
+            chipGrad.addColorStop(0.35, '#ffb300');
+            chipGrad.addColorStop(0.75, '#f57c00');
+            chipGrad.addColorStop(1, '#e65100');
+            this.poly(c, [[-21, 17], [21, 17], [0, -21]], chipGrad);
+            this.oval(c, -6, 6, 6, 3, 'rgba(255, 248, 225, 0.45)');
+            this.oval(c, 5, -4, 5, 2.5, 'rgba(255, 248, 225, 0.45)');
+            this.oval(c, 0, 12, 7, 2, 'rgba(216, 67, 21, 0.25)');
+            for (const [px, py] of [[-12, 10], [-5, 0], [8, 8], [11, -6], [-3, -12], [2, 3], [-8, -4], [6, 13], [0, -5], [-14, 14], [13, 12]]) {
+                this.oval(c, px, py, 1.2, 1.2, '#c62828');
+                this.oval(c, px + 1.2, py - 0.8, 1, 1, '#ff6f00');
+            }
+            c.strokeStyle = 'rgba(255, 255, 255, 0.6)'; c.lineWidth = 1.2; c.lineCap = 'round';
+            c.beginPath(); c.moveTo(-6, -10); c.lineTo(0, -20); c.lineTo(6, -10); c.stroke();
+        } else if(type==='guacamole') {
+            // Tigelinha Molcajete de pedra mexicana com Guacamole fresco e tortilha espetada
+            c.shadowBlur = 0;
+            c.save(); c.translate(8, -12); c.rotate(0.35);
+            this.poly(c, [[-10, 10], [10, 10], [0, -12]], '#d47b18');
+            this.poly(c, [[-9, 9], [9, 9], [0, -11]], '#f57c00');
+            this.poly(c, [[-7, 8], [7, 8], [0, -9]], '#ffb300');
+            for (const [px, py] of [[-3, 3], [2, 0], [-1, -4], [3, 5]]) this.oval(c, px, py, 1, 1, '#c62828');
+            c.restore();
+            this.oval(c, -14, 18, 4, 5, '#1e2428');
+            this.oval(c, 14, 18, 4, 5, '#1e2428');
+            this.oval(c, 0, 19, 4, 4, '#15191c');
+            this.oval(c, 0, 10, 24, 14, '#263238');
+            this.oval(c, 0, 10, 22, 12, '#37474f');
+            this.oval(c, 0, 6, 23, 10, '#1e272c');
+            const guacG = c.createRadialGradient(-3, 3, 2, 0, 4, 18);
+            guacG.addColorStop(0, '#8bc34a');
+            guacG.addColorStop(0.5, '#689f38');
+            guacG.addColorStop(1, '#33691e');
+            this.oval(c, 0, 5, 21, 8.5, guacG);
+            this.oval(c, -8, 5, 5, 3.5, '#7cb342');
+            this.oval(c, 6, 6, 4.5, 3, '#7cb342');
+            this.oval(c, 0, 3, 6, 3, '#9ccc65');
+            this.box(c, -10, 3, 3.5, 3.5, '#e53935', 1);
+            this.box(c, 2, 6, 3.5, 3.5, '#d32f2f', 1);
+            this.box(c, 9, 3, 3, 3, '#e53935', 1);
+            this.box(c, -2, 2, 3, 2.5, '#f44336', 1);
+            for (const [ox, oy] of [[-5, 6], [5, 4], [-1, 7], [8, 6]]) this.oval(c, ox, oy, 1.8, 1.4, '#ffffff');
+            for (const [cx, cy] of [[-7, 7], [1, 4], [-3, 3], [6, 7], [3, 2]]) this.oval(c, cx, cy, 1.2, 1.2, '#1b5e20');
         } else if(type==='sushi') {
             // Sushi Nigiri de Salmão com arroz e alga nori
             c.shadowBlur=0;
@@ -409,33 +463,394 @@ const JohnArt = {
             this.oval(c, 0, -113.5, 3.2, 3.2, '#d63031');
         }
     },
-    kitchen(c,w,h,ninja=false,time=0,label=true) {
-        const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,ninja?'#217c77':'#edc99b');g.addColorStop(1,ninja?'#96b9a0':'#fff0cf');c.fillStyle=g;c.fillRect(0,0,w,h);
-        c.strokeStyle=ninja?'rgba(238,255,224,.12)':'rgba(138,91,48,.12)';c.lineWidth=1;
-        for(let y=100;y<h*.75;y+=44){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();for(let x=(y%88?0:36);x<w;x+=72){c.beginPath();c.moveTo(x,y);c.lineTo(x,y+44);c.stroke();}}
-        const cx=w*.5, ovenY=h*.47, ow=Math.min(250,w*.6);
-        this.box(c,cx-ow/2-12,ovenY-ow*.55,ow+24,ow*.7,ninja?'#aac1a0':'#cc7950',ow*.3);
-        this.box(c,cx-ow/2,ovenY-ow*.5,ow,ow*.63,'#f3bb7b',ow*.3);
-        this.box(c,cx-ow*.38,ovenY-ow*.36,ow*.76,ow*.43,'#683f2f',ow*.2);
-        const fire=c.createRadialGradient(cx,ovenY,2,cx,ovenY,ow*.42);fire.addColorStop(0,'#fff0a1');fire.addColorStop(.4,'#ffba52');fire.addColorStop(1,'#9b492d');
-        this.box(c,cx-ow*.33,ovenY-ow*.23,ow*.66,ow*.29,fire,20);
-        for(let i=0;i<5;i++) this.oval(c,cx+(i-2)*ow*.1,ovenY-8,ow*.04,13+Math.sin(time*4+i)*5,'#ffcd65');
-        this.box(c,cx-ow*.59,ovenY+ow*.12,ow*1.18,12,'#82624b',3);
-        if(label){c.fillStyle=ninja?'#ebebca':'#a34b34';c.textAlign='center';c.font=`900 ${Math.min(25,w*.05)}px Nunito`;c.fillText(ninja?'KATANA & NACHO • FATIE & BRILHE':'SUSHINACHOS • SABOR A TODO VAPOR',cx,Math.max(124,ovenY-ow*.66));}
-        for(const x of [w*.12,w*.88]) {c.fillStyle='#675a41';c.fillRect(x,0,2,105);this.poly(c,[[x-25,121],[x-12,99],[x+12,99],[x+25,121]],'#df6743');this.oval(c,x,123,22,4,'#ffdf95');}
-        if(ninja) {
-            const fy=h*.78;this.poly(c,[[0,fy],[w,fy],[w,h],[0,h]],'#b48558');
-            c.strokeStyle='rgba(94,55,33,.16)';for(let i=-8;i<9;i++){c.beginPath();c.moveTo(w/2+i*40,fy);c.lineTo(w/2+i*180,h);c.stroke();}for(let i=1;i<5;i++){let y=fy+(h-fy)*(i/5)**1.6;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
+    kitchen(c, w, h, ninja=false, time=0, label=true) {
+        if (ninja) {
+            this.japaneseTemple(c, w, h, time, label);
         } else {
-            // Front-facing stage: the floor/contact line coincides with John's feet.
-            const floorY=h-35;
-            c.fillStyle='#bb8d60';c.fillRect(0,floorY-9,w,9);
-            c.fillStyle='#875d3c';c.fillRect(0,floorY-2,w,3);
-            c.fillStyle='#c99b68';c.fillRect(0,floorY+1,w,34);
-            c.fillStyle='#e9bd86';c.fillRect(0,floorY+2,w,3);
-            c.strokeStyle='#b18151';c.lineWidth=1;
-            for(let x=0;x<w;x+=90){c.beginPath();c.moveTo(x,floorY+5);c.lineTo(x,h);c.stroke();}
+            this.mexicanFiesta(c, w, h, time, label);
         }
-        if(ninja){this.box(c,w*.08,h*.19,w*.84,h*.64,'rgba(76,62,38,.12)',36);}
+    },
+    mexicanFiesta(c, w, h, time=0, label=true) {
+        // Fundo em adobe acolhedor mexicano
+        const g = c.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, '#e58237'); g.addColorStop(0.35, '#f3a456'); g.addColorStop(0.75, '#fad082'); g.addColorStop(1, '#ffebbe');
+        c.fillStyle = g; c.fillRect(0, 0, w, h);
+
+        const cx = w * 0.5;
+        const archW = Math.min(w * 0.82, 380);
+        const archTop = Math.max(90, h * 0.15);
+        const archH = Math.min(h * 0.64, 460);
+
+        // Grande arco arquitetônico colonial de cantina mexicana
+        this.box(c, cx - archW/2 - 12, archTop - 10, archW + 24, archH + 20, '#e5934a', 32);
+        const innerG = c.createLinearGradient(0, archTop, 0, archTop + archH);
+        innerG.addColorStop(0, '#c75f28'); innerG.addColorStop(0.45, '#e0833a'); innerG.addColorStop(1, '#f8cb79');
+        this.box(c, cx - archW/2, archTop, archW, archH, innerG, 26);
+        c.strokeStyle = '#9c4316'; c.lineWidth = 2.5;
+        c.beginPath(); c.roundRect(cx - archW/2, archTop, archW, archH, 26); c.stroke();
+
+        // Sol mexicano decorativo estilizado no topo do arco
+        const sunY = archTop + 40;
+        this.oval(c, cx, sunY, 26, 26, '#ffe082');
+        this.oval(c, cx, sunY, 21, 21, '#ffb300');
+        c.strokeStyle = '#ff8f00'; c.lineWidth = 2.2;
+        for (let i = 0; i < 12; i++) {
+            const a = i * Math.PI / 6;
+            c.beginPath();
+            c.moveTo(cx + Math.cos(a) * 25, sunY + Math.sin(a) * 25);
+            c.lineTo(cx + Math.cos(a) * 34, sunY + Math.sin(a) * 34);
+            c.stroke();
+        }
+
+        // Título / Letreiro Festivo (Apenas Fiesta Sushinachos conforme solicitado)
+        if (label) {
+            c.fillStyle = '#6d2311';
+            c.textAlign = 'center';
+            c.font = `900 ${Math.min(23, w * 0.05)}px Nunito, sans-serif`;
+            c.fillText('Fiesta Sushinachos', cx, archTop + 84);
+        }
+
+        // Guirlanda de Papel Picado Mexicano no topo superior (acima do HUD para não atrapalhar leitura)
+        const flagColors = ['#e91e63', '#2e7d32', '#ff9800', '#00bcd4', '#fbc02d', '#9c27b0', '#e53935'];
+        const vy = 12;
+        c.strokeStyle = '#7c5432'; c.lineWidth = 1.4;
+        c.beginPath();
+        c.moveTo(0, vy);
+        c.quadraticCurveTo(cx, vy + 16, w, vy);
+        c.stroke();
+
+        const flagCount = Math.max(7, Math.floor(w / 40));
+        for (let i = 0; i < flagCount; i++) {
+            const t = (i + 0.5) / flagCount;
+            const fx = t * w;
+            const fy = vy + Math.sin(t * Math.PI) * 16;
+            const sway = Math.sin(time * 2.5 + i * 0.7) * 2;
+            const col = flagColors[i % flagColors.length];
+            const fw = 15, fh = 19;
+            this.poly(c, [
+                [fx - fw/2, fy],
+                [fx + fw/2, fy],
+                [fx + fw/2 + sway, fy + fh],
+                [fx + sway, fy + fh - 4],
+                [fx - fw/2 + sway, fy + fh]
+            ], col);
+            this.oval(c, fx + sway * 0.5, fy + fh * 0.45, 2.8, 2.8, 'rgba(255,255,255,0.45)');
+        }
+
+        // Músicos Mariachis em Festa (Estilo cartoon mexicano clássico)
+        const my = archTop + archH - 35;
+        const noteAnim = Math.sin(time * 3.5) * 4;
+
+        // 1. Mariachi Central (Cantor com Guitarrón)
+        this.box(c, cx - 18, my - 55, 36, 45, '#2d1e15', 6);
+        this.poly(c, [[cx - 6, my - 53], [cx + 6, my - 53], [cx, my - 45]], '#ffffff');
+        this.poly(c, [[cx - 8, my - 46], [cx + 8, my - 46], [cx, my - 42]], '#d32f2f');
+        for (let by = my - 40; by <= my - 18; by += 8) this.oval(c, cx, by, 1.8, 1.8, '#ffca28');
+        this.oval(c, cx, my - 62, 13, 11, '#e5a56d');
+        // Bigode mexicano
+        c.strokeStyle = '#1b1b1b'; c.lineWidth = 4; c.lineCap = 'round';
+        c.beginPath();
+        c.moveTo(cx - 10, my - 58);
+        c.quadraticCurveTo(cx - 5, my - 64, cx, my - 60);
+        c.quadraticCurveTo(cx + 5, my - 64, cx + 10, my - 58);
+        c.stroke();
+        // Sombrero Mexicano Grande Central
+        this.oval(c, cx, my - 72, 44, 13, '#c98528');
+        this.oval(c, cx, my - 74, 42, 11, '#f5c366');
+        this.poly(c, [[cx - 16, my - 72], [cx + 16, my - 72], [cx + 10, my - 95], [cx - 10, my - 95]], '#d99232');
+        this.box(c, cx - 14, my - 77, 28, 5, '#c62828', 2);
+        // Guitarrón de madeira
+        this.oval(c, cx + 12, my - 34, 14, 18, '#a66028');
+        this.oval(c, cx + 12, my - 34, 5, 5, '#3e1c07');
+        this.box(c, cx - 18, my - 42, 28, 4, '#5d3111', 1);
+
+        // 2. Mariachi da Esquerda (Trompetista)
+        const lx = cx - 78;
+        this.box(c, lx - 15, my - 50, 30, 42, '#1e2b24', 6);
+        this.oval(c, lx, my - 57, 11, 10, '#e5a56d');
+        c.strokeStyle = '#1b1b1b'; c.lineWidth = 3.2;
+        c.beginPath(); c.moveTo(lx - 8, my - 54); c.quadraticCurveTo(lx, my - 58, lx + 8, my - 54); c.stroke();
+        // Sombrero Verde Esmeralda
+        this.oval(c, lx, my - 67, 36, 11, '#1b5e20');
+        this.oval(c, lx, my - 69, 34, 9, '#2e7d32');
+        this.poly(c, [[lx - 12, my - 67], [lx + 12, my - 67], [lx + 8, my - 88], [lx - 8, my - 88]], '#388e3c');
+        this.box(c, lx - 11, my - 72, 22, 4, '#ffffff', 1);
+        // Trompete Dourado
+        c.strokeStyle = '#ffc107'; c.lineWidth = 3.2;
+        c.beginPath(); c.moveTo(lx + 4, my - 56); c.lineTo(lx - 22, my - 78); c.stroke();
+        this.oval(c, lx - 24, my - 80, 6, 8, '#ffb300');
+        // Notas musicais
+        c.fillStyle = '#e65100'; c.font = 'bold 16px sans-serif'; c.textAlign = 'center';
+        c.fillText('♪', lx - 34, my - 88 + noteAnim);
+        c.fillText('♫', lx - 18, my - 102 - noteAnim);
+
+        // 3. Mariachi da Direita (Violinista)
+        const rx = cx + 78;
+        this.box(c, rx - 15, my - 50, 30, 42, '#3e1e24', 6);
+        this.oval(c, rx, my - 57, 11, 10, '#e5a56d');
+        c.strokeStyle = '#1b1b1b'; c.lineWidth = 3.2;
+        c.beginPath(); c.moveTo(rx - 8, my - 54); c.quadraticCurveTo(rx, my - 58, rx + 8, my - 54); c.stroke();
+        // Sombrero Vermelho
+        this.oval(c, rx, my - 67, 36, 11, '#b71c1c');
+        this.oval(c, rx, my - 69, 34, 9, '#d32f2f');
+        this.poly(c, [[rx - 12, my - 67], [rx + 12, my - 67], [rx + 8, my - 88], [rx - 8, my - 88]], '#e53935');
+        this.box(c, rx - 11, my - 72, 22, 4, '#ffd54f', 1);
+        // Violino
+        this.oval(c, rx - 8, my - 42, 9, 13, '#8d4d1e');
+        c.strokeStyle = '#d7ccc8'; c.lineWidth = 2;
+        c.beginPath(); c.moveTo(rx - 18, my - 32); c.lineTo(rx + 6, my - 52); c.stroke();
+        c.fillStyle = '#e65100'; c.font = 'bold 16px sans-serif'; c.textAlign = 'center';
+        c.fillText('♩', rx + 24, my - 90 - noteAnim);
+
+        // Cactos decorativos autênticos nos cantos inferiores (com vasos de terracota, nervuras e espinhos afiados)
+        for (const [xPos, side] of [[44, -1], [w - 44, 1]]) {
+            const potY = h - 36;
+            // Vaso de barro terracota mexicano
+            this.poly(c, [
+                [xPos - 14, potY],
+                [xPos + 14, potY],
+                [xPos + 10, potY + 22],
+                [xPos - 10, potY + 22]
+            ], '#a84318');
+            this.poly(c, [
+                [xPos - 12, potY + 2],
+                [xPos + 12, potY + 2],
+                [xPos + 9, potY + 20],
+                [xPos - 9, potY + 20]
+            ], '#c75a28');
+            // Borda saliente do vaso
+            this.box(c, xPos - 16, potY - 4, 32, 7, '#8f3410', 3);
+            this.box(c, xPos - 15, potY - 3, 30, 5, '#d96832', 2);
+            // Faixa decorativa asteca/mexicana no vaso
+            this.box(c, xPos - 11, potY + 8, 22, 4, '#00bcd4', 1);
+            this.box(c, xPos - 10, potY + 9, 20, 2, '#ffeb3b', 0);
+            // Terra escura
+            this.oval(c, xPos, potY - 2, 13, 3, '#3e2723');
+
+            // Tronco principal do cacto saguaro
+            const cacBase = potY - 2;
+            const cacH = 68;
+            this.box(c, xPos - 10, cacBase - cacH, 20, cacH, '#2e7d32', 10);
+            // Nervuras verticais de relevo e luz
+            this.box(c, xPos - 8, cacBase - cacH + 2, 5, cacH - 4, '#43a047', 2);
+            this.box(c, xPos - 2, cacBase - cacH + 2, 4, cacH - 4, '#388e3c', 2);
+            this.box(c, xPos + 3, cacBase - cacH + 2, 5, cacH - 4, '#1b5e20', 2);
+
+            // Braço inferior (voltado para dentro/fora alternando)
+            const b1Side = side;
+            const b1Y = cacBase - 26;
+            this.box(c, xPos, b1Y - 4, b1Side * 16, 9, '#2e7d32', 4);
+            this.box(c, xPos + b1Side * 10, b1Y - 24, 8, 26, '#2e7d32', 4);
+            this.box(c, xPos + b1Side * 11, b1Y - 23, 3, 24, '#43a047', 1);
+
+            // Braço superior (lado oposto)
+            const b2Side = -side;
+            const b2Y = cacBase - 42;
+            this.box(c, xPos, b2Y - 4, b2Side * 14, 8, '#2e7d32', 4);
+            this.box(c, xPos + b2Side * 8, b2Y - 22, 8, 24, '#2e7d32', 4);
+            this.box(c, xPos + b2Side * 9, b2Y - 21, 3, 22, '#43a047', 1);
+
+            // Espinhos pontiagudos visíveis (traços agudos em leque / espinhos claros)
+            c.strokeStyle = '#fff9c4'; c.lineWidth = 1.6; c.lineCap = 'round';
+            for (let sy = cacBase - cacH + 8; sy <= cacBase - 8; sy += 12) {
+                // Espinho lateral esquerdo
+                c.beginPath(); c.moveTo(xPos - 10, sy); c.lineTo(xPos - 15, sy - 3); c.stroke();
+                c.beginPath(); c.moveTo(xPos - 10, sy); c.lineTo(xPos - 14, sy + 3); c.stroke();
+                // Espinho lateral direito
+                c.beginPath(); c.moveTo(xPos + 10, sy); c.lineTo(xPos + 15, sy - 3); c.stroke();
+                c.beginPath(); c.moveTo(xPos + 10, sy); c.lineTo(xPos + 14, sy + 3); c.stroke();
+                // Pontinhos de espinho na nervura frontal
+                this.oval(c, xPos - 2, sy, 1.4, 1.4, '#fff9c4');
+                this.oval(c, xPos + 4, sy + 6, 1.4, 1.4, '#fff9c4');
+            }
+            // Espinhos nos braços laterais
+            c.beginPath(); c.moveTo(xPos + b1Side * 18, b1Y - 14); c.lineTo(xPos + b1Side * 22, b1Y - 17); c.stroke();
+            c.beginPath(); c.moveTo(xPos + b2Side * 16, b2Y - 12); c.lineTo(xPos + b2Side * 20, b2Y - 15); c.stroke();
+
+            // Flores mexicanas desabrochando
+            this.oval(c, xPos - 3, cacBase - cacH - 4, 4, 6, '#e91e63');
+            this.oval(c, xPos + 3, cacBase - cacH - 4, 4, 6, '#e91e63');
+            this.oval(c, xPos, cacBase - cacH - 6, 5, 6, '#ff4081');
+            this.oval(c, xPos, cacBase - cacH - 4, 3, 3, '#ffeb3b');
+
+            const topArmX = xPos + b2Side * 12, topArmY = b2Y - 24;
+            this.oval(c, topArmX, topArmY - 3, 3.5, 4.5, '#ff4081');
+            this.oval(c, topArmX, topArmY - 2, 2, 2, '#ffeb3b');
+        }
+
+        // Piso do salão / tablado
+        const floorY = h - 35;
+        c.fillStyle = '#a65329'; c.fillRect(0, floorY - 9, w, 9);
+        c.fillStyle = '#7a3617'; c.fillRect(0, floorY - 2, w, 3);
+        c.fillStyle = '#bf6a3b'; c.fillRect(0, floorY + 1, w, 34);
+        c.fillStyle = '#d98555'; c.fillRect(0, floorY + 2, w, 3);
+        c.strokeStyle = '#853e19'; c.lineWidth = 1;
+        for (let x = 0; x < w; x += 85) {
+            c.beginPath(); c.moveTo(x, floorY + 5); c.lineTo(x, h); c.stroke();
+        }
+    },
+    japaneseTemple(c, w, h, time=0, label=true) {
+        // Céu suave em crepúsculo oriental (tons suaves, baixo contraste e ambiente harmonioso)
+        const g = c.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, '#243746');
+        g.addColorStop(0.32, '#314a58');
+        g.addColorStop(0.68, '#41606d');
+        g.addColorStop(1, '#4f727c');
+        c.fillStyle = g; c.fillRect(0, 0, w, h);
+
+        const cx = w * 0.5;
+
+        // Estrelas discretas e suaves no céu
+        const stars = [[0.12, 0.08], [0.28, 0.14], [0.45, 0.06], [0.65, 0.12], [0.82, 0.09], [0.91, 0.18], [0.22, 0.22], [0.75, 0.24]];
+        for (const [sx, sy] of stars) {
+            const tw = Math.sin(time * 3 + sx * 10) * 0.3 + 0.5;
+            this.oval(c, sx * w, sy * h, 1.2 * tw, 1.2 * tw, 'rgba(255, 250, 230, 0.35)');
+        }
+
+        // Lua serena com brilho suave e translúcido (sem pontos brancos ofuscantes)
+        const moonR = Math.min(54, w * 0.14);
+        const moonY = h * 0.25;
+        this.oval(c, cx, moonY, moonR + 16, moonR + 16, 'rgba(255, 245, 215, 0.06)');
+        this.oval(c, cx, moonY, moonR + 6, moonR + 6, 'rgba(255, 245, 215, 0.12)');
+        this.oval(c, cx, moonY, moonR, moonR, 'rgba(255, 248, 225, 0.45)');
+        this.oval(c, cx, moonY, moonR - 4, moonR - 4, 'rgba(255, 252, 235, 0.58)');
+
+        // Silhueta suave do Monte Fuji na névoa do crepúsculo
+        const fujiBaseY = h * 0.64;
+        this.poly(c, [[cx - 190, fujiBaseY], [cx - 52, h * 0.36], [cx + 52, h * 0.36], [cx + 190, fujiBaseY]], 'rgba(32, 48, 58, 0.65)');
+        // Neve no cume integrada na atmosfera
+        this.poly(c, [
+            [cx - 60, h * 0.40],
+            [cx - 52, h * 0.36],
+            [cx + 52, h * 0.36],
+            [cx + 60, h * 0.40],
+            [cx + 32, h * 0.44],
+            [cx, h * 0.42],
+            [cx - 32, h * 0.44]
+        ], 'rgba(225, 242, 248, 0.38)');
+
+        // Templo Pagode tradicional com tonalidades harmônicas e acolhedoras
+        const pagodaW = Math.min(w * 0.64, 300);
+        const pagodaY = h * 0.38;
+        // Telhado superior curvo
+        this.poly(c, [[cx - pagodaW/2 - 22, pagodaY + 16], [cx - pagodaW/2 + 8, pagodaY], [cx + pagodaW/2 - 8, pagodaY], [cx + pagodaW/2 + 22, pagodaY + 16]], 'rgba(35, 48, 58, 0.75)');
+        this.box(c, cx - pagodaW/2 + 14, pagodaY + 15, pagodaW - 28, 6, 'rgba(155, 58, 48, 0.75)', 2);
+        // Paredes com janelas Shoji de brilho morno suave
+        this.box(c, cx - pagodaW/2 + 24, pagodaY + 21, pagodaW - 48, 46, 'rgba(135, 48, 40, 0.7)', 2);
+        for (let wx = cx - pagodaW/2 + 36; wx <= cx + pagodaW/2 - 50; wx += 28) {
+            this.box(c, wx, pagodaY + 27, 18, 32, 'rgba(255, 235, 170, 0.38)', 2);
+            c.strokeStyle = 'rgba(70, 35, 28, 0.4)'; c.lineWidth = 1.2;
+            c.beginPath(); c.moveTo(wx + 9, pagodaY + 27); c.lineTo(wx + 9, pagodaY + 59); c.stroke();
+            c.beginPath(); c.moveTo(wx, pagodaY + 43); c.lineTo(wx + 18, pagodaY + 43); c.stroke();
+        }
+
+        // O Grande Portal Torii Japonês em tom vermelho laca tradicional suave (baixo contraste com o fundo)
+        const toriiW = Math.min(w * 0.74, 350);
+        const toriiTop = Math.max(105, h * 0.18);
+        const toriiBottom = h * 0.78;
+        const pxL = cx - toriiW/2, pxR = cx + toriiW/2;
+
+        // Bases de pedra (Daiishi)
+        this.box(c, pxL - 14, toriiBottom - 38, 28, 38, '#2d3840', 4);
+        this.box(c, pxR - 14, toriiBottom - 38, 28, 38, '#2d3840', 4);
+
+        // Pilares cilíndricos em vermelho vermilion suave
+        this.box(c, pxL - 10, toriiTop + 24, 20, toriiBottom - toriiTop - 58, '#8a3830', 3);
+        this.box(c, pxL - 6, toriiTop + 24, 5, toriiBottom - toriiTop - 58, '#a0483e', 2);
+        this.box(c, pxR - 10, toriiTop + 24, 20, toriiBottom - toriiTop - 58, '#8a3830', 3);
+        this.box(c, pxR - 6, toriiTop + 24, 5, toriiBottom - toriiTop - 58, '#a0483e', 2);
+
+        // Trave transversal inferior (Nuki)
+        this.box(c, cx - toriiW/2 - 26, toriiTop + 54, toriiW + 52, 18, '#7a2f27', 3);
+        this.box(c, cx - toriiW/2 - 24, toriiTop + 56, toriiW + 48, 4, '#9e443a', 1);
+
+        // Viga mestra superior com beiral curvo (Kasagi & Shimagi)
+        this.poly(c, [[cx - toriiW/2 - 48, toriiTop - 2], [cx + toriiW/2 + 48, toriiTop - 2], [cx + toriiW/2 + 36, toriiTop + 22], [cx - toriiW/2 - 36, toriiTop + 22]], '#2d3840');
+        this.box(c, cx - toriiW/2 - 36, toriiTop + 20, toriiW + 72, 18, '#8a3830', 3);
+        this.box(c, cx - toriiW/2 - 34, toriiTop + 22, toriiW + 68, 4, '#a0483e', 1);
+
+        // Placa Votiva Central (Gakuzuka) com ideograma japonês dourado suave
+        this.box(c, cx - 14, toriiTop + 20, 28, 34, '#2d3840', 3);
+        this.box(c, cx - 11, toriiTop + 23, 22, 28, '#7a2720', 2);
+        c.fillStyle = 'rgba(255, 235, 170, 0.85)';
+        c.font = '900 16px "Hiragino Kaku Gothic Pro", "Noto Sans JP", sans-serif';
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillText('壽', cx, toriiTop + 37);
+
+        // Lanternas Japonesas de Papel Vermelho (Chōchin) com luz âmbar difusa
+        const sway = Math.sin(time * 2.8) * 3;
+        for (const lx of [cx - toriiW * 0.28, cx + toriiW * 0.28]) {
+            const ly = toriiTop + 85;
+            c.strokeStyle = '#2d3436'; c.lineWidth = 1.3;
+            c.beginPath(); c.moveTo(lx, toriiTop + 72); c.lineTo(lx + sway, ly - 16); c.stroke();
+            this.oval(c, lx + sway, ly, 30, 30, 'rgba(255, 220, 140, 0.12)');
+            this.oval(c, lx + sway, ly, 16, 22, '#993d32');
+            this.oval(c, lx + sway, ly, 11, 16, 'rgba(255, 230, 160, 0.45)');
+            c.strokeStyle = 'rgba(45, 25, 20, 0.45)'; c.lineWidth = 1.1;
+            c.beginPath(); c.moveTo(lx + sway - 12, ly - 6); c.lineTo(lx + sway + 12, ly - 6); c.stroke();
+            c.beginPath(); c.moveTo(lx + sway - 12, ly + 6); c.lineTo(lx + sway + 12, ly + 6); c.stroke();
+            c.beginPath(); c.moveTo(lx + sway, ly + 22); c.lineTo(lx + sway, ly + 32); c.stroke();
+        }
+
+        // Estandartes Nobori Tradicionais com textura natural de tecido
+        const banLY = toriiTop + 95;
+        // Estandarte Esquerdo (Linho Cru Suave): 寿司 (Sushi)
+        this.box(c, pxL + 18, banLY, 24, 76, 'rgba(240, 238, 230, 0.7)', 3);
+        c.fillStyle = 'rgba(40, 48, 54, 0.85)';
+        c.font = '900 18px "Hiragino Kaku Gothic Pro", "Noto Sans JP", sans-serif';
+        c.textAlign = 'center';
+        c.textBaseline = 'alphabetic';
+        c.fillText('寿', pxL + 30, banLY + 28);
+        c.fillText('司', pxL + 30, banLY + 60);
+
+        // Estandarte Direito (Tecido Vermilion Queimado): 忍者 (Ninja)
+        this.box(c, pxR - 42, banLY, 24, 76, 'rgba(138, 48, 40, 0.72)', 3);
+        c.fillStyle = 'rgba(255, 250, 245, 0.9)';
+        c.font = '900 18px "Hiragino Kaku Gothic Pro", "Noto Sans JP", sans-serif';
+        c.textAlign = 'center';
+        c.textBaseline = 'alphabetic';
+        c.fillText('忍', pxR - 30, banLY + 28);
+        c.fillText('者', pxR - 30, banLY + 60);
+
+        // Lanternas de Pedra Tradicionais (Tōrō) nas laterais em tom de granito
+        for (const [tx, side] of [[pxL - 26, -1], [pxR + 26, 1]]) {
+            const ty = toriiBottom - 18;
+            this.box(c, tx - 12, ty, 24, 18, '#354752', 2);
+            this.box(c, tx - 7, ty - 22, 14, 22, '#415562', 1);
+            this.box(c, tx - 11, ty - 32, 22, 10, '#2d3b45', 2);
+            this.box(c, tx - 7, ty - 30, 14, 7, 'rgba(255, 230, 150, 0.4)', 1);
+            this.poly(c, [[tx - 16, ty - 32], [tx, ty - 42], [tx + 16, ty - 32]], '#354752');
+            this.oval(c, tx, ty - 43, 3, 3, 'rgba(255, 230, 150, 0.4)');
+        }
+
+        // Pátio de pedras do templo na base (harmônico com o gradiente do céu)
+        const fy = h * 0.78;
+        this.poly(c, [[0, fy], [w, fy], [w, h], [0, h]], '#344854');
+        c.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        for (let i = -8; i < 9; i++) {
+            c.beginPath(); c.moveTo(w/2 + i * 40, fy); c.lineTo(w/2 + i * 180, h); c.stroke();
+        }
+        for (let i = 1; i < 5; i++) {
+            let y = fy + (h - fy) * (i / 5) ** 1.6;
+            c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke();
+        }
+
+        // Pétalas de Sakura flutuando suavemente
+        for (let i = 0; i < 8; i++) {
+            const petX = (cx - 150 + i * 50 + Math.sin(time * 2 + i) * 20 + w) % w;
+            const petY = (h * 0.2 + i * 60 + time * 32) % (h * 0.85);
+            this.oval(c, petX, petY, 3.8, 2.4, 'rgba(255, 185, 195, 0.65)');
+            this.oval(c, petX, petY, 2, 1.4, 'rgba(255, 140, 155, 0.7)');
+        }
+
+        // Título limpo (apenas quando label === true, em tom suave)
+        if (label) {
+            c.fillStyle = 'rgba(255, 240, 190, 0.85)';
+            c.font = `900 ${Math.min(22, w * 0.045)}px Nunito, sans-serif`;
+            c.textAlign = 'center';
+            c.textBaseline = 'alphabetic';
+            c.fillText('SUSHI NINJA • 寿司', cx, Math.max(120, toriiTop - 14));
+        }
     }
 };

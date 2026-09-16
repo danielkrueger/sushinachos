@@ -61,13 +61,12 @@ class PizzaCatcherGame {
     spawnItem() {
         // Determine what to spawn based on weights and level
         const possibleItems = [
-            { type: 'burrito', emoji: '🌯', points: 10, weight: 36, bad: false, mustCatch: true },
-            { type: 'taco', emoji: '🌮', points: 12, weight: 24, bad: false, mustCatch: false },
-            { type: 'sushi', emoji: '🍣', points: 12, weight: 20, bad: false, mustCatch: false },
-            { type: 'sashimi', emoji: '🐟', points: 14, weight: 14, bad: false, mustCatch: false },
-            { type: 'temaki', emoji: '🍙', points: 12, weight: 8, bad: false, mustCatch: false },
+            { type: 'burrito', emoji: '🌯', name: 'Burrito', points: 10, weight: 34, bad: false, mustCatch: true },
+            { type: 'taco', emoji: '🌮', name: 'Taco', points: 12, weight: 26, bad: false, mustCatch: false },
+            { type: 'tortilha', emoji: '📐', name: 'Tortilha', points: 10, weight: 24, bad: false, mustCatch: false },
+            { type: 'guacamole', emoji: '🥑', name: 'Guacamole', points: 14, weight: 20, bad: false, mustCatch: false },
             { type: 'burnt', emoji: '🔥', name: 'Burrito Queimado', points: -20, weight: 10 + this.level, bad: true, mustCatch: false },
-            { type: 'plate', emoji: '🍽️', points: -10, weight: 8 + this.level, bad: true, mustCatch: false }
+            { type: 'plate', emoji: '🍽️', name: 'Prato', points: -10, weight: 8 + this.level, bad: true, mustCatch: false }
         ];
         
         if (this.level >= 3) {
@@ -310,12 +309,26 @@ class PizzaCatcherGame {
             this.ctx.globalAlpha = 1.0;
         }
         
-        this.ctx.fillStyle = '#714e35';
-        this.ctx.font = "900 16px Nunito";
-        this.ctx.textAlign = 'left';
-        this.ctx.fillText('FORNADA ' + this.level, 16, 83);
-        this.ctx.textAlign = 'right';
-        this.ctx.fillText('❤️'.repeat(Math.max(0,this.lives)), this.w-16, 83);
+        // Badge de contraste para RODADA
+        if (typeof JohnArt.box === 'function') JohnArt.box(this.ctx, 14, 68, 114, 28, 'rgba(255, 252, 242, 0.94)', 14);
+        if (this.ctx.roundRect) {
+            this.ctx.strokeStyle = '#c75a28'; this.ctx.lineWidth = 1.5;
+            this.ctx.beginPath(); this.ctx.roundRect(14, 68, 114, 28, 14); this.ctx.stroke();
+        }
+        this.ctx.fillStyle = '#6d2311';
+        this.ctx.font = "900 14px Nunito";
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('RODADA ' + this.level, 71, 86);
+
+        // Badge de contraste para VIDAS
+        if (typeof JohnArt.box === 'function') JohnArt.box(this.ctx, this.w - 108, 68, 94, 28, 'rgba(255, 252, 242, 0.94)', 14);
+        if (this.ctx.roundRect) {
+            this.ctx.strokeStyle = '#c75a28'; this.ctx.lineWidth = 1.5;
+            this.ctx.beginPath(); this.ctx.roundRect(this.w - 108, 68, 94, 28, 14); this.ctx.stroke();
+        }
+        this.ctx.font = "15px sans-serif";
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('❤️'.repeat(Math.max(0,this.lives)), this.w - 61, 87);
         // Active Powerups
         let py = 112;
         this.ctx.font = "16px 'Nunito'";

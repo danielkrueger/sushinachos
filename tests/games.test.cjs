@@ -52,8 +52,8 @@ test('runner ends once and destroy cancels pending completion',()=>{
 test('catcher cannot produce negative balance or multiple game over calls',()=>{
  let n=0;const g=game('catcher',390,844,()=>n++);g.catchItem({points:-20,bad:true,x:0,y:0});assert.equal(g.score,0);g.loseLife();g.loseLife();g.loseLife();assert.equal(n,1);
 });
-test('catcher rewards temaki and penalizes empty plates',()=>{
- const source=fs.readFileSync('js/pizza-catcher.js','utf8');assert.match(source,/type: 'temaki'.*points: 12.*bad: false/);assert.match(source,/type: 'plate'.*bad: true/);assert.doesNotMatch(source,/type: 'temaki'.*bad: true/);
+test('catcher rewards tortilha and penalizes empty plates',()=>{
+ const source=fs.readFileSync('js/pizza-catcher.js','utf8');assert.match(source,/type: 'tortilha'.*points: 10.*bad: false/);assert.match(source,/type: 'plate'.*bad: true/);assert.doesNotMatch(source,/type: 'tortilha'.*bad: true/);
 });
 test('ninja slice uses segment distance and awards combo',()=>{
  const g=game('ninja');g.items=[{id:'pizza',x:100,y:200,size:50,pts:10,vx:0,vy:0,gravity:300,rot:0,rotSpeed:0}];g.onTouchStart(30,200);g.onTouchMove(160,200);assert.equal(g.score,10);assert.equal(g.items.length,0);assert.equal(g.particles.filter(p=>p.isHalf).length,2);
@@ -80,13 +80,13 @@ function sceneryFrame(distance) {
 }
 test('buildings keep their appearance and move continuously across a street segment boundary',()=>{
  const before=sceneryFrame(11.99),after=sceneryFrame(12.01);
- const building=before.find(o=>o.kind==='building'&&o.side===-1&&Math.abs(o.z)<.1);
+ const building=before.find(o=>o.kind==='building'&&o.side===1&&Math.abs(o.z)<.1);
  const next=after.find(o=>o.kind==='building'&&o.side===building.side&&o.id===building.id);
  assert.ok(next,'same building must remain present');assert.ok(Math.abs(next.z-building.z+.02)<1e-8,'building must advance 2 cm, not teleport 12 m');
 });
 test('palms stay visible as they pass the player instead of disappearing at z=0',()=>{
  const after=sceneryFrame(11.01);
- assert.ok(after.some(o=>o.kind==='palm'&&o.side===-1&&Math.abs(o.z+.01)<1e-8));
+ assert.ok(after.some(o=>o.kind==='palm'&&o.side===1&&Math.abs(o.z+.01)<1e-8));
 });
 test('near-camera walls are clipped without projecting vertices behind the camera',()=>{
  const drawn=[];const scope=vm.createContext({Math,JohnArt:{poly(c,points){drawn.push(points);}}});
@@ -99,7 +99,7 @@ test('near-camera walls are clipped without projecting vertices behind the camer
  g.quad([[4,0,-12],[4,0,-10],[4,5,-10],[4,5,-12]],'#fff');assert.equal(drawn.length,1);
 });
 test('street-facing walls remain while the front of a building passes behind the camera',()=>{
- assert.ok(sceneryFrame(20).some(o=>o.kind==='building'&&o.side===-1&&o.id===1&&o.z===-8));
+ assert.ok(sceneryFrame(20).some(o=>o.kind==='building'&&o.side===1&&o.id===1&&o.z===-8));
  for(const boundary of [24,120,1200]) {
   const before=sceneryFrame(boundary-.01),after=sceneryFrame(boundary+.01);
   for(const b of before.filter(o=>o.kind==='building'&&o.z>0&&o.z<120)){
@@ -108,9 +108,19 @@ test('street-facing walls remain while the front of a building passes behind the
   }
  }
 });
+test('runner inverts beach and building sides between delivery and return stages',()=>{
+ const scope=vm.createContext({Math,JohnArt:{oval(){},poly(){},john(){},box(){}}});
+ vm.runInContext(fs.readFileSync('js/pizza-runner.js','utf8')+';this.Game=PizzaRunnerGame',scope);
+ const g=new scope.Game({getContext:()=>({})},390,844,()=>{});
+ assert.equal(g.beachSide(),-1);assert.equal(g.buildingSide(),1);
+ g.stage=1;
+ assert.equal(g.beachSide(),1);assert.equal(g.buildingSide(),-1);
+ g.stage=2;
+ assert.equal(g.beachSide(),-1);assert.equal(g.buildingSide(),1);
+});
 test('catcher draws falling food in front of John',()=>{
  const order=[];const ctx=new Proxy({}, {get:()=>()=>{},set:()=>true});
- const scope=vm.createContext({Math,JohnArt:{kitchen(){order.push('background');},food(){order.push('food');}}});
+ const scope=vm.createContext({Math,JohnArt:{kitchen(){order.push('background');},food(){order.push('food');},box(){}}});
  vm.runInContext(fs.readFileSync('js/pizza-catcher.js','utf8')+';this.Game=PizzaCatcherGame',scope);
  const g=new scope.Game({getContext:()=>ctx},390,844,()=>{});g.start();
  g.drawChef=()=>order.push('john');g.items=[{type:'pizza',x:195,y:700,rotation:0}];g.render();

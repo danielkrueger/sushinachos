@@ -193,6 +193,63 @@ class PizzaRunnerGame {
         }
         JohnArt.oval(c,top.x,top.y+p.s*.07,p.s*.12,p.s*.16,'#82603a');
     }
+    beachSide() { return this.destinationKind() === 'family' ? -1 : 1; }
+    buildingSide() { return -this.beachSide(); }
+    deckRailing(side, z, len=3) {
+        const x = side * 8.0;
+        // Mourão vertical de madeira
+        this.block(x, z, .18, 1.15, .18, '#59361e', '#422410', '#6e4428');
+        // Corrimão superior
+        this.quad([[x - .09, 1.05, z], [x + .09, 1.05, z], [x + .09, 1.15, z + len], [x - .09, 1.15, z + len]], '#6e4428');
+        this.quad([[x + side * .09, 1.03, z], [x + side * .09, 1.03, z + len], [x + side * .09, 1.15, z + len], [x + side * .09, 1.15, z]], '#523018');
+        // Viga inferior
+        this.quad([[x - .07, .22, z], [x + .07, .22, z], [x + .07, .30, z + len], [x - .07, .30, z + len]], '#59361e');
+        this.quad([[x + side * .07, .22, z], [x + side * .07, .22, z + len], [x + side * .07, .30, z + len], [x + side * .07, .30, z]], '#422410');
+        // Cruzetas em X (estilo rústico do deck do Gravatá)
+        this.quad([[x - .03, .28, z], [x + .03, .36, z], [x + .03, 1.05, z + len], [x - .03, .97, z + len]], '#5d3920');
+        this.quad([[x - .03, 1.05, z], [x + .03, .97, z], [x + .03, .28, z + len], [x - .03, .36, z + len]], '#4c2d18');
+    }
+    lampPost(side, z) {
+        const x = side * 5.35;
+        this.block(x, z, .24, .14, .24, '#78909c', '#546e7a', '#90a4ae');
+        const pBase = this.project(x, 0, z);
+        const pTop = this.project(x, 4.6, z);
+        if(!Number.isFinite(pBase.x) || !Number.isFinite(pTop.x)) return;
+        const c = this.ctx;
+        c.save();
+        c.strokeStyle = '#e0e7ea';
+        c.lineWidth = Math.max(1.5, pBase.s * .06);
+        c.lineCap = 'round';
+        c.beginPath(); c.moveTo(pBase.x, pBase.y); c.lineTo(pTop.x, pTop.y); c.stroke();
+        const pLeft = this.project(x - side * .7, 4.4, z);
+        const pRight = this.project(x + side * .7, 4.4, z);
+        c.lineWidth = Math.max(1, pBase.s * .035);
+        c.beginPath(); c.moveTo(pTop.x, pTop.y); c.quadraticCurveTo(pTop.x - side * pBase.s * .3, pTop.y - pBase.s * .18, pLeft.x, pLeft.y); c.stroke();
+        c.beginPath(); c.moveTo(pTop.x, pTop.y); c.quadraticCurveTo(pTop.x + side * pBase.s * .3, pTop.y - pBase.s * .18, pRight.x, pRight.y); c.stroke();
+        JohnArt.oval(c, pLeft.x, pLeft.y, pBase.s * .07, pBase.s * .04, '#fff9c4');
+        JohnArt.oval(c, pRight.x, pRight.y, pBase.s * .07, pBase.s * .04, '#fff9c4');
+        c.restore();
+    }
+    beachUmbrella(side, z, i) {
+        const x = side * 11.0;
+        const pBase = this.project(x, 0, z);
+        const pTop = this.project(x, 2.3, z);
+        if(!Number.isFinite(pBase.x) || !Number.isFinite(pTop.x)) return;
+        const c = this.ctx;
+        c.save();
+        JohnArt.oval(c, pBase.x + side * pBase.s * .1, pBase.y, pBase.s * .55, pBase.s * .22, 'rgba(80, 60, 40, 0.28)');
+        c.strokeStyle = '#8d6e63'; c.lineWidth = Math.max(1.5, pBase.s * .04);
+        c.beginPath(); c.moveTo(pBase.x, pBase.y); c.lineTo(pTop.x, pTop.y); c.stroke();
+        const colors = [['#e53935', '#ffffff'], ['#0288d1', '#ffffff'], ['#fbc02d', '#ffffff'], ['#43a047', '#ffffff']];
+        const [c1, c2] = colors[Math.abs(i) % colors.length];
+        const pPeak = this.project(x, 2.7, z);
+        const pL = this.project(x - 1.4, 2.1, z);
+        const pR = this.project(x + 1.4, 2.1, z);
+        const pMid = this.project(x, 2.05, z - .5);
+        JohnArt.poly(c, [[pL.x, pL.y], [pPeak.x, pPeak.y], [pMid.x, pMid.y]], c1);
+        JohnArt.poly(c, [[pMid.x, pMid.y], [pPeak.x, pPeak.y], [pR.x, pR.y]], c2);
+        c.restore();
+    }
     rect(x1,x2,y1,y2,z,color) {this.quad([[x1,y1,z],[x2,y1,z],[x2,y2,z],[x1,y2,z]],color);}
     person(x,z,height,shirt,hair,wave) {
         const c=this.ctx,p=this.project(x,0,z),u=(p.y-this.project(x,height,z).y)/10;if(u<=0)return;
@@ -242,7 +299,7 @@ class PizzaRunnerGame {
     }
     obstacle(o) {
         const c=this.ctx,x=(o.lane-1)*2.1,z=o.z;
-        if(o.kind==='coin'){if(o.checked)return;const p=this.project(x,1.05+Math.sin(this.time*4+z)*.1,z);JohnArt.coin(c,p.x,p.y,p.s*.3,this.time*2+z);return;}
+        if(o.kind==='coin'){if(o.checked)return;const p=this.project(x,1.05+Math.sin(this.time*4+z)*.1,z);JohnArt.coin(c,p.x,p.y,p.s*.36,this.time*2+z);return;}
         if(o.kind==='hole') {
             const rim=[[-.95,.1],[-.64,.04],[-.42,-.13],[-.05,.03],[.2,-.08],[.48,.12],[.87,.03],[.78,.4],[1,.66],[.78,.88],[.9,1.25],[.56,1.39],[.3,1.28],[0,1.54],[-.24,1.33],[-.64,1.45],[-.82,1.12],[-1,.93],[-.82,.58]];
             this.quad(rim.map(([dx,dz])=>[x+dx,.015,z+dz]),'#393d39');
@@ -320,12 +377,40 @@ class PizzaRunnerGame {
         JohnArt.oval(c,w*.75,h*.15,35,35,weather===2?'#e6f0ff':'#fff0b3');
         for(let i=0;i<5;i++){const x=((i*w*.27+this.time*3)%(w+180))-90;JohnArt.oval(c,x,h*(.12+(i%2)*.06),65,12,'#ffffff80');}
         c.fillStyle='#66b7ae';c.fillRect(0,h*.29,w,h*.08);
-        this.quad([[-100,0,-7],[100,0,-7],[100,0,150],[-100,0,150]],'#9dbf8c');
+        const bSide=this.beachSide(), uSide=this.buildingSide();
+        // Lado urbano (grama/terreno atrás dos prédios e calçada)
+        this.quad([[uSide*3.4,0,-7],[uSide*100,0,-7],[uSide*100,0,150],[uSide*3.4,0,150]],'#9dbf8c');
         const sidewalk=this.sceneryLayout.sidewalkEdge;
-        this.quad([[-sidewalk,0,-7],[sidewalk,0,-7],[sidewalk,0,150],[-sidewalk,0,150]],'#edcc9e');
+        this.quad([[uSide*3.4,0,-7],[uSide*sidewalk,0,-7],[uSide*sidewalk,0,150],[uSide*3.4,0,150]],'#edcc9e');
+
+        // LADO DA PRAIA DO GRAVATÁ:
+        // Oceano Atlântico
+        this.quad([[bSide*14.5,0,-7],[bSide*100,0,-7],[bSide*100,0,150],[bSide*14.5,0,150]],'#277a8c');
+        // Faixa de areia dourada
+        this.quad([[bSide*8.0,0,-7],[bSide*14.5,0,-7],[bSide*14.5,0,150],[bSide*8.0,0,150]],'#e8cca2');
+        // Areia molhada perto da arrebentação
+        this.quad([[bSide*12.5,0,-7],[bSide*14.5,0,-7],[bSide*14.5,0,150],[bSide*12.5,0,150]],'#c9af83');
+        // Deck de madeira elevado da orla
+        this.quad([[bSide*5.4,0,-7],[bSide*8.0,0,-7],[bSide*8.0,0,150],[bSide*5.4,0,150]],'#b8885a');
+        this.quad([[bSide*5.4-.06,.02,-7],[bSide*5.4+.06,.02,-7],[bSide*5.4+.06,.02,150],[bSide*5.4-.06,.02,150]],'#875630');
+        this.quad([[bSide*8.0-.06,.02,-7],[bSide*8.0+.06,.02,-7],[bSide*8.0+.06,.02,150],[bSide*8.0-.06,.02,150]],'#754724');
+        // Ciclovia vermelha
+        this.quad([[bSide*3.4,0,-7],[bSide*5.4,0,-7],[bSide*5.4,0,150],[bSide*3.4,0,150]],'#bf4836');
+
+        // Pista da rua
         this.quad([[-3.4,0,-7],[3.4,0,-7],[3.4,0,150],[-3.4,0,150]],'#738a80');
         for(let z=145;z>-6;z-=5){const zz=z-this.distance%5;if(zz<=-6)continue;for(const x of [-1.05,1.05])this.quad([[x-.025,.02,zz],[x+.025,.02,zz],[x+.025,.02,zz+2],[x-.025,.02,zz+2]],'#f5e7ba');}
         for(const side of [-1,1])this.quad([[side*3.4,.02,-7],[side*3.6,.02,-7],[side*3.6,.02,150],[side*3.4,.02,150]],'#fff1c8');
+
+        // Detalhes da Ciclovia e Deck de Madeira:
+        // Linha branca divisória da ciclovia
+        for(let z=145;z>-6;z-=4){const zz=z-this.distance%4;if(zz<=-6)continue;this.quad([[bSide*4.4-.04,.025,zz],[bSide*4.4+.04,.025,zz],[bSide*4.4+.04,.025,zz+1.8],[bSide*4.4-.04,.025,zz+1.8]],'#ffffffcc');}
+        // Ripas de madeira transversais do deck
+        const deckMin=Math.min(bSide*5.4,bSide*8.0), deckMax=Math.max(bSide*5.4,bSide*8.0);
+        for(let z=145;z>-6;z-=1.4){const zz=z-this.distance%1.4;if(zz<=-6)continue;this.quad([[deckMin,.022,zz],[deckMax,.022,zz],[deckMax,.022,zz+.07],[deckMin,.022,zz+.07]],'#825934');}
+        // Ondas quebrando suavemente na areia
+        for(let z=140;z>-5;z-=14){const wz=z-(this.distance*.7)%14;if(wz<=-6)continue;const waveOffset=Math.sin(this.time*2.2+wz*.18)*.7;const wx=bSide*(14.0+waveOffset);this.quad([[wx,.02,wz],[wx+bSide*1.8,.02,wz],[wx+bSide*1.8,.02,wz+4.2],[wx,.02,wz+4.2]],'rgba(255,255,255,0.72)');this.quad([[wx-bSide*.3,.022,wz+.6],[wx+bSide*1,.022,wz+.6],[wx+bSide*1,.022,wz+3.6],[wx-bSide*.3,.022,wz+3.6]],'rgba(224,247,250,0.5)');}
+
         const scene=[];
         // Absolute segment IDs keep appearance and position stable across each 12 m boundary.
         // Include the building's full depth behind us, then clip its remaining walls.
@@ -339,10 +424,14 @@ class PizzaRunnerGame {
         };
         for(let i=first;i<=last;i++) {
             const z=i*12-this.distance;
-            addScenery(z,6,()=>this.building(-1,z,i));
-            addScenery(z+4,6,()=>this.building(1,z+4,i+1));
-            addScenery(z-1,0,()=>this.palm(-1,z-1));
-            addScenery(z+3,0,()=>this.palm(1,z+3));
+            // Lado urbano: prédios comerciais e palmeiras na calçada
+            addScenery(z,6,()=>this.building(uSide,z,i));
+            addScenery(z-1,0,()=>this.palm(uSide,z-1));
+
+            // Lado da orla da Praia do Gravatá: guarda-corpo em X, postes e praia
+            for(let k=0;k<4;k++){const rz=z+k*3;addScenery(rz,3,()=>this.deckRailing(bSide,rz,3));}
+            if(i%2===0){addScenery(z+2,0,()=>this.lampPost(bSide,z+2));}
+            else{addScenery(z+5,0,()=>this.beachUmbrella(bSide,z+5,i));}
         }
         const destination=this.stopAt()+9-this.distance;addScenery(destination,8,()=>this.destination(destination));
         for(const o of this.objects)if(o.z>-5&&(this.state==='playing'||o.hit))scene.push({z:o.hit&&o.kind==='hole'?.01:o.z,draw:()=>this.obstacle(o)});

@@ -64,9 +64,9 @@ const ChefJohnGames = (() => {
 
     // ---- Tutorials ----
     const TUTORIALS = {
-        catcher: { icon: '🍣', title: 'Pega Sushinachos', text: 'A esteira está a todo vapor!\n\nArraste o dedo ou use ← → para mover o chef.\nPegue sushis, nachos crocantes e delícias para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!' },
-        runner: { icon: '🏃', title: 'Corrida Sushinachos', text: 'A próxima entrega é sua!\n\n← → ou deslize para os lados: troque de faixa.\n↑ / espaço ou deslize para cima: pule as barreiras e os buracos.\n↓ ou deslize para baixo: passe sob os toldos.\n⚡ TURBO: toque no botão ou pressione Shift para acelerar por alguns segundos.\n\nEntregue o pedido de sushi & nachos, volte ao Sushinachos para pegar o próximo e siga assim! Cada chegada vale 100 SN Coin de bônus, e a corrida fica mais longa e mais rápida.' },
-        ninja: { icon: '🔪', title: 'Ninja Sushinachos', text: 'Um corte de mestre, uma chuva de sabores!\n\nArraste o dedo ou o mouse pressionado para fatiar sushis e nachos no ar.\nCorte várias comidas no mesmo gesto: combo até 4×!\n⚠️ Evite: 🔥 itens queimados. Não corte: 🍽️ pratos vazios e 🥛 copos.\n\nVocê tem 3 vidas. Comida boa não pode cair!' }
+        catcher: { icon: '🌮', title: 'Festa Mexicana', text: 'A festa mexicana está a todo vapor!\n\nArraste o dedo ou use ← → para mover o chef.\nPegue burritos, tacos, tortilhas crocantes e guacamole fresco para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!' },
+        runner: { icon: '🏃', title: 'Entrega Sushinachos', text: 'A próxima entrega é sua!\n\n← → ou deslize para os lados: troque de faixa.\n↑ / espaço ou deslize para cima: pule as barreiras e os buracos.\n↓ ou deslize para baixo: passe sob os toldos.\n⚡ TURBO: toque no botão ou pressione Shift para acelerar por alguns segundos.\n\nEntregue o pedido de sushi & nachos, volte ao Sushinachos para pegar o próximo e siga assim! Cada chegada vale 100 SN Coin de bônus, e a corrida fica mais longa e mais rápida.' },
+        ninja: { icon: '⚔️', title: 'Sushi Ninja', text: 'Um corte de mestre, uma chuva de sushis!\n\nArraste o dedo ou o mouse pressionado para fatiar sushis, sashimis e temakis no ar.\nCorte várias comidas no mesmo gesto: combo até 4×!\n⚠️ Não corte: 🍽️ pratos vazios e 🥛 copos.\n\nVocê tem 3 vidas. Comida boa não pode cair!' }
     };
 
     // ============================================================

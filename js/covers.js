@@ -7,8 +7,12 @@ document.querySelectorAll('[data-cover]').forEach(canvas => {
         game.objects=[{lane:0,z:10,kind:'cactus'},{lane:2,z:22,kind:'barrier'},...Array.from({length:6},(_,i)=>({lane:1,z:8+i*5,kind:'coin'}))];
         game.render();
     } else {
-        JohnArt.kitchen(ctx,w,h,canvas.dataset.cover==='ninja',0,false);
+        const isNinja = canvas.dataset.cover==='ninja';
+        JohnArt.kitchen(ctx,w,h,isNinja,0,false);
         if(canvas.dataset.cover==='catcher') JohnArt.john(ctx,w*.48,h*.95,1.7);
-        for(let i=0;i<5;i++)JohnArt.food(ctx,['burrito','sushi','taco','sashimi','special'][i],85+i*116,130+(i%2)*55,68,i*.6);
+        const foodList = isNinja
+            ? ['sushi','temaki','sashimi','sushi','special']
+            : ['burrito','tortilha','taco','guacamole','special'];
+        for(let i=0;i<5;i++)JohnArt.food(ctx,foodList[i],85+i*116,130+(i%2)*55,68,i*.6);
     }
 });
