@@ -26,17 +26,6 @@ class PizzaNinjaGame {
         this.levelTimer = 0;
         this.waveInterval = 1.2;
         this.isGameOver = false;
-        this.bgStars = [];
-
-        // Estrelinhas cintilantes de fundo
-        for (let i = 0; i < 25; i++) {
-            this.bgStars.push({
-                x: Math.random() * this.w,
-                y: Math.random() * this.h * 0.8,
-                size: 1 + Math.random() * 2.5,
-                twinkle: Math.random() * Math.PI * 2
-            });
-        }
 
         // Tabela de itens temáticos do Sushi Ninja (100% culinária japonesa):
         this.itemTypes = [
@@ -159,11 +148,6 @@ class PizzaNinjaGame {
             }
         }
 
-        // Estrelas
-        for (let s of this.bgStars) {
-            s.twinkle += dt * 2;
-        }
-
         // Partículas
         for (let i = this.particles.length - 1; i >= 0; i--) {
             let p = this.particles[i];
@@ -193,25 +177,58 @@ class PizzaNinjaGame {
 
         JohnArt.kitchen(ctx, this.w, this.h, true, this.levelTimer, false);
 
-        // Rastro de corte luminoso
+        // Rastro de corte luminoso de alta performance (sem shadowBlur)
         if (this.trail.length > 1) {
-            for (let i = 1; i < this.trail.length; i++) {
-                let p0 = this.trail[i - 1];
-                let p1 = this.trail[i];
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, p1.life);
-                ctx.lineWidth = 7 * p1.life + 2;
-                ctx.lineCap = 'round';
-                ctx.strokeStyle = '#ffffff';
-                ctx.shadowBlur = 16;
-                ctx.shadowColor = '#00e5ff';
+            ctx.save();
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
 
+            // Camada 1: Brilho ciano suave externo
+            for (let i = 1; i < this.trail.length; i++) {
+                const p0 = this.trail[i - 1];
+                const p1 = this.trail[i];
+                const life = Math.max(0, p1.life);
+                if (life <= 0.01) continue;
+
+                ctx.strokeStyle = `rgba(0, 229, 255, ${(life * 0.35).toFixed(2)})`;
+                ctx.lineWidth = 14 * life + 4;
                 ctx.beginPath();
                 ctx.moveTo(p0.x, p0.y);
                 ctx.lineTo(p1.x, p1.y);
                 ctx.stroke();
-                ctx.restore();
             }
+
+            // Camada 2: Lâmina de energia neon intermediária
+            for (let i = 1; i < this.trail.length; i++) {
+                const p0 = this.trail[i - 1];
+                const p1 = this.trail[i];
+                const life = Math.max(0, p1.life);
+                if (life <= 0.01) continue;
+
+                ctx.strokeStyle = `rgba(0, 240, 255, ${(life * 0.75).toFixed(2)})`;
+                ctx.lineWidth = 7 * life + 2;
+                ctx.beginPath();
+                ctx.moveTo(p0.x, p0.y);
+                ctx.lineTo(p1.x, p1.y);
+                ctx.stroke();
+            }
+
+            // Camada 3: Fio da navalha central ultra brilhante (branco)
+            for (let i = 1; i < this.trail.length; i++) {
+                const p0 = this.trail[i - 1];
+                const p1 = this.trail[i];
+                const life = Math.max(0, p1.life);
+                if (life <= 0.01) continue;
+
+                ctx.strokeStyle = `rgba(255, 255, 255, ${life.toFixed(2)})`;
+                ctx.lineWidth = 3 * life + 1;
+                ctx.beginPath();
+                ctx.moveTo(p0.x, p0.y);
+                ctx.lineTo(p1.x, p1.y);
+                ctx.stroke();
+            }
+
+            ctx.restore();
         }
 
         // Desenhar itens voando
@@ -223,24 +240,27 @@ class PizzaNinjaGame {
             ctx.rotate(item.rot);
             ctx.shadowBlur = 0;
 
-            // Halo dourado para especiais
+            // Halo dourado para especiais (gradiente radial acelerado por hardware)
             if (item.glow) {
-                ctx.shadowBlur = 24;
-                ctx.shadowColor = '#FFD700';
-                ctx.fillStyle = 'rgba(255, 215, 0, 0.2)';
+                const glowG = ctx.createRadialGradient(0, 0, item.size * 0.2, 0, 0, item.size * 0.85);
+                glowG.addColorStop(0, 'rgba(255, 215, 0, 0.45)');
+                glowG.addColorStop(0.65, 'rgba(255, 215, 0, 0.18)');
+                glowG.addColorStop(1, 'rgba(255, 215, 0, 0)');
+                ctx.fillStyle = glowG;
                 ctx.beginPath();
-                ctx.arc(0, 0, item.size * 0.75, 0, Math.PI * 2);
+                ctx.arc(0, 0, item.size * 0.85, 0, Math.PI * 2);
                 ctx.fill();
             }
 
-            // Halo de perigo para louça frágil
+            // Halo de perigo para louça frágil (gradiente radial acelerado por hardware)
             if (item.dish) {
-                ctx.shadowBlur = 14;
-                ctx.shadowColor = '#00E5FF';
-                // Círculo translúcido de aviso
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+                const dishG = ctx.createRadialGradient(0, 0, item.size * 0.2, 0, 0, item.size * 0.75);
+                dishG.addColorStop(0, 'rgba(0, 229, 255, 0.4)');
+                dishG.addColorStop(0.65, 'rgba(0, 229, 255, 0.15)');
+                dishG.addColorStop(1, 'rgba(0, 229, 255, 0)');
+                ctx.fillStyle = dishG;
                 ctx.beginPath();
-                ctx.arc(0, 0, item.size * 0.6, 0, Math.PI * 2);
+                ctx.arc(0, 0, item.size * 0.75, 0, Math.PI * 2);
                 ctx.fill();
             }
 
@@ -254,12 +274,14 @@ class PizzaNinjaGame {
 
         // Partículas e estilhaços
         for (let p of this.particles) {
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rot);
-            ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+            const alpha = Math.max(0, p.life / p.maxLife);
+            if (alpha <= 0.01) continue;
 
             if (p.isShard) {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rot);
+                ctx.globalAlpha = alpha;
                 // Estilhaço pontiagudo de porcelana ou vidro
                 ctx.fillStyle = p.color;
                 ctx.beginPath();
@@ -268,11 +290,13 @@ class PizzaNinjaGame {
                 ctx.lineTo(-p.size * 0.6, p.size * 0.5);
                 ctx.closePath();
                 ctx.fill();
+                ctx.restore();
             } else if (p.isHalf) {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rot);
+                ctx.globalAlpha = alpha;
                 // Metades de comida fatiada
-                ctx.font = `${p.size}px Arial`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
                 ctx.beginPath();
                 if (p.side === 'left') {
                     ctx.rect(-p.size, -p.size, p.size, p.size * 2);
@@ -281,13 +305,17 @@ class PizzaNinjaGame {
                 }
                 ctx.clip();
                 JohnArt.food(ctx, p.id, 0, 0, p.size);
+                ctx.restore();
             } else {
+                // Faíscas circulares simples - renderização direta sem transformações caras de matriz
+                ctx.save();
+                ctx.globalAlpha = alpha;
                 ctx.fillStyle = p.color;
                 ctx.beginPath();
-                ctx.arc(0, 0, p.size, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.restore();
             }
-            ctx.restore();
         }
 
         // HUD - Vidas
@@ -505,8 +533,14 @@ class PizzaNinjaGame {
     onTouchMove(x, y, event) {
         if (!this.slicing || this.isGameOver) return;
 
+        if (this.lastX !== null && this.lastY !== null) {
+            const dx = x - this.lastX;
+            const dy = y - this.lastY;
+            if (dx * dx + dy * dy < 4) return;
+        }
+
         this.trail.push({ x, y, life: 1 });
-        if (this.trail.length > 25) this.trail.shift();
+        if (this.trail.length > 22) this.trail.shift();
 
         this.checkCollisions(this.lastX, this.lastY, x, y);
 

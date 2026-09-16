@@ -62,12 +62,55 @@ const ChefJohnGames = (() => {
         track('game_quit', { ...playStats(), reason });
     }
 
-    // ---- Tutorials ----
+    // ---- Platform detection ----
+    function isMobilePlatform() {
+        return window.matchMedia('(pointer: coarse)').matches ||
+               ('ontouchstart' in window) ||
+               (navigator.maxTouchPoints > 0) ||
+               /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    }
+
+    // ---- Tutorials (Exclusivos para Celular ou PC) ----
     const TUTORIALS = {
-        catcher: { icon: '🌮', title: 'Festa Mexicana', text: 'A festa mexicana está a todo vapor!\n\nArraste o dedo ou use ← → para mover o nacho.\nPegue burritos, tacos, tortilhas crocantes e guacamole fresco para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!' },
-        runner: { icon: '🏃', title: 'Entrega Sushinachos', text: 'A próxima entrega é sua!\n\n← → ou deslize para os lados: troque de faixa.\n↑ / espaço ou deslize para cima: pule as barreiras e os buracos.\n↓ ou deslize para baixo: passe sob os toldos.\n⚡ TURBO: toque no botão ou pressione Shift para acelerar por alguns segundos.\n\nEntregue o pedido de sushi & nachos, volte ao Sushinachos para pegar o próximo e siga assim! Cada chegada vale 100 SN Coin de bônus, e a corrida fica mais longa e mais rápida.' },
-        ninja: { icon: '⚔️', title: 'Sushi Ninja', text: 'Um corte de mestre, uma chuva de sushis!\n\nArraste o dedo ou o mouse pressionado para fatiar sushis, sashimis e temakis no ar.\nCorte várias comidas no mesmo gesto: combo até 4×!\n⚠️ Não corte: 🍽️ pratos vazios e 🥛 copos.\n\nVocê tem 3 vidas. Comida boa não pode cair!' }
+        mobile: {
+            catcher: {
+                icon: '🌮',
+                title: 'Festa Mexicana',
+                text: 'A festa mexicana está a todo vapor!\n\nArraste o dedo na tela para mover o nacho e pegar as comidas.\nPegue burritos, tacos, tortilhas crocantes e guacamole fresco para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!'
+            },
+            runner: {
+                icon: '🏃',
+                title: 'Entrega Sushinachos',
+                text: 'A próxima entrega é sua!\n\n👉 Deslize para os lados: troque de faixa.\n👆 Deslize para cima: pule as barreiras e os buracos.\n👇 Deslize para baixo: passe sob os toldos.\n⚡ Botão TURBO: toque no botão para acelerar por alguns segundos!\n\nEntregue o pedido de sushi & nachos, volte ao Sushinachos para pegar o próximo e siga assim! Cada chegada vale 100 SN Coin de bônus, e a corrida fica mais longa e mais rápida.'
+            },
+            ninja: {
+                icon: '⚔️',
+                title: 'Sushi Ninja',
+                text: 'Um corte de mestre, uma chuva de sushis!\n\nDeslize o dedo na tela como uma lâmina para fatiar sushis, sashimis e temakis no ar.\nCorte várias comidas no mesmo golpe: combo até 4×!\n⚠️ Não corte: 🍽️ pratos vazios e 🥛 copos.\n\nVocê tem 3 vidas. Comida boa não pode cair!'
+            }
+        },
+        desktop: {
+            catcher: {
+                icon: '🌮',
+                title: 'Festa Mexicana',
+                text: 'A festa mexicana está a todo vapor!\n\nUse as setas ← → do teclado ou arraste com o mouse para mover o nacho.\nPegue burritos, tacos, tortilhas crocantes e guacamole fresco para ganhar SN Coin.\n⚠️ Evite: 🔥 itens queimados e 🍽️ pratos vazios.\n\nVocê tem 3 vidas. Não deixe as comidas caírem!'
+            },
+            runner: {
+                icon: '🏃',
+                title: 'Entrega Sushinachos',
+                text: 'A próxima entrega é sua!\n\n← → ou A / D: troque de faixa.\n↑, Barra de Espaço ou W: pule as barreiras e os buracos.\n↓ ou S: deslize sob os toldos.\n⚡ Tecla Shift (ou clique em TURBO): acelere por alguns segundos!\n\nEntregue o pedido de sushi & nachos, volte ao Sushinachos para pegar o próximo e siga assim! Cada chegada vale 100 SN Coin de bônus, e a corrida fica mais longa e mais rápida.'
+            },
+            ninja: {
+                icon: '⚔️',
+                title: 'Sushi Ninja',
+                text: 'Um corte de mestre, uma chuva de sushis!\n\nClique e arraste o mouse pressionado para fatiar sushis, sashimis e temakis no ar.\nCorte várias comidas no mesmo golpe: combo até 4×!\n⚠️ Não corte: 🍽️ pratos vazios e 🥛 copos.\n\nVocê tem 3 vidas. Comida boa não pode cair!'
+            }
+        }
     };
+
+    Object.defineProperty(TUTORIALS, 'catcher', { configurable: true, get: () => (isMobilePlatform() ? TUTORIALS.mobile.catcher : TUTORIALS.desktop.catcher) });
+    Object.defineProperty(TUTORIALS, 'runner', { configurable: true, get: () => (isMobilePlatform() ? TUTORIALS.mobile.runner : TUTORIALS.desktop.runner) });
+    Object.defineProperty(TUTORIALS, 'ninja', { configurable: true, get: () => (isMobilePlatform() ? TUTORIALS.mobile.ninja : TUTORIALS.desktop.ninja) });
 
     // ============================================================
     // INITIALIZATION
@@ -97,6 +140,7 @@ const ChefJohnGames = (() => {
 
         // Canvas resize
         window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', updateCanvasRect, { passive: true });
         document.addEventListener('visibilitychange', () => { if (document.hidden && currentGame && !isPaused && !finished && !tutorial) pauseGame(); });
         window.addEventListener('pagehide', () => trackQuit('close'));
 
@@ -154,6 +198,7 @@ const ChefJohnGames = (() => {
 
     function resizeCanvas() {
         if (!screens.game) return;
+        updateCanvasRect();
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const rect = screens.game.getBoundingClientRect();
         canvas.width = rect.width * dpr;
@@ -268,15 +313,24 @@ const ChefJohnGames = (() => {
     }
 
     // ---- Coordinate helpers ----
+    let cachedCanvasRect = null;
+
+    function updateCanvasRect() {
+        if (canvas) {
+            cachedCanvasRect = canvas.getBoundingClientRect();
+        }
+    }
+
     function getCanvasCoords(clientX, clientY) {
-        const rect = canvas.getBoundingClientRect();
-        return { x: clientX - rect.left, y: clientY - rect.top };
+        if (!cachedCanvasRect) updateCanvasRect();
+        return { x: clientX - cachedCanvasRect.left, y: clientY - cachedCanvasRect.top };
     }
 
     // ---- Touch handlers ----
     function handleTouchStart(e) {
         e.preventDefault();
         if (isPaused || !currentGame) return;
+        updateCanvasRect();
         const t = e.touches[0];
         const c = getCanvasCoords(t.clientX, t.clientY);
         if (currentGame.onTouchStart) currentGame.onTouchStart(c.x, c.y, e);
@@ -306,6 +360,7 @@ const ChefJohnGames = (() => {
     // ---- Mouse/pointer handlers ----
     function handlePointerStart(clientX, clientY) {
         if (isPaused || !currentGame) return;
+        updateCanvasRect();
         const c = getCanvasCoords(clientX, clientY);
         if (currentGame.onTouchStart) currentGame.onTouchStart(c.x, c.y);
     }
@@ -347,7 +402,8 @@ const ChefJohnGames = (() => {
         track('game_start', { game: gameType });
         showScreen('game');
         screens.game.dataset.game = gameType;
-        const tut = TUTORIALS[gameType];
+        const platform = isMobilePlatform() ? 'mobile' : 'desktop';
+        const tut = (TUTORIALS[platform] && TUTORIALS[platform][gameType]) || TUTORIALS[gameType];
         document.getElementById('tutorial-icon').textContent = tut.icon;
         document.getElementById('tutorial-title').textContent = tut.title;
         document.getElementById('tutorial-text').textContent = tut.text;

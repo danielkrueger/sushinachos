@@ -24,7 +24,7 @@ const JohnArt = {
     },
     food(c, type, x, y, size, rotation = 0) {
         c.save(); c.translate(x,y); c.rotate(rotation); c.scale(size/50,size/50);
-        c.shadowColor='rgba(73,37,18,.24)'; c.shadowBlur=12; c.shadowOffsetY=7;
+        c.shadowBlur = 0; c.shadowOffsetY = 0;
         if (type === 'golden' || type === 'special') { this.coin(c,0,0,24); }
         else if (type === 'pizza' || type === 'burnt') {
             const burnt=type==='burnt';
@@ -689,7 +689,11 @@ const JohnArt = {
             c.beginPath(); c.moveTo(x, floorY + 5); c.lineTo(x, h); c.stroke();
         }
     },
-    japaneseTemple(c, w, h, time=0, label=true) {
+    _templeCanvas: null,
+    _templeW: 0,
+    _templeH: 0,
+    _templeLabel: null,
+    _renderStaticTemple(c, w, h, label) {
         // Céu suave em crepúsculo oriental (tons suaves, baixo contraste e ambiente harmonioso)
         const g = c.createLinearGradient(0, 0, 0, h);
         g.addColorStop(0, '#243746');
@@ -699,13 +703,6 @@ const JohnArt = {
         c.fillStyle = g; c.fillRect(0, 0, w, h);
 
         const cx = w * 0.5;
-
-        // Estrelas discretas e suaves no céu
-        const stars = [[0.12, 0.08], [0.28, 0.14], [0.45, 0.06], [0.65, 0.12], [0.82, 0.09], [0.91, 0.18], [0.22, 0.22], [0.75, 0.24]];
-        for (const [sx, sy] of stars) {
-            const tw = Math.sin(time * 3 + sx * 10) * 0.3 + 0.5;
-            this.oval(c, sx * w, sy * h, 1.2 * tw, 1.2 * tw, 'rgba(255, 250, 230, 0.35)');
-        }
 
         // Lua serena com brilho suave e translúcido (sem pontos brancos ofuscantes)
         const moonR = Math.min(54, w * 0.14);
@@ -778,21 +775,6 @@ const JohnArt = {
         c.textBaseline = 'middle';
         c.fillText('壽', cx, toriiTop + 37);
 
-        // Lanternas Japonesas de Papel Vermelho (Chōchin) com luz âmbar difusa
-        const sway = Math.sin(time * 2.8) * 3;
-        for (const lx of [cx - toriiW * 0.28, cx + toriiW * 0.28]) {
-            const ly = toriiTop + 85;
-            c.strokeStyle = '#2d3436'; c.lineWidth = 1.3;
-            c.beginPath(); c.moveTo(lx, toriiTop + 72); c.lineTo(lx + sway, ly - 16); c.stroke();
-            this.oval(c, lx + sway, ly, 30, 30, 'rgba(255, 220, 140, 0.12)');
-            this.oval(c, lx + sway, ly, 16, 22, '#993d32');
-            this.oval(c, lx + sway, ly, 11, 16, 'rgba(255, 230, 160, 0.45)');
-            c.strokeStyle = 'rgba(45, 25, 20, 0.45)'; c.lineWidth = 1.1;
-            c.beginPath(); c.moveTo(lx + sway - 12, ly - 6); c.lineTo(lx + sway + 12, ly - 6); c.stroke();
-            c.beginPath(); c.moveTo(lx + sway - 12, ly + 6); c.lineTo(lx + sway + 12, ly + 6); c.stroke();
-            c.beginPath(); c.moveTo(lx + sway, ly + 22); c.lineTo(lx + sway, ly + 32); c.stroke();
-        }
-
         // Estandartes Nobori Tradicionais com textura natural de tecido
         const banLY = toriiTop + 95;
         // Estandarte Esquerdo (Linho Cru Suave): 寿司 (Sushi)
@@ -836,14 +818,6 @@ const JohnArt = {
             c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke();
         }
 
-        // Pétalas de Sakura flutuando suavemente
-        for (let i = 0; i < 8; i++) {
-            const petX = (cx - 150 + i * 50 + Math.sin(time * 2 + i) * 20 + w) % w;
-            const petY = (h * 0.2 + i * 60 + time * 32) % (h * 0.85);
-            this.oval(c, petX, petY, 3.8, 2.4, 'rgba(255, 185, 195, 0.65)');
-            this.oval(c, petX, petY, 2, 1.4, 'rgba(255, 140, 155, 0.7)');
-        }
-
         // Título limpo (apenas quando label === true, em tom suave)
         if (label) {
             c.fillStyle = 'rgba(255, 240, 190, 0.85)';
@@ -851,6 +825,59 @@ const JohnArt = {
             c.textAlign = 'center';
             c.textBaseline = 'alphabetic';
             c.fillText('SUSHI NINJA • 寿司', cx, Math.max(120, toriiTop - 14));
+        }
+    },
+    japaneseTemple(c, w, h, time=0, label=true) {
+        // Cache do fundo estático do templo (evita renderizar dezenas de vetores complexos por quadro)
+        const canUseOffscreen = typeof document !== 'undefined' && document.createElement;
+        if (canUseOffscreen) {
+            if (!this._templeCanvas || this._templeW !== w || this._templeH !== h || this._templeLabel !== label) {
+                this._templeCanvas = document.createElement('canvas');
+                this._templeCanvas.width = w;
+                this._templeCanvas.height = h;
+                this._templeW = w;
+                this._templeH = h;
+                this._templeLabel = label;
+                const tc = this._templeCanvas.getContext('2d');
+                this._renderStaticTemple(tc, w, h, label);
+            }
+            c.drawImage(this._templeCanvas, 0, 0);
+        } else {
+            this._renderStaticTemple(c, w, h, label);
+        }
+
+        const cx = w * 0.5;
+        const toriiW = Math.min(w * 0.74, 350);
+        const toriiTop = Math.max(105, h * 0.18);
+
+        // Estrelas discretas e suaves no céu
+        const stars = [[0.12, 0.08], [0.28, 0.14], [0.45, 0.06], [0.65, 0.12], [0.82, 0.09], [0.91, 0.18], [0.22, 0.22], [0.75, 0.24]];
+        for (const [sx, sy] of stars) {
+            const tw = Math.sin(time * 3 + sx * 10) * 0.3 + 0.5;
+            this.oval(c, sx * w, sy * h, 1.2 * tw, 1.2 * tw, 'rgba(255, 250, 230, 0.35)');
+        }
+
+        // Lanternas Japonesas de Papel Vermelho (Chōchin) com luz âmbar difusa
+        const sway = Math.sin(time * 2.8) * 3;
+        for (const lx of [cx - toriiW * 0.28, cx + toriiW * 0.28]) {
+            const ly = toriiTop + 85;
+            c.strokeStyle = '#2d3436'; c.lineWidth = 1.3;
+            c.beginPath(); c.moveTo(lx, toriiTop + 72); c.lineTo(lx + sway, ly - 16); c.stroke();
+            this.oval(c, lx + sway, ly, 30, 30, 'rgba(255, 220, 140, 0.12)');
+            this.oval(c, lx + sway, ly, 16, 22, '#993d32');
+            this.oval(c, lx + sway, ly, 11, 16, 'rgba(255, 230, 160, 0.45)');
+            c.strokeStyle = 'rgba(45, 25, 20, 0.45)'; c.lineWidth = 1.1;
+            c.beginPath(); c.moveTo(lx + sway - 12, ly - 6); c.lineTo(lx + sway + 12, ly - 6); c.stroke();
+            c.beginPath(); c.moveTo(lx + sway - 12, ly + 6); c.lineTo(lx + sway + 12, ly + 6); c.stroke();
+            c.beginPath(); c.moveTo(lx + sway, ly + 22); c.lineTo(lx + sway, ly + 32); c.stroke();
+        }
+
+        // Pétalas de Sakura flutuando suavemente
+        for (let i = 0; i < 8; i++) {
+            const petX = (cx - 150 + i * 50 + Math.sin(time * 2 + i) * 20 + w) % w;
+            const petY = (h * 0.2 + i * 60 + time * 32) % (h * 0.85);
+            this.oval(c, petX, petY, 3.8, 2.4, 'rgba(255, 185, 195, 0.65)');
+            this.oval(c, petX, petY, 2, 1.4, 'rgba(255, 140, 155, 0.7)');
         }
     }
 };
