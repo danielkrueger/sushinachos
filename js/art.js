@@ -116,17 +116,38 @@ const JohnArt = {
             this.oval(c, -4, -21, 6, 4, '#4caf50');
             this.oval(c, 4, -20, 6, 4, '#ffca28');
             this.oval(c, 0, -22, 3, 2, '#e53935');
-        } else if(type==='quesadilla') {
-            // Quesadilla dourada grelhada com queijo derretido
+        } else if(type==='taco' || type==='quesadilla') {
+            // Taco crocante recheado com carne, alface, tomate e queijo
             c.shadowBlur=0;
-            this.poly(c, [[-22, 16], [22, 16], [20, -10], [0, -20], [-20, -10]], '#f4c37d');
-            this.poly(c, [[-20, 14], [20, 14], [18, -8], [0, -18], [-18, -8]], '#fed89b');
-            c.strokeStyle='#9c5b1c'; c.lineWidth=2.2; c.lineCap='round';
-            c.beginPath(); c.moveTo(-14, 12); c.lineTo(-8, -12); c.stroke();
-            c.beginPath(); c.moveTo(-4, 12); c.lineTo(2, -14); c.stroke();
-            c.beginPath(); c.moveTo(6, 12); c.lineTo(12, -10); c.stroke();
-            this.poly(c, [[-22, 14], [22, 14], [18, 20], [12, 17], [6, 22], [0, 18], [-6, 21], [-14, 17], [-20, 20]], '#ffb300');
-            this.poly(c, [[-20, 14], [20, 14], [16, 18], [11, 16], [6, 20], [0, 16], [-6, 19], [-13, 16], [-18, 18]], '#ffe082');
+            // Casca de trás (dourada tostada)
+            this.poly(c, [[-22, 6], [-19, -9], [19, -9], [22, 6], [16, 17], [-16, 17]], '#d48822');
+            // Recheio de carne moída temperada
+            this.poly(c, [[-17, 4], [-14, -7], [14, -7], [17, 4]], '#5a3825');
+            this.oval(c, -7, -4, 3, 2, '#3e2417');
+            this.oval(c, 1, -5, 3, 2, '#3e2417');
+            this.oval(c, 8, -4, 3, 2, '#3e2417');
+            // Alface fresca desfiada (tons de verde)
+            this.poly(c, [[-17, -3], [-14, -13], [-10, -7], [-5, -14], [0, -6], [6, -13], [11, -7], [15, -12], [17, -2]], '#43a047');
+            this.poly(c, [[-13, -4], [-10, -11], [-7, -6], [-3, -12], [2, -5], [8, -11], [12, -6]], '#66bb6a');
+            // Tomates picados em cubinhos
+            this.box(c, -11, -11, 4, 4, '#e53935', 1);
+            this.box(c, 1, -12, 4, 4, '#e53935', 1);
+            this.box(c, 9, -9, 4, 4, '#d32f2f', 1);
+            this.box(c, -4, -6, 3, 3, '#e53935', 1);
+            // Tiras de queijo cheddar ralado
+            c.strokeStyle='#ffb300'; c.lineWidth=2; c.lineCap='round';
+            c.beginPath(); c.moveTo(-11, -7); c.lineTo(-7, -2); c.stroke();
+            c.beginPath(); c.moveTo(-2, -9); c.lineTo(2, -3); c.stroke();
+            c.beginPath(); c.moveTo(5, -10); c.lineTo(8, -4); c.stroke();
+            c.beginPath(); c.moveTo(12, -6); c.lineTo(15, -1); c.stroke();
+            // Casca da frente (crocante dourada cobrindo a base)
+            this.poly(c, [[-22, 5], [-18, 1], [18, 1], [22, 5], [16, 18], [-16, 18]], '#f6b83d');
+            this.poly(c, [[-20, 6], [-16, 3], [16, 3], [20, 6], [14, 16], [-14, 16]], '#fed56a');
+            // Pontinhos de milho tostado na casquinha
+            this.oval(c, -9, 9, 2, 1.5, '#c97d1b');
+            this.oval(c, 2, 11, 2.5, 1.5, '#c97d1b');
+            this.oval(c, 11, 8, 2, 1.5, '#c97d1b');
+            this.oval(c, -4, 14, 1.5, 1, '#c97d1b');
         } else if(type==='cheese') {
             this.poly(c,[[-23,14],[23,14],[23,-8],[-13,-22],[-23,-5]],'#df911f');
             this.poly(c,[[-23,-5],[23,-8],[-13,-22]],'#ffe58b'); this.poly(c,[[-23,-5],[23,-8],[23,12],[-23,16]],'#ffc74f');
@@ -135,9 +156,37 @@ const JohnArt = {
             this.oval(c,0,4,27,20,'#86a8a7');this.oval(c,0,0,27,20,'#f7fffb');this.oval(c,0,0,20,14,'#bedbd5');this.oval(c,0,1,17,11,'#edf7ef');
         } else if(type==='glass') {
             this.poly(c,[[-17,-24],[17,-24],[13,24],[-13,24]],'#a7d9dc');this.poly(c,[[-12,-16],[12,-16],[9,20],[-9,20]],'#eafafa');this.box(c,-10,-20,4,35,'#fff',2);
-        } else if(type==='pineapple') {
-            this.oval(c,0,7,16,21,'#eab748');c.shadowBlur=0;this.poly(c,[[0,-9],[-16,-30],[-5,-24],[0,-36],[5,-23],[18,-29],[8,-8]],'#408450');
-            c.strokeStyle='#b7772c';for(let i=-10;i<15;i+=8){c.beginPath();c.moveTo(i,-6);c.lineTo(i+10,21);c.stroke();}
+        } else if(type==='temaki' || type==='pineapple') {
+            // Cone de Temaki com alga nori, arroz, salmão fresco, cream cheese e cebolinha
+            c.shadowBlur=0;
+            // Cone de nori de fundo
+            this.poly(c, [[-16, -7], [16, -7], [2, 20], [-4, 20]], '#1a241e');
+            this.poly(c, [[-14, -5], [14, -5], [1, 18], [-3, 18]], '#25352b');
+            // Arroz na boca do cone
+            this.oval(c, 0, -7, 15, 8, '#f5f5f0');
+            this.oval(c, 0, -8, 13, 6, '#ffffff');
+            this.oval(c, -7, -7, 2.5, 1.5, '#e0e0e0');
+            this.oval(c, 7, -7, 2.5, 1.5, '#e0e0e0');
+            // Pepino / Avocado
+            this.poly(c, [[-12, -6], [-10, -17], [-6, -15], [-7, -5]], '#2e7d32');
+            this.poly(c, [[-11, -6], [-9, -15], [-7, -14], [-8, -5]], '#4caf50');
+            // Fatia nobre de salmão fresco
+            this.poly(c, [[-7, -6], [-4, -22], [6, -20], [8, -5]], '#ff5722');
+            this.poly(c, [[-5, -7], [-3, -20], [5, -18], [6, -6]], '#ff7043');
+            c.strokeStyle='rgba(255,255,255,0.75)'; c.lineWidth=1.5;
+            c.beginPath(); c.moveTo(-3, -16); c.lineTo(4, -14); c.stroke();
+            c.beginPath(); c.moveTo(-4, -11); c.lineTo(5, -9); c.stroke();
+            // Cream cheese
+            this.oval(c, 7, -9, 4, 3, '#fffde7');
+            // Dobra frontal da folha de alga nori envolvendo o cone
+            this.poly(c, [[-16, -6], [12, -2], [2, 20], [-4, 20]], '#141d18');
+            c.strokeStyle='#2d3d33'; c.lineWidth=1.5;
+            c.beginPath(); c.moveTo(-16, -6); c.lineTo(2, 20); c.stroke();
+            // Cebolinha picada e gergelim
+            this.oval(c, -1, -10, 2, 2, '#43a047');
+            this.oval(c, 3, -7, 2, 2, '#43a047');
+            this.oval(c, 1, -12, 1, 1.5, '#fff9c4');
+            this.oval(c, 5, -11, 1, 1.5, '#fff9c4');
         } else { this.coin(c,0,0,22); c.fillStyle='#fff'; c.font='bold 15px sans-serif';c.textAlign='center';c.fillText(type==='powerup_paddle'?'↔':'½',0,4); }
         c.restore();
     },

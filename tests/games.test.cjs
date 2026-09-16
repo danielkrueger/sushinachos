@@ -52,8 +52,8 @@ test('runner ends once and destroy cancels pending completion',()=>{
 test('catcher cannot produce negative balance or multiple game over calls',()=>{
  let n=0;const g=game('catcher',390,844,()=>n++);g.catchItem({points:-20,bad:true,x:0,y:0});assert.equal(g.score,0);g.loseLife();g.loseLife();g.loseLife();assert.equal(n,1);
 });
-test('catcher rewards pineapple pizza and penalizes empty plates',()=>{
- const source=fs.readFileSync('js/pizza-catcher.js','utf8');assert.match(source,/type: 'pineapple'.*points: 12.*bad: false/);assert.match(source,/type: 'plate'.*bad: true/);assert.doesNotMatch(source,/type: 'pineapple'.*bad: true/);
+test('catcher rewards temaki and penalizes empty plates',()=>{
+ const source=fs.readFileSync('js/pizza-catcher.js','utf8');assert.match(source,/type: 'temaki'.*points: 12.*bad: false/);assert.match(source,/type: 'plate'.*bad: true/);assert.doesNotMatch(source,/type: 'temaki'.*bad: true/);
 });
 test('ninja slice uses segment distance and awards combo',()=>{
  const g=game('ninja');g.items=[{id:'pizza',x:100,y:200,size:50,pts:10,vx:0,vy:0,gravity:300,rot:0,rotSpeed:0}];g.onTouchStart(30,200);g.onTouchMove(160,200);assert.equal(g.score,10);assert.equal(g.items.length,0);assert.equal(g.particles.filter(p=>p.isHalf).length,2);
