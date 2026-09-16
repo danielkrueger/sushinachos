@@ -40,15 +40,14 @@ class PizzaNinjaGame {
 
         // Tabela de itens temáticos do Sushinachos (mexicano e japonês):
         this.itemTypes = [
-            { id: 'nacho',      emoji: '🧀', name: 'Nacho',      pts: 3,   weight: 35, bad: false },
-            { id: 'sushi',      emoji: '🍣', name: 'Sushi',      pts: 4,   weight: 25, bad: false },
-            { id: 'sashimi',    emoji: '🐟', name: 'Sashimi',    pts: 5,   weight: 20, bad: false },
-            { id: 'burrito',    emoji: '🌯', name: 'Burrito',    pts: 4,   weight: 18, bad: false },
-            { id: 'quesadilla', emoji: '🌮', name: 'Quesadilla', pts: 4,   weight: 18, bad: false },
-            { id: 'special',    emoji: '⭐', name: 'SN Coin',    pts: 10,  weight: 6,  bad: false, glow: true, isCoin: true },
-            { id: 'plate',      emoji: '🍽️', name: 'Prato',      pts: 0,   weight: 6,  bad: true, dish: true, label: 'PRATO' },
-            { id: 'glass',      emoji: '🥛', name: 'Copo',       pts: 0,   weight: 6,  bad: true, dish: true, label: 'COPO' },
-            { id: 'burnt',      emoji: '🔥', name: 'Nacho Queimado', pts: -5,  weight: 8,  bad: true }
+            { id: 'burrito',    emoji: '🌯', name: 'Burrito',          pts: 3,   weight: 35, bad: false },
+            { id: 'quesadilla', emoji: '🌮', name: 'Quesadilla',       pts: 4,   weight: 25, bad: false },
+            { id: 'sushi',      emoji: '🍣', name: 'Sushi',            pts: 4,   weight: 22, bad: false },
+            { id: 'sashimi',    emoji: '🐟', name: 'Sashimi',          pts: 5,   weight: 18, bad: false },
+            { id: 'special',    emoji: '⭐', name: 'SN Coin',          pts: 10,  weight: 6,  bad: false, glow: true, isCoin: true },
+            { id: 'plate',      emoji: '🍽️', name: 'Prato',            pts: 0,   weight: 6,  bad: true, dish: true, label: 'PRATO' },
+            { id: 'glass',      emoji: '🥛', name: 'Copo',             pts: 0,   weight: 6,  bad: true, dish: true, label: 'COPO' },
+            { id: 'burnt',      emoji: '🔥', name: 'Burrito Queimado', pts: -5,  weight: 8,  bad: true }
         ];
     }
 

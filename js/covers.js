@@ -9,6 +9,6 @@ document.querySelectorAll('[data-cover]').forEach(canvas => {
     } else {
         JohnArt.kitchen(ctx,w,h,canvas.dataset.cover==='ninja',0,false);
         if(canvas.dataset.cover==='catcher') JohnArt.john(ctx,w*.48,h*.95,1.7);
-        for(let i=0;i<5;i++)JohnArt.food(ctx,['nacho','sushi','sashimi','burrito','special'][i],85+i*116,130+(i%2)*55,68,i*.6);
+        for(let i=0;i<5;i++)JohnArt.food(ctx,['burrito','sushi','quesadilla','sashimi','special'][i],85+i*116,130+(i%2)*55,68,i*.6);
     }
 });

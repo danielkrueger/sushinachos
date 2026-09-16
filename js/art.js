@@ -23,19 +23,23 @@ const JohnArt = {
         else if (type === 'pizza' || type === 'burnt') {
             const burnt=type==='burnt';
             if(burnt) {
-                // Nacho Queimado: triângulo de nacho carbonizado com fumaça e brasas incandescentes
+                // Burrito Queimado: burrito carbonizado com papel alumínio chamuscado, brasas e fumaça
                 c.shadowBlur=0; c.shadowOffsetY=0;
-                this.poly(c,[[-22,18],[22,18],[0,-22]],'#1c1a19');
-                this.poly(c,[[-19,15],[19,15],[0,-19]],'#2e2724');
-                this.poly(c,[[-14,12],[14,12],[0,-14]],'#3d3430');
-                c.strokeStyle='#ff3d00'; c.lineWidth=1.8; c.lineCap='round';
-                c.beginPath(); c.moveTo(-10,10); c.lineTo(-2,2); c.lineTo(4,6); c.stroke();
-                c.beginPath(); c.moveTo(2,-6); c.lineTo(8,-2); c.stroke();
-                for (const [x,y] of [[-7,8],[2,3],[5,-1],[-3,-4]]) this.oval(c,x,y,2.5,2.5,'#ff6d00');
-                for (const [x,y] of [[-7,8],[2,3],[5,-1]]) this.oval(c,x,y,1.2,1.2,'#ffea00');
-                this.oval(c,-4,-26,5,4,'rgba(120,115,110,0.6)');
-                this.oval(c,3,-32,7,5,'rgba(100,95,90,0.45)');
-                this.oval(c,-1,-39,9,6,'rgba(80,75,70,0.3)');
+                this.poly(c,[[-14,-20],[14,-20],[15,20],[-15,20]],'#1c1a19');
+                this.poly(c,[[-12,-18],[12,-18],[13,18],[-13,18]],'#2c2420');
+                this.poly(c,[[-15,0],[15,0],[15,21],[-15,21]],'#545b61');
+                this.poly(c,[[-14,2],[14,2],[14,19],[-14,19]],'#78848c');
+                c.strokeStyle='#262b2f'; c.lineWidth=2;
+                c.beginPath(); c.moveTo(-15,8); c.lineTo(-4,14); c.stroke();
+                c.beginPath(); c.moveTo(4,10); c.lineTo(15,13); c.stroke();
+                this.oval(c,0,-20,13,6,'#12100f');
+                c.strokeStyle='#ff3d00'; c.lineWidth=1.6; c.lineCap='round';
+                c.beginPath(); c.moveTo(-8,-19); c.lineTo(0,-22); c.lineTo(7,-18); c.stroke();
+                for(const [x,y] of [[-5,-20],[2,-21],[6,-19],[0,-12],[-7,6]]) this.oval(c,x,y,2.2,2.2,'#ff6d00');
+                for(const [x,y] of [[-5,-20],[2,-21],[6,-19]]) this.oval(c,x,y,1.1,1.1,'#ffea00');
+                this.oval(c,-3,-28,6,5,'rgba(110,105,100,0.6)');
+                this.oval(c,4,-35,8,6,'rgba(90,85,80,0.45)');
+                this.oval(c,-1,-43,10,7,'rgba(70,65,60,0.3)');
             } else {
                 this.poly(c,[[-23,-18],[23,0],[-23,18]],'#e9a64e');
                 c.shadowBlur=0; c.shadowOffsetY=0;

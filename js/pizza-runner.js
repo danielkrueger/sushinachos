@@ -231,7 +231,7 @@ class PizzaRunnerGame {
             this.rect(-1.3,1.3,0,2.9,z-.04,'#5b3322');this.rect(-1.05,1.05,.15,2.7,z-.06,'#8a4b2f');
             for(let j=0;j<16;j++){const x=-9.6+j*1.2;this.quad([[x,3.2,z-1.3],[x+1.2,3.2,z-1.3],[x+1.2,3.9,z-.02],[x,3.9,z-.02]],j%2?'#fff2ce':'#cc4b36');}
             this.rect(-7,7,4.25,5.95,z-.05,'#fff3d9');this.rect(-6.75,6.75,4.4,5.8,z-.07,'#b33a2d');label('SUSHINACHOS',5.1,.5,'#fff3d9');
-            const emblem=this.project(0,7,z-.1);JohnArt.food(c,'nacho',emblem.x,emblem.y,emblem.s*2.2,Math.PI/2);
+            const emblem=this.project(0,7,z-.1);JohnArt.food(c,'burrito',emblem.x,emblem.y,emblem.s*2.2,0);
             for(const [x,height,shirt,hair] of [[-3.4,1.85,'#fffdf0','#2c2723'],[2.4,1.2,'#f2b33d','#6b4a2f'],[3.6,1.8,'#5aa0c8','#3b2a20']])this.person(x,z-2.4,height,shirt,hair,cheer);
         }
         if(cheer>0) {
